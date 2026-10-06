@@ -2,14 +2,14 @@
   "date": "2026-10-06",
   "unitTests": 13,
   "apiTests": 9,
-  "browserTests": 54,
-  "total": 76,
+  "browserTests": 63,
+  "total": 85,
   "browsers": [
     "Chromium",
     "WebKit",
     "Firefox"
   ],
-  "browserDurationMs": 264562,
+  "browserDurationMs": 673626.442,
   "skipped": 0,
   "retries": 0,
   "restoreExercise": "passed",
@@ -17,5 +17,10 @@
   "inputExifRemoval": "passed",
   "clinicalValidation": false,
   "independentSecurityAudit": false,
-  "physicalDeviceTesting": false
+  "physicalDeviceTesting": false,
+  "browserEvidence": "Deux exécutions : régression complète et contrôle de mesure corrigé sur trois moteurs ; voir browser-results.json.",
+  "explicitRerunTests": 3,
+  "sourceIntegrityFiles": 8,
+  "staticDemoValidation": "passed",
+  "restoreAndStoragePhase": "Livraison initiale du même jour, avant refonte ; backend et chiffrement inchangés."
 }

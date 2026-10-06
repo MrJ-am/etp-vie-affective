@@ -1,16 +1,16 @@
-✔ Quinze étapes accessibles, bilans distincts et aucune date de session inventée (1.398321ms)
-✔ Les sept rubriques et la provenance sont conservées pour chaque chapitre régulier (0.271029ms)
-✔ Les originaux et l’extraction privée sont absents des ressources servies (0.532755ms)
-✔ AES-256-GCM : vecteur NIST indépendant, message vide (6.211916ms)
-✔ AAD et ciphertext compatibles avec OpenSSL/Node, indépendamment du déchiffreur applicatif (3.120058ms)
-✔ PBKDF2 Web Crypto compatible avec la dérivation indépendante de Node (184.410289ms)
-✔ Phrase et récupération ouvrent le même coffre ; mauvaise phrase refusée (272.314191ms)
-✔ Altération, substitution de coffre et d’objet refusées (99.081337ms)
-✔ Nonce de 96 bits renouvelé à chaque opération ; clé non exportable (99.295516ms)
-✔ Changement de phrase par ancien secret ou kit, ancienne sauvegarde préservée (712.264879ms)
-✔ Versions, KDF, base64 et tailles invalides refusés avant calcul coûteux (94.969567ms)
-✔ Padding borné, longueur UTF-8 et validation profonde des imports (1.522674ms)
-✔ images : dimensions avant décodage, refus d’une bombe PNG et d’un format masqué (1.615751ms)
+✔ Quinze étapes accessibles, bilans distincts et aucune date de session inventée (2.205959ms)
+✔ Les sept rubriques et la provenance sont conservées pour chaque chapitre régulier (0.296447ms)
+✔ Les originaux et l’extraction privée sont absents des ressources servies (0.185433ms)
+✔ AES-256-GCM : vecteur NIST indépendant, message vide (6.409582ms)
+✔ AAD et ciphertext compatibles avec OpenSSL/Node, indépendamment du déchiffreur applicatif (4.655398ms)
+✔ PBKDF2 Web Crypto compatible avec la dérivation indépendante de Node (173.560682ms)
+✔ Phrase et récupération ouvrent le même coffre ; mauvaise phrase refusée (259.015568ms)
+✔ Altération, substitution de coffre et d’objet refusées (85.78322ms)
+✔ Nonce de 96 bits renouvelé à chaque opération ; clé non exportable (99.681426ms)
+✔ Changement de phrase par ancien secret ou kit, ancienne sauvegarde préservée (693.933867ms)
+✔ Versions, KDF, base64 et tailles invalides refusés avant calcul coûteux (95.948407ms)
+✔ Padding borné, longueur UTF-8 et validation profonde des imports (1.264422ms)
+✔ images : dimensions avant décodage, refus d’une bombe PNG et d’un format masqué (2.20596ms)
 ℹ tests 13
 ℹ suites 0
 ℹ pass 13
@@ -18,4 +18,4 @@
 ℹ cancelled 0
 ℹ skipped 0
 ℹ todo 0
-ℹ duration_ms 1687.305363
+ℹ duration_ms 1610.543519

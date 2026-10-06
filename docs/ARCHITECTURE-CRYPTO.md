@@ -50,3 +50,7 @@ L’export chiffré contient format/version, trousseau, enveloppe et images. L�
 | `DELETE /api/account` | CSRF, Origin, confirmation du mot de passe ; journal durable puis cascade SQL |
 
 La démo génère son propre CryptoKey non exportable par navigateur et ne contacte pas l’API. Ce stockage sert à isoler les visiteurs ; il ne possède pas la protection par phrase du vrai coffre. Un autre utilisateur du même profil de navigateur peut rouvrir la démo. Il ne faut y écrire que des exemples fictifs.
+
+## Interface continue
+
+La présentation utilise Elm Animator 2.0.0 : fenêtres imbriquées, plan spatial et chemins explicites. L’état de navigation ne contient que des destinations de présentation. Les transitions CSS natives générées par Animator ne modifient ni le carnet v1 ni les flux ci-dessus, n’ajoutent aucun stockage ou chemin réseau et s’arrêtent avec le verrouillage. Le pont transmet uniquement le changement de préférence native de réduction des mouvements et assure le focus. Lire `CONTINUITE.md`.

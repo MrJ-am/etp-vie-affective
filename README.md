@@ -2,6 +2,8 @@
 
 Prototype fonctionnel du compagnon de séances pour adultes autistes. Quinze étapes, sept rubriques regroupées en Avant / Pendant / Entre, objectifs et formulations successives, défis persistants, expérimentations et paysage personnel. Usage réservé aux **données fictives**. Aucune validation clinique ou certification de sécurité n’est revendiquée.
 
+La navigation suit un plan permanent et des fenêtres animées avec Elm Animator 2.0.0. Le parcours contient les séances, puis leurs moments ; objectifs et repères restent transversaux. Lire `docs/CONTINUITE.md` pour les relations, les animations et les garanties de conservation du fond. La réduction des mouvements du navigateur et le réglage sans animation conservent tous les chemins.
+
 La démonstration privée publiée utilise uniquement le stockage du navigateur. Elle se lance avec « Ouvrir la démonstration », puis « Reprendre mon carnet ». La version complète ci-dessous possède de vrais comptes, une API Common Lisp et PostgreSQL. Les fichiers internes ayant servi au travail ne sont pas inclus.
 
 ## Lancer la version complète
@@ -32,7 +34,7 @@ Cette commande arrête l’application et conserve les volumes. **Ne pas supprim
 | `frontend/src/Main.elm` | Interface Elm/ElmUI, navigation, commandes métier |
 | `frontend/src/Carnet.elm` | Modèle privé, sérialisation et vues transversales locales |
 | `content/parcours.json` | Catalogue éditorial versionné, provenance, quinze étapes |
-| `shared/elm/MrJam/Carnet.elm`, `shared/assets/carnet.css` | Extension additive destinée à style-mrjam, thème centralisé |
+| `shared/elm/MrJam/Carnet.elm`, `shared/elm/MrJam/Continuite.elm`, `shared/assets/carnet.css` | Extension additive destinée à style-mrjam, thème centralisé |
 | `style.lock.json` | Révision vérifiée de style-mrjam |
 | `bridge/` | Web Crypto en Worker, transport, IndexedDB et APIs natives |
 | `backend/` | API Lisp, migration PostgreSQL, image reproductible |

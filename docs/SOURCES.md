@@ -30,3 +30,5 @@ Consultation directe le 6 octobre 2026. `verification-sources.json` conserve les
 | [Spaargaren et al., 2025, SAM](https://pubmed.ncbi.nlm.nih.gov/40567128/), [PMC](https://pmc.ncbi.nlm.nih.gov/articles/PMC12417602/) | Étude sur le stress avec bénéfices moyens et charge d’usage chez une partie des personnes. Motive la vérification de la charge et du contrôle, sans valider le carnet ni le programme affectif |
 
 Les choix graphiques, l’absence de scores et la réduction de notifications sont des hypothèses de ce prototype. Les tests utilisateurs sont à organiser selon `CHARTE-ET-TESTS-USAGERS.md`.
+
+La refonte de navigation s’appuie sur [Elm Animator 2.0.0](https://package.elm-lang.org/packages/mdgriffith/elm-animator/2.0.0/) et sa [philosophie Continuous UI](https://github.com/mdgriffith/elm-animator/blob/2.0.0/README.md), consultées le 6 octobre 2026. Cette référence guide uniquement la forme et l’orientation ; elle ne constitue pas une source clinique et ne remplace aucune source pédagogique. Les choix sont documentés dans `CONTINUITE.md`.

@@ -19,7 +19,7 @@ body { background: var(--papier); }
 .theme-carnet .carnet-soustitre { font-size: 1.65rem; line-height: 1.28 !important; letter-spacing: -.012em; }
 .theme-carnet .carnet-bouton, .theme-carnet .carnet-onglet { line-height: 1.35 !important; font-size: 1rem; }
 .theme-carnet .carnet-nav-item > * { width: 100% !important; text-align: left !important; }
-.theme-carnet .carnet-sidebar { position: sticky; top: 0; min-height: calc(100dvh - 34px); max-width: 246px; }
+.theme-carnet .carnet-sidebar { position: sticky; top: 0; min-height: calc(100dvh - 34px); max-width: 276px; }
 .theme-carnet .carnet-couverture { box-shadow: -8px 0 0 #4d263d, 7px 5px 0 #e4dbcf, 11px 9px 0 #f2ece3, 12px 14px 35px #30282f18; border-left: 1px solid #ffffff44; min-height: 385px; }
 .theme-carnet .chapter-footer { border-radius: 0 0 12px 12px; }
 .theme-carnet .current-chapter { box-shadow: 0 6px 20px #30282f05; }
@@ -41,6 +41,33 @@ body { background: var(--papier); }
 .theme-carnet .skip-link { position: absolute !important; left: 10px; top: -90px; z-index: 200; background: white; color: #623451; padding: 14px; border: 2px solid #623451; }
 .theme-carnet .skip-link:focus { top: 10px; }
 .theme-carnet .carnet-panneau { transition: border-color .15s ease; }
+/* ElmUI shrink utilise flex-basis:0 ; les fenêtres avec overflow et les grilles
+   ont besoin de leur hauteur intrinsèque, aussi sur WebKit/Firefox. */
+.theme-carnet .continuite-fenetre { flex: 0 0 auto !important; height: auto !important; min-height: auto !important; position: relative; width: 100%; min-width: 0; overflow: hidden; isolation: isolate; }
+.theme-carnet .continuite-panneau { width: 100%; min-width: 0; }
+.theme-carnet .continuite-panneau[data-active="true"] { z-index: 1; background: var(--papier); }
+.theme-carnet .continuite-panneau[data-active="false"] { position: absolute; top: 0; left: 0; pointer-events: none; }
+.theme-carnet .continuite-fenetre[data-moving="false"] > .continuite-panneau[data-active="false"] { visibility: hidden; }
+.theme-carnet .continuite-fenetre[data-moving="true"] > .continuite-panneau { will-change: translate; }
+.theme-carnet .plan-grille { flex: 0 0 auto !important; height: auto !important; min-height: auto !important; display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(3, 1fr); gap: 0; align-items: stretch; position: relative; overflow: hidden; border: 1px solid var(--ligne); border-radius: 12px; }
+.theme-carnet .plan-case { height: auto !important; align-self: stretch !important; width: 100% !important; padding: 10px 8px; min-height: 108px !important; border-bottom: 1px solid var(--ligne); }
+.theme-carnet .plan-case .carnet-petit { font-size: .76rem; line-height: 1.45 !important; }
+.theme-carnet .plan-case .carnet-onglet { padding: 8px 6px !important; font-size: .86rem; width: 100% !important; border-color: transparent !important; background: transparent !important; }
+.theme-carnet .plan-case .carnet-onglet[aria-pressed="true"] { font-weight: 700; }
+.theme-carnet .plan-repere { pointer-events: none; position: absolute; left: 0; top: 0; width: 50%; height: 33.333333%; border-radius: 10px; background: #efe1e9; box-shadow: inset 0 0 0 2px var(--prune); }
+.theme-carnet .plan-branche { border-left: 2px solid var(--prune); }
+.theme-carnet .continuite-ruban { width: 100%; height: 3px; background: var(--ligne); overflow: hidden; }
+.theme-carnet .continuite-ruban-repere { height: 3px; background: var(--prune); }
+.theme-carnet .moments-navigation .carnet-onglet { width: 100% !important; white-space: normal; }
+.theme-carnet .moments-navigation .carnet-petit { font-size: .82rem; }
+.theme-carnet .carnet-chemin .carnet-petit { width: auto !important; flex-grow: 0 !important; flex-basis: auto !important; }
+.theme-carnet .sommaire-grid { flex: 0 0 auto !important; height: auto !important; min-height: auto !important; display: grid !important; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 16px; align-items: stretch !important; }
+.theme-carnet .sommaire-grid > .carnet-panneau { width: 100% !important; height: 100% !important; justify-content: flex-start; }
+.theme-carnet .sommaire-grid .carnet-soustitre { font-size: 1.45rem; }
+html[data-sober="true"] .plan-repere { background: #fff; }
+html[data-sober="true"] .plan-grille { border-radius: 3px; }
+html[data-sober="true"] .continuite-panneau[data-active="true"] { background: #fff; }
+html[data-motion="off"] .continuite-panneau { will-change: auto !important; }
 html[data-large="true"] { font-size: 20px; }
 html[data-sober="true"] .theme-carnet { background: #fff !important; }
 html[data-sober="true"] .carnet-couverture, html[data-sober="true"] .current-chapter { box-shadow: none !important; }
@@ -49,8 +76,15 @@ html[data-sober="true"] .carnet-panneau { border-radius: 3px !important; }
 html[data-motion="off"] *, html[data-motion="off"] *::before, html[data-motion="off"] *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  .continuite-panneau { will-change: auto !important; }
+}
+@media (min-width: 601px) and (max-width: 1049px) {
+  .theme-carnet .plan-case { min-height: 88px !important; }
 }
 @media (max-width: 600px) {
+  .theme-carnet .plan-case { min-height: 86px !important; padding: 6px 10px; }
+  .theme-carnet .plan-case .carnet-petit { font-size: .75rem; }
+  .theme-carnet .moments-navigation .carnet-onglet { font-size: .86rem; padding: 8px 5px !important; }
   .theme-carnet .carnet-panneau { padding: 20px !important; }
   .theme-carnet .carnet-couverture { padding: 28px !important; min-height: 310px; }
   .theme-carnet .carnet-couverture p { font-size: 2rem !important; }

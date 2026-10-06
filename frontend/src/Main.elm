@@ -16,6 +16,7 @@ import Html.Attributes as A
 import Json.Decode as D
 import Json.Encode as E
 import MrJam.Carnet as C
+import MrJam.Continuite as Continuite
 
 
 port commande : E.Value -> Cmd msg
@@ -53,6 +54,12 @@ type Vue
 type alias Modele =
     { ecran : Ecran
     , vue : Vue
+    , camera : Continuite.Point
+    , momentCamera : Float
+    , preparation : Int
+    , sortie : Maybe Vue
+    , momentSortie : Maybe Moment
+    , retourSeance : Maybe Vue
     , carnet : Carnet
     , chapitres : List Chapitre
     , largeur : Int
@@ -84,6 +91,8 @@ type alias Modele =
 
 type Msg
     = Evenement D.Value
+    | TransitionTerminee String
+    | PreparerMouvement Float
     | Taille Int Int
     | Naviguer Vue
     | OuvrirCompte Ecran
@@ -92,6 +101,7 @@ type Msg
     | Demander String
     | Annuler
     | AfficherMenu
+    | RetrouverPlan
     | ToggleApprofondissement
     | ToggleSources
     | Noter String String
@@ -133,6 +143,12 @@ init : D.Value -> ( Modele, Cmd Msg )
 init flags =
     ( { ecran = Entree
       , vue = Accueil
+      , camera = position Accueil
+      , momentCamera = 0
+      , preparation = 0
+      , sortie = Nothing
+      , momentSortie = Nothing
+      , retourSeance = Nothing
       , carnet = K.vide
       , chapitres = lire (D.field "chapitres" (D.list Contenu.decoder)) [] flags
       , largeur = lire (D.field "largeur" D.int) 1440 flags
@@ -226,16 +242,23 @@ update msg modele =
                 "opened" ->
                     case D.decodeValue (D.field "journal" K.decoder) data of
                         Ok doc ->
-                            ( { modele | ecran = Ouvert, vue = Accueil, carnet = doc, demo = lire (D.field "demo" D.bool) False data, formulaires = Dict.empty, erreur = "", notice = "", busy = False, photosUrls = Dict.empty, confirmation = "", menu = False }, focus )
+                            ( { modele | ecran = Ouvert, vue = Accueil, camera = position Accueil, momentCamera = 0, preparation = 0, sortie = Nothing, momentSortie = Nothing, retourSeance = Nothing, carnet = doc, demo = lire (D.field "demo" D.bool) False data, formulaires = Dict.empty, erreur = "", notice = "", busy = False, photosUrls = Dict.empty, confirmation = "", menu = False }, focus )
 
                         Err _ ->
-                            ( { modele | ecran = Verrouille, carnet = K.vide, busy = False, erreur = "Le carnet a un format non pris en charge. Il reste conservé chiffré." }, envoyer "lock" E.null )
+                            ( { modele | ecran = Verrouille, camera = position Accueil, momentCamera = 0, preparation = 0, sortie = Nothing, momentSortie = Nothing, retourSeance = Nothing, carnet = K.vide, busy = False, erreur = "Le carnet a un format non pris en charge. Il reste conservé chiffré." }, envoyer "lock" E.null )
+
+                "motionPreference" ->
+                    let
+                        suivant =
+                            { modele | reducedMotion = lire (D.field "reduce" D.bool) False data }
+                    in
+                    ( stabiliserSiNecessaire suivant, Cmd.none )
 
                 "locked" ->
-                    ( { modele | ecran = Verrouille, carnet = K.vide, demo = lire (D.field "demo" D.bool) False data, formulaires = Dict.empty, photosUrls = Dict.empty, selection = [], kit = Nothing, coffreRecupere = "", authRecupere = "", busy = False, confirmation = "", menu = False, notice = "" }, Cmd.none )
+                    ( { modele | ecran = Verrouille, camera = position Accueil, momentCamera = 0, preparation = 0, sortie = Nothing, momentSortie = Nothing, retourSeance = Nothing, carnet = K.vide, demo = lire (D.field "demo" D.bool) False data, formulaires = Dict.empty, photosUrls = Dict.empty, selection = [], kit = Nothing, coffreRecupere = "", authRecupere = "", busy = False, confirmation = "", menu = False, notice = "" }, Cmd.none )
 
                 "entry" ->
-                    ( { modele | ecran = Entree, carnet = K.vide, formulaires = Dict.empty, photosUrls = Dict.empty, selection = [], kit = Nothing, busy = False, erreur = "", notice = "", confirmation = "", demo = False }, focus )
+                    ( { modele | ecran = Entree, camera = position Accueil, momentCamera = 0, preparation = 0, sortie = Nothing, momentSortie = Nothing, retourSeance = Nothing, carnet = K.vide, formulaires = Dict.empty, photosUrls = Dict.empty, selection = [], kit = Nothing, busy = False, erreur = "", notice = "", confirmation = "", demo = False }, focus )
 
                 "busy" ->
                     ( { modele | busy = True, erreur = "", notice = texte }, Cmd.none )
@@ -289,8 +312,153 @@ update msg modele =
         Taille largeur _ ->
             ( { modele | largeur = largeur }, Cmd.none )
 
+        PreparerMouvement _ ->
+            ( if modele.preparation <= 1 then
+                { modele
+                    | preparation = 0
+                    , camera = position modele.vue
+                    , momentCamera =
+                        case modele.vue of
+                            ChapitreVue _ moment ->
+                                momentPosition moment
+
+                            _ ->
+                                0
+                }
+
+              else
+                { modele | preparation = modele.preparation - 1 }
+            , Cmd.none
+            )
+
+        TransitionTerminee fenetre ->
+            ( if modele.preparation > 0 then
+                modele
+
+              else if fenetre == "moment" then
+                { modele | momentSortie = Nothing }
+
+              else
+                { modele | sortie = Nothing }
+            , Cmd.none
+            )
+
         Naviguer vue ->
-            ( { modele | vue = vue, menu = False, erreur = "", notice = "", approfondi = False, sources = False, confirmation = "", objectifEdition = Nothing, defiEdition = Nothing }, focus )
+            if vue == modele.vue then
+                ( modele, focus )
+
+            else
+                let
+                    anime =
+                        animations modele && modele.ecran == Ouvert && vue /= Presentation && modele.vue /= Presentation
+
+                    memeSeance =
+                        case ( modele.vue, vue ) of
+                            ( ChapitreVue avant _, ChapitreVue apres _ ) ->
+                                avant == apres
+
+                            _ ->
+                                False
+
+                    nouveauMoment =
+                        case vue of
+                            ChapitreVue _ moment ->
+                                momentPosition moment
+
+                            _ ->
+                                0
+
+                    animeMoment =
+                        anime && memeSeance && nouveauMoment /= modele.momentCamera
+
+                    ancienMoment =
+                        case modele.vue of
+                            ChapitreVue _ moment ->
+                                Just moment
+
+                            _ ->
+                                Nothing
+
+                    retour =
+                        case ( modele.vue, vue ) of
+                            ( ChapitreVue _ _, Objectifs ) ->
+                                Just modele.vue
+
+                            ( ChapitreVue _ _, Reperes ) ->
+                                Just modele.vue
+
+                            ( _, ChapitreVue _ _ ) ->
+                                Nothing
+
+                            _ ->
+                                modele.retourSeance
+
+                    suivant =
+                        { modele
+                            | vue = vue
+                            , camera =
+                                if anime then
+                                    modele.camera
+
+                                else
+                                    position vue
+                            , momentCamera =
+                                if anime && memeSeance then
+                                    modele.momentCamera
+
+                                else
+                                    case vue of
+                                        ChapitreVue _ moment ->
+                                            momentPosition moment
+
+                                        _ ->
+                                            0
+                            , preparation =
+                                if anime && (position vue /= modele.camera || animeMoment) then
+                                    2
+
+                                else
+                                    0
+                            , menu = False
+                            , erreur = ""
+                            , notice = ""
+                            , confirmation = ""
+                            , retourSeance = retour
+                            , approfondi =
+                                if memeSeance then
+                                    modele.approfondi
+
+                                else
+                                    False
+                            , sources =
+                                if memeSeance then
+                                    modele.sources
+
+                                else
+                                    False
+                            , sortie =
+                                if anime && position vue /= modele.camera then
+                                    if modele.preparation > 0 then
+                                        modele.sortie
+
+                                    else
+                                        Just modele.vue
+
+                                else
+                                    Nothing
+                            , momentSortie =
+                                if animeMoment then
+                                    if modele.preparation > 0 then
+                                        modele.momentSortie
+
+                                    else
+                                        ancienMoment
+
+                                else
+                                    Nothing
+                        }
+                in
+                ( suivant, focus )
 
         OuvrirCompte ecran ->
             ( { modele | ecran = ecran, formulaires = Dict.empty, erreur = "", notice = "", confirmation = "" }, focus )
@@ -311,6 +479,9 @@ update msg modele =
         Annuler ->
             ( { modele | confirmation = "" }, Cmd.none )
 
+        RetrouverPlan ->
+            ( modele, envoyer "focus" (E.object [ ( "id", E.string "plan-carnet" ), ( "scroll", E.bool True ) ]) )
+
         AfficherMenu ->
             ( { modele | menu = not modele.menu }, Cmd.none )
 
@@ -322,6 +493,7 @@ update msg modele =
 
         Noter cle texte ->
             modifier (K.noter cle texte carnet) modele
+                |> (\( suivant, cmd ) -> ( stabiliserSiNecessaire suivant, cmd ))
 
         EffacerNote cle ->
             modifier { carnet | notes = Dict.remove cle carnet.notes } modele |> avecNotice "Cette entrée a été effacée du carnet actif."
@@ -706,9 +878,84 @@ actionTechnique action modele =
             exec action E.null
 
 
+position : Vue -> Continuite.Point
+position vue =
+    case vue of
+        Accueil ->
+            { x = 0, y = 0 }
+
+        Parcours ->
+            { x = 1, y = 0 }
+
+        ChapitreVue _ _ ->
+            { x = 2, y = 0 }
+
+        Objectifs ->
+            { x = 0, y = 1 }
+
+        Reperes ->
+            { x = 1, y = 1 }
+
+        Reglages ->
+            { x = 0, y = 2 }
+
+        Apropos ->
+            { x = 1, y = 2 }
+
+        Presentation ->
+            { x = 1, y = 1 }
+
+
+momentPosition : Moment -> Float
+momentPosition moment =
+    case moment of
+        Avant ->
+            0
+
+        Pendant ->
+            1
+
+        Entre ->
+            2
+
+
+animations : Modele -> Bool
+animations modele =
+    not modele.reducedMotion && K.note "reglage-animations" modele.carnet /= "non"
+
+
+stabiliserSiNecessaire : Modele -> Modele
+stabiliserSiNecessaire modele =
+    if animations modele then
+        modele
+
+    else
+        { modele
+            | camera = position modele.vue
+            , momentCamera =
+                case modele.vue of
+                    ChapitreVue _ moment ->
+                        momentPosition moment
+
+                    _ ->
+                        0
+            , preparation = 0
+            , sortie = Nothing
+            , momentSortie = Nothing
+        }
+
+
 subscriptions : Modele -> Sub Msg
-subscriptions _ =
-    Sub.batch [ evenement Evenement, Browser.Events.onResize Taille ]
+subscriptions modele =
+    Sub.batch
+        [ evenement Evenement
+        , Browser.Events.onResize Taille
+        , if modele.ecran == Ouvert && animations modele && modele.preparation > 0 then
+            Browser.Events.onAnimationFrameDelta PreparerMouvement
+
+          else
+            Sub.none
+        ]
 
 
 type alias Repere =
@@ -810,7 +1057,7 @@ view modele =
                 )
             , if modele.ecran == Ouvert then
                 if modele.vue == Presentation then
-                    presentation modele
+                    U.el [ width fill, R.mainContent, U.htmlAttribute (A.id "titre-page"), U.htmlAttribute (A.tabindex -1) ] (presentation modele)
 
                 else
                     shell modele
@@ -820,6 +1067,8 @@ view modele =
                     [ enTetePublic modele
                     , U.el
                         [ width (U.maximum 1100 fill)
+                        , U.htmlAttribute (A.id "titre-page")
+                        , U.htmlAttribute (A.tabindex -1)
                         , U.centerX
                         , U.paddingXY
                             (if modele.largeur < 600 then
@@ -890,7 +1139,7 @@ marque =
 
 pageTitre : String -> String -> Element Msg
 pageTitre sur titre =
-    U.column [ width fill, U.spacing 13, U.htmlAttribute (A.id "titre-page"), U.htmlAttribute (A.tabindex -1) ]
+    U.column [ width fill, U.spacing 13 ]
         [ C.surTitre sur, C.titre 1 titre ]
 
 
@@ -1161,31 +1410,10 @@ shell modele =
                         U.none
                     , kitVue modele
                     , conflitVue modele
-                    , case modele.vue of
-                        Accueil ->
-                            pageAccueil modele
-
-                        Parcours ->
-                            pageParcours modele
-
-                        ChapitreVue id moment ->
-                            pageChapitre modele (Contenu.trouver id modele.chapitres) moment
-
-                        Objectifs ->
-                            pageObjectifs modele
-
-                        Reperes ->
-                            pageReperes modele
-
-                        Reglages ->
-                            pageReglages modele
-
-                        Apropos ->
-                            pageApropos modele
-
-                        Presentation ->
-                            U.none
+                    , chemin modele
+                    , fenetreCarnet modele
                     , U.el [ width fill, U.paddingXY 0 18 ] (C.petit "Tout est facultatif. Vous pouvez laisser une rubrique vide, la reprendre ou la mettre de côté.")
+                    , C.discret "Retrouver le plan du carnet" RetrouverPlan
                     ]
                 ]
     in
@@ -1198,32 +1426,299 @@ shell modele =
 
 barreLaterale : Modele -> Element Msg
 barreLaterale modele =
-    U.column [ width (px 246), U.alignTop, U.paddingXY 24 30, U.spacing 28, Bg.color C.couleurs.blanc, B.widthEach { top = 0, bottom = 0, left = 0, right = 1 }, B.color C.couleurs.ligne, C.classe "carnet-sidebar", R.navigation ]
+    U.column [ width (px 276), U.alignTop, U.paddingXY 20 26, U.spacing 22, Bg.color C.couleurs.blanc, B.widthEach { top = 0, bottom = 0, left = 0, right = 1 }, B.color C.couleurs.ligne, C.classe "carnet-sidebar", R.navigation ]
         [ marque
         , navigation modele
         , C.separateur
         , U.column [ width fill, U.spacing 12 ] [ C.surTitre "MON ESPACE PERSONNEL", C.petit "Vos repères vous appartiennent. Vous choisissez ce que vous partagez." ]
-        , C.discret "À propos & sources" (Naviguer Apropos)
+        , C.discret "Comprendre le plan" AfficherMenu
         , C.discret "Me déconnecter" (Action "logout")
         ]
+
+
+nomEspace : Vue -> String
+nomEspace vue =
+    case vue of
+        Accueil ->
+            "Mon accueil"
+
+        Parcours ->
+            "Mon parcours"
+
+        ChapitreVue id _ ->
+            "Séance " ++ String.fromInt id
+
+        Objectifs ->
+            "Mes objectifs"
+
+        Reperes ->
+            "Mes repères"
+
+        Reglages ->
+            "Mes réglages"
+
+        Apropos ->
+            "À propos & sources"
+
+        Presentation ->
+            "Ma sélection"
+
+
+roleEspace : Vue -> String
+roleEspace vue =
+    case vue of
+        Accueil ->
+            "Retrouver où j’en suis"
+
+        Parcours ->
+            "Choisir parmi les 15 étapes"
+
+        ChapitreVue _ _ ->
+            "Préparer, expérimenter, reprendre"
+
+        Objectifs ->
+            "Ce qui me guide dans la durée"
+
+        Reperes ->
+            "Ce que je garde et choisis de partager"
+
+        Reglages ->
+            "Mon confort et ma confidentialité"
+
+        Apropos ->
+            "Les contenus, les sources et les limites"
+
+        Presentation ->
+            "Ce que je choisis de montrer"
+
+
+memeEspace : Vue -> Vue -> Bool
+memeEspace a b =
+    case ( a, b ) of
+        ( ChapitreVue _ _, ChapitreVue _ _ ) ->
+            True
+
+        _ ->
+            a == b
 
 
 navigation : Modele -> Element Msg
 navigation modele =
     let
-        actif vue =
-            modele.vue == vue
+        camera =
+            let
+                p =
+                    position modele.vue
+            in
+            { p | x = min 1 p.x }
 
-        item symbole label vue =
-            U.el [ width fill, C.classe "carnet-nav-item" ] (C.onglet (actif vue) (symbole ++ "  " ++ label) (Naviguer vue))
+        item vue =
+            U.column [ width (U.fillPortion 1), U.spacing 4, C.classe "plan-case" ]
+                [ C.onglet
+                    (modele.vue
+                        == vue
+                        || (vue
+                                == Parcours
+                                && (case modele.vue of
+                                        ChapitreVue _ _ ->
+                                            True
+
+                                        _ ->
+                                            False
+                                   )
+                           )
+                    )
+                    (nomEspace vue)
+                    (Naviguer vue)
+                , C.petit (roleEspace vue)
+                ]
     in
-    U.column [ width fill, U.spacing 7 ]
-        [ item "⌂" "Mon accueil" Accueil
-        , item "▤" "Mon parcours" Parcours
-        , item "◎" "Mes objectifs" Objectifs
-        , item "◇" "Mes repères" Reperes
-        , item "⚙" "Mes réglages" Reglages
+    U.column [ width fill, U.spacing 12 ]
+        [ C.surTitre "LE PLAN DE MON CARNET"
+        , U.column
+            [ width fill
+            , U.height shrink
+            , U.spacing 0
+            , C.classe "plan-grille"
+            , U.behindContent (Continuite.repere camera (animations modele))
+            , U.htmlAttribute (A.id "plan-carnet")
+            , U.htmlAttribute (A.tabindex -1)
+            , U.htmlAttribute (A.attribute "aria-label" "Plan du carnet")
+            ]
+            (List.map item [ Accueil, Parcours, Objectifs, Reperes, Reglages, Apropos ])
+        , case modele.vue of
+            ChapitreVue id moment ->
+                U.column [ width fill, U.spacing 5, U.paddingXY 10 5, C.classe "plan-branche" ]
+                    [ C.petit ("Parcours → Séance " ++ String.fromInt id)
+                    , C.petit ("↳ " ++ nomMoment moment ++ " · " ++ roleMoment moment)
+                    ]
+
+            _ ->
+                U.none
         ]
+
+
+nomMoment : Moment -> String
+nomMoment moment =
+    case moment of
+        Avant ->
+            "Avant"
+
+        Pendant ->
+            "Pendant"
+
+        Entre ->
+            "Entre les séances"
+
+
+roleMoment : Moment -> String
+roleMoment moment =
+    case moment of
+        Avant ->
+            "Je me prépare"
+
+        Pendant ->
+            "J’expérimente et je retiens"
+
+        Entre ->
+            "Je comprends, je poursuis, je fais le point"
+
+
+chemin : Modele -> Element Msg
+chemin modele =
+    U.column [ width fill, U.spacing 10, C.classe "carnet-chemin" ]
+        [ U.wrappedRow [ width fill, U.spacing 6, R.navigation, U.htmlAttribute (A.attribute "aria-label" "Ma position dans le carnet") ]
+            ([ C.discret "Carnet" (Naviguer Accueil) ]
+                ++ (case modele.vue of
+                        ChapitreVue id moment ->
+                            [ C.petit "›"
+                            , C.discret "Parcours" (Naviguer Parcours)
+                            , C.petit "›"
+                            , C.petit ("Séance " ++ String.fromInt id ++ " · " ++ nomMoment moment)
+                            ]
+
+                        Accueil ->
+                            [ C.petit "› Accueil" ]
+
+                        _ ->
+                            [ C.petit ("› " ++ nomEspace modele.vue) ]
+                   )
+            )
+        , case modele.retourSeance of
+            Just (ChapitreVue id moment) ->
+                C.secondaire ("Revenir à la séance " ++ String.fromInt id ++ " · " ++ nomMoment moment) (Naviguer (ChapitreVue id moment))
+
+            _ ->
+                U.none
+        ]
+
+
+vueContenu : Modele -> Vue -> Element Msg
+vueContenu modele vue =
+    case vue of
+        Accueil ->
+            pageAccueil modele
+
+        Parcours ->
+            pageParcours modele
+
+        ChapitreVue id moment ->
+            pageChapitre modele (Contenu.trouver id modele.chapitres) moment
+
+        Objectifs ->
+            pageObjectifs modele
+
+        Reperes ->
+            pageReperes modele
+
+        Reglages ->
+            pageReglages modele
+
+        Apropos ->
+            pageApropos modele
+
+        Presentation ->
+            U.none
+
+
+fenetreCarnet : Modele -> Element Msg
+fenetreCarnet modele =
+    let
+        chapitre =
+            case modele.vue of
+                ChapitreVue _ _ ->
+                    modele.vue
+
+                _ ->
+                    case modele.sortie of
+                        Just (ChapitreVue id moment) ->
+                            ChapitreVue id moment
+
+                        _ ->
+                            ChapitreVue modele.carnet.etape Avant
+
+        panneau vue =
+            { cle =
+                if memeEspace vue chapitre then
+                    "seance"
+
+                else
+                    nomEspace vue
+            , position = position vue
+            , ouvert = memeEspace modele.vue vue
+            , contenu =
+                if memeEspace modele.vue vue || (modele.sortie |> Maybe.map (\sortie -> memeEspace sortie vue) |> Maybe.withDefault False) then
+                    vueContenu
+                        (if memeEspace modele.vue vue then
+                            modele
+
+                         else
+                            { modele
+                                | momentSortie = Nothing
+                                , momentCamera =
+                                    case vue of
+                                        ChapitreVue _ moment ->
+                                            momentPosition moment
+
+                                        _ ->
+                                            0
+                            }
+                        )
+                        vue
+
+                else
+                    C.panneau [ C.titre 1 (nomEspace vue), C.paragraphe (roleEspace vue) ]
+            }
+    in
+    Continuite.plan
+        { camera = modele.camera
+        , largeur =
+            toFloat
+                (min 1120
+                    (modele.largeur
+                        - (if modele.largeur >= 1050 then
+                            276
+
+                           else
+                            0
+                          )
+                    )
+                    - (if modele.largeur < 600 then
+                        40
+
+                       else
+                        84
+                      )
+                )
+                + 48
+        , hauteur = 680
+        , mouvement = animations modele && modele.sortie /= Nothing
+        , anime = animations modele && modele.sortie /= Nothing
+        , duree = 460
+        , termine = TransitionTerminee "carnet"
+        , identifiant = "titre-page"
+        }
+        (List.map panneau [ Accueil, Parcours, chapitre, Objectifs, Reperes, Reglages, Apropos ])
 
 
 enTeteCarnet : Modele -> Element Msg
@@ -1241,24 +1736,25 @@ enTeteCarnet modele =
                 16
             , U.spacing 12
             ]
-            [ if modele.largeur < 1050 then
-                C.secondaire
-                    (if modele.menu then
-                        "Fermer le menu"
-
-                     else
-                        "Menu"
-                    )
-                    AfficherMenu
-
-              else
-                C.petit "Mon espace personnel"
-            , U.el [ width fill, C.classe "save-status", U.htmlAttribute (A.attribute "role" "status"), U.htmlAttribute (A.attribute "aria-live" "polite") ]
-                (C.petit (sauvegardeTexte modele))
+            [ U.el [ width fill, C.classe "save-status", U.htmlAttribute (A.attribute "role" "status"), U.htmlAttribute (A.attribute "aria-live" "polite") ] (C.petit (sauvegardeTexte modele))
             , C.secondaire "Masquer / verrouiller" (Action "lock")
             ]
+        , if modele.largeur < 1050 then
+            U.column [ width fill, U.paddingXY 20 16, U.spacing 12, R.navigation, U.htmlAttribute (A.attribute "aria-label" "Plan du carnet") ]
+                [ navigation modele
+                , actions [ C.discret "Comprendre le plan" AfficherMenu, C.discret "Me déconnecter" (Action "logout") ]
+                ]
+
+          else
+            U.none
         , if modele.menu then
-            U.column [ width fill, U.padding 20, U.spacing 16, R.navigation ] [ navigation modele, C.discret "À propos & sources" (Naviguer Apropos), C.discret "Me déconnecter" (Action "logout") ]
+            U.column [ width fill, U.padding 20, U.spacing 12, C.classe "plan-explication" ]
+                [ C.titre 2 "Un carnet, des espaces reliés"
+                , C.paragraphe "L’accueil est votre point de départ. Le parcours rassemble les quinze étapes. En ouvrant une séance, vous entrez dans ses moments : Avant, Pendant, Entre les séances. Les bilans ont leurs propres questions."
+                , C.paragraphe "Les objectifs donnent une direction et les défis restent disponibles d’une séance à l’autre. Les expérimentations appartiennent à une séance ; vous pouvez les reprendre à la suivante. Les repères réunissent les traces, les formulations et les étapes que vous souhaitez garder. Vous choisissez ce que vous partagez."
+                , C.petit "Le plan reste à la même place. Les déplacements montrent les liens entre ces espaces ; les mêmes chemins sont disponibles sans mouvement dans Mes réglages. Vous pouvez explorer dans l’ordre de votre choix."
+                , C.discret "Refermer l’explication" AfficherMenu
+                ]
 
           else
             U.none
@@ -1419,7 +1915,7 @@ pageParcours modele =
     U.column [ width fill, U.spacing 24 ]
         [ pageTitre "MON PARCOURS" "Une séance après l’autre"
         , C.paragraphe "Je choisis une séance pour préparer, retrouver ou explorer. Rien n’est à débloquer."
-        , U.column [ width fill, U.spacing 12 ]
+        , U.column [ width fill, U.spacing 16, U.alignTop, C.classe "sommaire-grid" ]
             (List.map
                 (\chapitre ->
                     C.panneau
@@ -1444,6 +1940,7 @@ pageParcours modele =
                                 , C.titre 2 chapitre.titre
                                 ]
                             ]
+                        , C.petit chapitre.objectif
                         , actions
                             [ C.secondaire "Ouvrir cette séance" (Naviguer (ChapitreVue chapitre.id Avant))
                             , if chapitre.id /= modele.carnet.etape then
@@ -1475,20 +1972,20 @@ pageChapitre modele chapitre moment =
 
           else
             U.column [ width fill, U.spacing 24 ]
-                [ actions
-                    [ C.onglet (moment == Avant) "Avant" (Naviguer (ChapitreVue chapitre.id Avant))
-                    , C.onglet (moment == Pendant) "Pendant" (Naviguer (ChapitreVue chapitre.id Pendant))
-                    , C.onglet (moment == Entre) "Entre les séances" (Naviguer (ChapitreVue chapitre.id Entre))
+                [ U.column [ width fill, U.spacing 8, C.classe "moments-navigation", R.navigation, U.htmlAttribute (A.attribute "aria-label" "Les trois moments de cette séance") ]
+                    [ U.row [ width fill, U.spacing 6 ]
+                        (List.indexedMap
+                            (\index m ->
+                                U.column [ width (U.fillPortion 1), U.spacing 6 ]
+                                    [ C.onglet (moment == m) (nomMoment m) (Naviguer (ChapitreVue chapitre.id m))
+                                    , C.petit (roleMoment m)
+                                    ]
+                            )
+                            [ Avant, Pendant, Entre ]
+                        )
+                    , Continuite.ruban modele.momentCamera 3 380 (animations modele)
                     ]
-                , case moment of
-                    Avant ->
-                        avantVue modele chapitre
-
-                    Pendant ->
-                        pendantVue modele chapitre
-
-                    Entre ->
-                        entreVue modele chapitre
+                , momentsVue modele chapitre moment
                 ]
         , C.separateur
         , actions [ C.secondaire "Terminer ma consultation" (ConsultationTerminee chapitre.id), C.discret "Sources de cette séance" ToggleSources ]
@@ -1510,6 +2007,68 @@ pageChapitre modele chapitre moment =
                 U.none
             ]
         ]
+
+
+momentsVue : Modele -> Chapitre -> Moment -> Element Msg
+momentsVue modele chapitre actuel =
+    let
+        panneau moment =
+            { cle = nomMoment moment
+            , position = { x = momentPosition moment, y = 0 }
+            , ouvert = moment == actuel
+            , contenu =
+                if moment == actuel || modele.momentSortie == Just moment then
+                    case moment of
+                        Avant ->
+                            avantVue modele chapitre
+
+                        Pendant ->
+                            pendantVue modele chapitre
+
+                        Entre ->
+                            entreVue modele chapitre
+
+                else
+                    C.panneau [ C.titre 2 (roleMoment moment) ]
+            }
+    in
+    Continuite.plan
+        { camera =
+            { x =
+                if memeEspace modele.vue (ChapitreVue chapitre.id actuel) then
+                    modele.momentCamera
+
+                else
+                    momentPosition actuel
+            , y = 0
+            }
+        , largeur =
+            toFloat
+                (min 1120
+                    (modele.largeur
+                        - (if modele.largeur >= 1050 then
+                            276
+
+                           else
+                            0
+                          )
+                    )
+                    - (if modele.largeur < 600 then
+                        40
+
+                       else
+                        84
+                      )
+                )
+                + 48
+        , hauteur = 0
+        , mouvement = animations modele && modele.momentSortie /= Nothing
+        , anime = animations modele && modele.momentSortie /= Nothing
+        , duree = 380
+        , termine = TransitionTerminee "moment"
+        , identifiant = "moment-ouvert"
+        }
+        (List.map panneau [ Avant, Pendant, Entre ])
 
 
 noteChamp : Modele -> Int -> String -> String -> Element Msg
@@ -1730,6 +2289,7 @@ paysageVue modele =
             , C.paragraphe "Des mots pour ce qui compte pour moi. Je peux les placer, préciser leur sens et hésiter entre deux espaces."
             , C.petit "Ce paysage explore mes propres repères. Il ne sert pas à noter des partenaires."
             , actions (List.map (\( id, texte ) -> C.onglet (modele.paysageEtape == id) (String.fromInt id ++ " · " ++ texte) (PaysagePhase id)) [ ( 1, "Construire" ), ( 2, "Hiérarchiser" ), ( 3, "Confronter" ), ( 4, "Garder une trace" ) ])
+            , Continuite.ruban (toFloat (modele.paysageEtape - 1)) 4 320 (animations modele)
             ]
         , if modele.paysageEtape == 1 then
             C.panneau
@@ -2057,7 +2617,7 @@ pageReglages modele =
             [ C.titre 2 "Mon confort de lecture"
             , C.choix "Présentation" [ ( "non", "Carnet" ), ( "oui", "Mode sobre · mêmes contenus et fonctions" ) ] (reglageValeur modele "reglage-sobre" "non") (Noter "reglage-sobre")
             , C.choix "Animations"
-                [ ( "oui", "Transitions discrètes" ), ( "non", "Sans animations" ) ]
+                [ ( "oui", "Déplacements qui montrent les liens" ), ( "non", "Sans animations · mêmes repères et chemins" ) ]
                 (reglageValeur modele
                     "reglage-animations"
                     (if modele.reducedMotion then
@@ -2068,7 +2628,7 @@ pageReglages modele =
                     )
                 )
                 (Noter "reglage-animations")
-            , C.petit "La préférence de réduction des mouvements du navigateur est respectée dès l’ouverture."
+            , C.petit "La préférence de réduction des mouvements du navigateur est prioritaire, y compris si elle change pendant la lecture. Sans animation, le plan et le chemin de navigation restent disponibles."
             , C.choix "Taille du texte" [ ( "standard", "Standard" ), ( "grand", "Plus grand" ) ] (reglageValeur modele "reglage-texte" "standard") (Noter "reglage-texte")
             , C.choix "Verrouillage après une période sans action" [ ( "5", "5 minutes" ), ( "10", "10 minutes" ), ( "15", "15 minutes" ), ( "30", "30 minutes" ), ( "0", "Manuel uniquement" ) ] (reglageValeur modele "reglage-verrouillage" "10") (Noter "reglage-verrouillage")
             ]

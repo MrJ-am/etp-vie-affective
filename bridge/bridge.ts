@@ -468,7 +468,9 @@ async function command(command: Command): Promise<void> {
   } else if (action === "focus") {
     requestAnimationFrame(() => {
       const target = document.getElementById(data.id);
-      target?.focus({ preventScroll: true });
+      const heading = target?.querySelector<HTMLElement>("h1");
+      if (heading) heading.tabIndex = -1;
+      (heading ?? target)?.focus({ preventScroll: true });
       if (data.scroll) window.scrollTo({ top: 0, behavior: "instant" });
     });
   } else if (action === "newVault") {
@@ -510,6 +512,7 @@ async function main(): Promise<void> {
     command(commandValue).catch(error => { emit("error", { message: message(error) }); emit("idle"); })
       .finally(() => { if (exclusive) technicalAction = false; });
   });
+  matchMedia("(prefers-reduced-motion: reduce)").addEventListener("change", event => emit("motionPreference", { reduce: event.matches }));
   addEventListener("online", () => { if (unlocked) synchronize().catch(error => emit("status", { state: "pending", message: message(error) })); });
   addEventListener("offline", () => { if (unlocked && mode === "account") emit("status", { state: "pending", message: "Hors connexion : sauvegarde chiffrée sur cet appareil." }); });
   for (const event of ["pointerdown", "keydown"]) addEventListener(event, () => { lastActivity = Date.now(); if (lastWarning) { lastWarning = false; emit("lockWarning", { show: false }); } });
