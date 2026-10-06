@@ -1,0 +1,100 @@
+[
+  {
+    "url": "https://www.w3.org/TR/WCAG22/",
+    "http": 200,
+    "verifieLe": "2026-10-06",
+    "consultation": "Document directement téléchargé",
+    "octetsLus": 300000
+  },
+  {
+    "url": "https://www.w3.org/WAI/WCAG2/supplemental/objectives/o1-understandable/",
+    "http": 200,
+    "verifieLe": "2026-10-06",
+    "consultation": "Document directement téléchargé",
+    "octetsLus": 40828
+  },
+  {
+    "url": "https://www.w3.org/WAI/WCAG2/supplemental/patterns/o1p07-icons-used/",
+    "http": 200,
+    "verifieLe": "2026-10-06",
+    "consultation": "Document directement téléchargé",
+    "octetsLus": 43233
+  },
+  {
+    "url": "https://www.w3.org/WAI/WCAG2/supplemental/patterns/o8p04-interface/",
+    "http": 200,
+    "verifieLe": "2026-10-06",
+    "consultation": "Document directement téléchargé",
+    "octetsLus": 44183
+  },
+  {
+    "url": "https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto",
+    "http": 200,
+    "verifieLe": "2026-10-06",
+    "consultation": "Document directement téléchargé",
+    "octetsLus": 169336
+  },
+  {
+    "url": "https://developer.mozilla.org/en-US/docs/Web/API/AesGcmParams",
+    "http": 200,
+    "verifieLe": "2026-10-06",
+    "consultation": "Document directement téléchargé",
+    "octetsLus": 149609
+  },
+  {
+    "url": "https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html",
+    "http": 200,
+    "verifieLe": "2026-10-06",
+    "consultation": "Document directement téléchargé",
+    "octetsLus": 93638
+  },
+  {
+    "url": "https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html",
+    "http": 200,
+    "verifieLe": "2026-10-06",
+    "consultation": "Document directement téléchargé",
+    "octetsLus": 96018
+  },
+  {
+    "url": "https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html",
+    "http": 200,
+    "verifieLe": "2026-10-06",
+    "consultation": "Document directement téléchargé",
+    "octetsLus": 157308
+  },
+  {
+    "url": "https://www.cnil.fr/fr/guide-rgpd-du-developpeur",
+    "http": 200,
+    "verifieLe": "2026-10-06",
+    "consultation": "Document directement téléchargé",
+    "octetsLus": 88763
+  },
+  {
+    "url": "https://cnil.fr/fr/RGPD-analyse-impact-protection-des-donnees-aipd",
+    "http": 200,
+    "verifieLe": "2026-10-06",
+    "consultation": "Document directement téléchargé",
+    "octetsLus": 103817
+  },
+  {
+    "url": "https://esante.gouv.fr/faq/si-jheberge-des-donnees-de-sante-chiffrees-suis-je-soumis-lobligation-de-certification-hds",
+    "http": 200,
+    "verifieLe": "2026-10-06",
+    "consultation": "Document directement téléchargé",
+    "octetsLus": 212
+  },
+  {
+    "url": "https://playwright.dev/docs/accessibility-testing",
+    "http": 200,
+    "verifieLe": "2026-10-06",
+    "consultation": "Document directement téléchargé",
+    "octetsLus": 140180
+  },
+  {
+    "url": "https://pubmed.ncbi.nlm.nih.gov/40567128/",
+    "http": 203,
+    "verifieLe": "2026-10-06",
+    "consultation": "Document directement téléchargé",
+    "octetsLus": 5590
+  }
+]

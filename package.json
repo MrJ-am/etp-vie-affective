@@ -1,0 +1,15 @@
+{
+  "name": "mon-carnet", "version": "0.1.0", "private": true, "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "node --import tsx --test tests/*.test.ts",
+    "test:browser": "playwright test",
+    "start": "docker compose up --build -d",
+    "stop": "docker compose down"
+  },
+  "devDependencies": {
+    "@lydell/elm": "0.19.1-14", "elm-format": "0.8.8", "typescript": "5.9.3",
+    "esbuild": "0.25.10", "tsx": "4.20.6", "@playwright/test": "1.55.1", "@axe-core/playwright": "4.10.2"
+  }
+}

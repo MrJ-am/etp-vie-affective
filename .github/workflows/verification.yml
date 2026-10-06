@@ -1,0 +1,22 @@
+name: Verification du carnet
+on: [push, workflow_dispatch]
+permissions: {contents: read}
+jobs:
+  verification:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4 vérifié
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4 vérifié
+        with: {node-version: '22', cache: npm}
+      - run: npm ci
+      - run: npm run typecheck && npm run build
+      - run: docker compose build app
+      - run: docker compose -p mon-carnet-tests -f compose.test.yaml up -d backend
+      - run: node --import tsx --test tests/crypto.test.ts tests/contenu.test.ts tests/image.test.ts
+      - run: node --import tsx --test tests/api.test.ts
+      - run: docker compose -p mon-carnet-tests -f compose.test.yaml run --rm browser
+      - run: node --import tsx scripts/verify-restore.ts
+      - run: node scripts/verify-storage.mjs
+      - if: always()
+        run: docker compose -p mon-carnet-tests -f compose.test.yaml down -v

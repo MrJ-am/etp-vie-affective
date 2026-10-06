@@ -1,0 +1,21 @@
+{
+  "date": "2026-10-06",
+  "unitTests": 13,
+  "apiTests": 9,
+  "browserTests": 54,
+  "total": 76,
+  "browsers": [
+    "Chromium",
+    "WebKit",
+    "Firefox"
+  ],
+  "browserDurationMs": 264562,
+  "skipped": 0,
+  "retries": 0,
+  "restoreExercise": "passed",
+  "storageAndIndependentScrypt": "passed",
+  "inputExifRemoval": "passed",
+  "clinicalValidation": false,
+  "independentSecurityAudit": false,
+  "physicalDeviceTesting": false
+}

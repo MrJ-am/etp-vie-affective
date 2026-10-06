@@ -1,0 +1,62 @@
+/* Thème additif MrJam.Carnet. Les styles de contrôle restent dans le paquet partagé. */
+:root { color-scheme: light; font-size: 16px; --prune: #623451; --encre: #30282f; --papier: #faf7f1; --ligne: #e0d7cf; }
+* { box-sizing: border-box; }
+html, body { margin: 0; min-width: 0; min-height: 100%; }
+body { background: var(--papier); }
+.theme-carnet { min-height: 100dvh; height: auto !important; max-width: 100%; }
+.theme-carnet input, .theme-carnet textarea, .theme-carnet select { font: inherit; line-height: 1.55; }
+.theme-carnet input, .theme-carnet textarea { font-size: 1rem !important; }
+.theme-carnet textarea { resize: vertical !important; }
+.theme-carnet button { min-width: 44px; min-height: 44px; }
+.theme-carnet button, .theme-carnet select { cursor: pointer; }
+.theme-carnet button > *, .theme-carnet label { max-width: 100%; }
+.theme-carnet a, .theme-carnet button, .theme-carnet input, .theme-carnet textarea, .theme-carnet select { -webkit-tap-highlight-color: transparent; }
+.theme-carnet :focus-visible { outline: 3px solid #623451 !important; outline-offset: 4px; }
+.theme-carnet .carnet-texte { font-size: 1.0625rem; line-height: 1.6 !important; white-space: pre-line; overflow-wrap: anywhere; }
+.theme-carnet .carnet-petit { font-size: .875rem; line-height: 1.6 !important; white-space: pre-line; overflow-wrap: anywhere; }
+.theme-carnet .carnet-surtitre { font-size: .8125rem; line-height: 1.5; }
+.theme-carnet .carnet-titre { font-size: clamp(2.1rem, 4.4vw, 2.875rem); line-height: 1.18 !important; letter-spacing: -.02em; }
+.theme-carnet .carnet-soustitre { font-size: 1.65rem; line-height: 1.28 !important; letter-spacing: -.012em; }
+.theme-carnet .carnet-bouton, .theme-carnet .carnet-onglet { line-height: 1.35 !important; font-size: 1rem; }
+.theme-carnet .carnet-nav-item > * { width: 100% !important; text-align: left !important; }
+.theme-carnet .carnet-sidebar { position: sticky; top: 0; min-height: calc(100dvh - 34px); max-width: 246px; }
+.theme-carnet .carnet-couverture { box-shadow: -8px 0 0 #4d263d, 7px 5px 0 #e4dbcf, 11px 9px 0 #f2ece3, 12px 14px 35px #30282f18; border-left: 1px solid #ffffff44; min-height: 385px; }
+.theme-carnet .chapter-footer { border-radius: 0 0 12px 12px; }
+.theme-carnet .current-chapter { box-shadow: 0 6px 20px #30282f05; }
+.carnet-select { display: grid; gap: 8px; width: 100%; color: #30282f; font: inherit; }
+.carnet-select > span { font-size: .9375rem; font-weight: 600; line-height: 1.5; }
+.carnet-select select { width: 100%; min-width: 0; min-height: 48px; padding: 11px; border: 1px solid #e0d7cf; border-radius: 8px; background: #fffffd; color: #30282f; font-size: 1rem !important; }
+.carnet-checkbox { display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 8px 0; cursor: pointer; line-height: 1.5; font-size: 1rem; }
+.carnet-checkbox input { width: 22px; height: 22px; flex: 0 0 22px; accent-color: #623451; }
+.theme-carnet .landscape-zone { border: 1px solid transparent; }
+.theme-carnet .zone-coeur { background: #efe0e9; border-color: #d5b7c9; }
+.theme-carnet .zone-autour { background: #e6eee5; border-color: #c6d7c4; }
+.theme-carnet .zone-horizon { background: #f2e9d7; border-color: #dfd0b3; }
+.theme-carnet .zone-explorer { background: #e7eaf1; border-color: #cdd2df; }
+.theme-carnet .zone-limites { background: #f5e4df; border-color: #dfc1b8; }
+.theme-carnet .landscape-zone .carnet-soustitre { font-size: 1.18rem; letter-spacing: 0; }
+.theme-carnet .landscape-zone .carnet-onglet { white-space: normal; width: 100% !important; background: #ffffffd9; box-shadow: 0 2px 3px #30282f06; }
+.theme-carnet .secret-code { overflow-wrap: anywhere; word-break: break-all; line-height: 1.6; }
+.theme-carnet .save-status { width: auto !important; flex: 1 1 180px !important; }
+.theme-carnet .skip-link { position: absolute !important; left: 10px; top: -90px; z-index: 200; background: white; color: #623451; padding: 14px; border: 2px solid #623451; }
+.theme-carnet .skip-link:focus { top: 10px; }
+.theme-carnet .carnet-panneau { transition: border-color .15s ease; }
+html[data-large="true"] { font-size: 20px; }
+html[data-sober="true"] .theme-carnet { background: #fff !important; }
+html[data-sober="true"] .carnet-couverture, html[data-sober="true"] .current-chapter { box-shadow: none !important; }
+html[data-sober="true"] .landscape-zone { background: #fff !important; border-color: #b6abb3 !important; }
+html[data-sober="true"] .carnet-panneau { border-radius: 3px !important; }
+html[data-motion="off"] *, html[data-motion="off"] *::before, html[data-motion="off"] *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+@media (max-width: 600px) {
+  .theme-carnet .carnet-panneau { padding: 20px !important; }
+  .theme-carnet .carnet-couverture { padding: 28px !important; min-height: 310px; }
+  .theme-carnet .carnet-couverture p { font-size: 2rem !important; }
+  .theme-carnet .carnet-soustitre { font-size: 1.45rem; }
+  .theme-carnet .prototype-banner p { font-size: .75rem; }
+}
+@media print {
+  .prototype-banner { display: none !important; }
+}

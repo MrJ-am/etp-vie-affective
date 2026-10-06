@@ -1,0 +1,42 @@
+// Contrôle complémentaire exécuté sur le vrai serveur local, fixture inventée.
+import {chromium} from "playwright";
+import assert from "node:assert/strict";
+import {readFile,unlink} from "node:fs/promises";
+import {unlock,open} from "../bridge/crypto.ts";
+const password="Compte_fictif_metadata_2026",phrase="Une phrase distincte pour le test des images";
+const browser=await chromium.launch({headless:true});
+try{
+  const page=await browser.newPage({viewport:{width:1440,height:1000}});
+  await page.goto("http://localhost:3000");
+  await page.getByRole("button",{name:"Créer mon compte",exact:true}).click();
+  await page.getByLabel("Identifiant pseudonyme",{exact:true}).fill("exif_"+crypto.randomUUID().slice(0,8));
+  await page.getByLabel("Mot de passe de connexion",{exact:true}).fill(password);
+  await page.getByLabel("Phrase de coffre · 12 caractères minimum",{exact:true}).fill(phrase);
+  await page.getByLabel("Confirmer la phrase de coffre",{exact:true}).fill(phrase);
+  await page.getByRole("checkbox").check();
+  await page.getByRole("button",{name:"Créer mon compte et mon coffre",exact:true}).click();
+  await page.getByRole("button",{name:"Reprendre mon carnet",exact:true}).waitFor();
+  await page.getByRole("button",{name:/Mon parcours/}).click();
+  await page.getByRole("button",{name:"Ouvrir cette séance",exact:true}).nth(1).click();
+  await page.getByRole("heading",{name:"Je me prépare",exact:true}).waitFor();
+  await page.getByRole("button",{name:"Pendant",exact:true}).click();
+  await page.getByRole("button",{name:"4 · Garder une trace",exact:true}).click();
+  const jpeg=Buffer.from(await page.evaluate(()=>{const c=document.createElement("canvas");c.width=16;c.height=16;c.getContext("2d").fillRect(0,0,16,16);return c.toDataURL("image/jpeg").split(",")[1];}),"base64");
+  const marker="PRIVATE_FICTIVE_EXIF_2026";
+  const exif=Buffer.concat([Buffer.from([69,120,105,102,0,0,73,73,42,0,8,0,0,0,0,0,0,0,0,0]),Buffer.from(marker)]);
+  const size=Buffer.alloc(2);size.writeUInt16BE(exif.length+2);
+  const raw=Buffer.concat([jpeg.subarray(0,2),Buffer.from([255,225]),size,exif,jpeg.subarray(2)]);
+  assert.ok(raw.includes(Buffer.from(marker)));
+  const choose=page.waitForEvent("filechooser");await page.getByRole("button",{name:"Ajouter une photo du support papier",exact:true}).click();
+  await(await choose).setFiles({name:"support-fictif-metadata.jpg",mimeType:"image/jpeg",buffer:raw});
+  await page.getByRole("img",{name:"Photo de ma production personnelle",exact:true}).waitFor();
+  await page.getByRole("button",{name:/Mes réglages/}).click();
+  const wait=page.waitForEvent("download");await page.getByRole("button",{name:"Exporter mon carnet chiffré",exact:true}).click();
+  const path=await(await wait).path();const backup=JSON.parse(await readFile(path,"utf8"));await unlink(path);
+  const image=backup.images[0];const clean=Buffer.from(await open(await unlock(backup.keyring,phrase),image,backup.keyring.vault,image.object));
+  assert.equal(clean[0],255);assert.equal(clean[1],216);
+  assert.ok(!clean.includes(Buffer.from("Exif\0\0")) && !clean.includes(Buffer.from(marker)));
+  const deleted=await page.evaluate(async password=>{const me=await(await fetch("/api/me")).json();return(await fetch("/api/account",{method:"DELETE",headers:{"Content-Type":"application/json","X-Carnet-CSRF":me.csrf},body:JSON.stringify({password})})).status;},password);
+  assert.equal(deleted,200);
+  console.log("JPEG avec segment EXIF et marqueur fictif : réencodage local vérifié après déchiffrement de l’export ; EXIF et marqueur supprimés. Compte de fixture supprimé.");
+}finally{await browser.close();}

@@ -1,0 +1,14 @@
+node_modules/
+dist/
+elm-stuff/
+vendor/
+.env
+.sites-runtime/
+test-results/
+playwright-report/
+runtime/
+*.log
+sources/
+private/
+*.zip
+*.tgz

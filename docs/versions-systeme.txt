@@ -1,0 +1,7 @@
+cl-alexandria	20211025.gita67c3a6-1
+cl-babel	20200719.gitf892d05-2
+cl-hunchentoot	1.2.38-1.1
+cl-ironclad	0.57-3
+cl-postmodern	20211113.git9d4332f-3
+cl-yason	0.7.6-1.1
+sbcl	2:2.2.9-1

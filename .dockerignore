@@ -1,0 +1,11 @@
+node_modules
+vendor
+.git
+elm-stuff
+test-results
+playwright-report
+runtime
+private
+sources
+*.log
+*.zip

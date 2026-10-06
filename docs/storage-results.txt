@@ -1,0 +1,3 @@
+Base : aucune sentinelle en clair dans coffres, objets et archives.
+Logs Lisp : aucune sentinelle en clair.
+scrypt Ironclad : résultat identique au vecteur Node/OpenSSL indépendant.

@@ -1,0 +1,35 @@
+services:
+  database:
+    image: postgres:17-bookworm@sha256:04ea508c0ea323b679fbab075463b800b33337253768ad3feccfbc8005c644aa
+    environment:
+      POSTGRES_DB: carnet_test
+      POSTGRES_USER: carnet_test
+      POSTGRES_PASSWORD: fictional-test-only
+    tmpfs: ["/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U carnet_test -d carnet_test"]
+      interval: 1s
+      timeout: 2s
+      retries: 30
+  backend:
+    image: mon-carnet-app
+    environment:
+      CARNET_DB_NAME: carnet_test
+      CARNET_DB_USER: carnet_test
+      CARNET_DB_PASSWORD: fictional-test-only
+      CARNET_DB_HOST: database
+      CARNET_PUBLIC_URL: http://localhost:3000
+    ports: ["127.0.0.1:3001:3000"]
+    volumes: ["test-deletions:/var/lib/carnet"]
+    depends_on:
+      database: {condition: service_healthy}
+  browser:
+    image: mcr.microsoft.com/playwright:v1.55.1-noble@sha256:2f29369043d81d6d69a815ceb80760f55e85f5020371ad06a4d996f18503ad1c
+    working_dir: /app
+    user: "1000:1000"
+    volumes: [".:/app"]
+    tmpfs: ["/tmp:size=256m,mode=1777"]
+    command: ["node", "scripts/browser-runner.mjs"]
+    depends_on: [backend]
+volumes:
+  test-deletions:

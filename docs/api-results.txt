@@ -1,0 +1,17 @@
+✔ API réelle : inscription et cookie HttpOnly/SameSite, coffre persistant opaque (1045.378738ms)
+✔ API réelle : isolation de comptes, session non authentifiée et accès horizontal (21.987544ms)
+✔ API réelle : CSRF, Origin, formats et volume bornés (47.420896ms)
+✔ API réelle : écritures atomiques et conflit explicite sans écrasement (15.936956ms)
+✔ API réelle : récupération de connexion séparée, rotation du code et ancien cookie révoqué (504.994976ms)
+✔ API réelle : nouveau coffre après perte des secrets conserve l’ancien chiffré (119.750199ms)
+✔ API réelle : suppression du compte purge sessions, objets et archives (888.013458ms)
+✔ API réelle : quotas de vingt images et 64 Mo incluant les archives (20037.60923ms)
+✔ API réelle : limitation de débit de l’inscription (119.624424ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 24388.709993

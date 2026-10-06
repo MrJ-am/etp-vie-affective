@@ -1,0 +1,30 @@
+services:
+  database:
+    image: postgres:17-bookworm@sha256:04ea508c0ea323b679fbab075463b800b33337253768ad3feccfbc8005c644aa
+    environment:
+      POSTGRES_DB: carnet
+      POSTGRES_USER: carnet
+      POSTGRES_PASSWORD: ${CARNET_DB_PASSWORD:-local-development-only}
+    volumes: ["carnet-database:/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U carnet -d carnet"]
+      interval: 2s
+      timeout: 2s
+      retries: 30
+  app:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    environment:
+      CARNET_DB_HOST: database
+      CARNET_DB_PASSWORD: ${CARNET_DB_PASSWORD:-local-development-only}
+      CARNET_PUBLIC_URL: ${CARNET_PUBLIC_URL:-http://localhost:3000}
+      CARNET_SECURE_COOKIE: ${CARNET_SECURE_COOKIE:-false}
+      CARNET_RETENTION_DAYS: ${CARNET_RETENTION_DAYS:-90}
+    ports: ["127.0.0.1:3000:3000"]
+    volumes: ["carnet-deletions:/var/lib/carnet"]
+    depends_on:
+      database: {condition: service_healthy}
+volumes:
+  carnet-database:
+  carnet-deletions:

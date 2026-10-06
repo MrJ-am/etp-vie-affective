@@ -1,0 +1,16 @@
+import {execFileSync} from "node:child_process";
+import assert from "node:assert/strict";
+import {scryptSync} from "node:crypto";
+const compose=["compose","-p","mon-carnet-tests","-f","compose.test.yaml"];
+const docker=(args,input)=>execFileSync("docker",[...compose,...args],{input,encoding:"utf8",stdio:["pipe","pipe","pipe"]});
+const sql="SELECT EXISTS(SELECT 1 FROM coffres WHERE payload::text LIKE '%SENTINEL_FICTIVE_CARNET_7482%') OR EXISTS(SELECT 1 FROM objets WHERE payload::text LIKE '%SENTINEL_FICTIVE_CARNET_7482%') OR EXISTS(SELECT 1 FROM archives WHERE payload::text LIKE '%SENTINEL_FICTIVE_CARNET_7482%');";
+assert.equal(docker(["exec","-T","database","psql","-U","carnet_test","-d","carnet_test","-At"],sql).trim(),"f");
+assert.ok(!docker(["logs","--no-color","backend"]).includes("SENTINEL_FICTIVE_CARNET_7482"));
+const expression='(format t "~%VECTOR:~a~%" (ironclad:byte-array-to-hex-string (carnet::password-key "Fictive-scrypt-vector-2026" "000102030405060708090a0b0c0d0e0f")))';
+const lisp=docker(["exec","-T","backend","env","CARNET_LIBRARY_ONLY=true","sbcl","--noinform","--disable-debugger","--load","backend/server.fasl","--eval",expression,"--quit"]);
+const actual=lisp.match(/VECTOR:([0-9a-f]{64})/)?.[1];
+const expected=scryptSync("Fictive-scrypt-vector-2026",Buffer.from("000102030405060708090a0b0c0d0e0f","hex"),32,{N:32768,r:8,p:3,maxmem:64*1024*1024}).toString("hex");
+assert.equal(actual,expected);
+console.log("Base : aucune sentinelle en clair dans coffres, objets et archives.");
+console.log("Logs Lisp : aucune sentinelle en clair.");
+console.log("scrypt Ironclad : résultat identique au vecteur Node/OpenSSL indépendant.");
