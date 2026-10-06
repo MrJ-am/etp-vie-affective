@@ -9,11 +9,11 @@ const sentinel="SENTINEL_FICTIVE_CARNET_7482";
 const catalogue=JSON.parse(await readFile("content/parcours.json","utf8"));
 async function settled(page:Page){
   await page.locator('#titre-page[data-active="true"]').waitFor();
-  await expect(page.locator('.continuite-fenetre[data-moving="true"]')).toHaveCount(0);
+  await expect(page.locator('[data-moving="true"]')).toHaveCount(0);
 }
 async function nav(page:Page,name:string){
   await page.getByRole("button",{name:"Masquer / verrouiller",exact:true}).waitFor();
-  const target=page.getByRole("button",{name:new RegExp(name)});
+  const target=page.getByRole("tab",{name,exact:true});
   await expect(target.first()).toBeVisible();
   await target.first().click();
   await expect(page.locator('#titre-page')).toHaveAttribute("data-panel",name);
@@ -21,8 +21,11 @@ async function nav(page:Page,name:string){
 }
 async function seance(page:Page,id:number,moment?:string){
   await nav(page,"Mon parcours");
-  await page.getByRole("button",{name:"Ouvrir cette séance",exact:true}).nth(id).click();
-  await expect(page.getByRole("heading",{level:1})).toHaveText(catalogue.chapitres[id].titre);
+  const capsule=page.locator('#capsule-'+id);
+  const opener=capsule.locator('.capsule-ouvrir');
+  if(await opener.getAttribute("aria-expanded")!=="true")await opener.click();
+  await expect(capsule.locator('.capsule-titre')).toHaveText(catalogue.chapitres[id].titre);
+  await expect(opener).toHaveAttribute("aria-expanded","true");
   await settled(page);
   if(moment){const tab=page.getByRole("button",{name:moment,exact:true});await tab.click();await expect(tab).toHaveAttribute("aria-pressed","true");await settled(page);}
 }
@@ -90,6 +93,7 @@ test("démo : paysage au clavier, hésitation, trace, retour et isolation naviga
   await page.getByLabel("J’hésite aussi avec… · facultatif",{exact:true}).selectOption("autour");
   await page.getByRole("button",{name:"4 · Garder une trace",exact:true}).click();
   await page.getByRole("button",{name:"Conserver cette version du paysage",exact:true}).click();
+  await expect(page.getByText("Cette version est conservée dans Mes repères. Vous pouvez continuer à modifier votre production.",{exact:true})).toBeVisible();
   await expect(page.locator(".save-status")).toContainText("Chiffré sur cet appareil");
   await page.reload();await page.getByRole("button",{name:"Ouvrir la démonstration",exact:true}).click();
   await seance(page,1,"Pendant");
@@ -259,7 +263,7 @@ test("accessibilité axe, clavier, réduction des mouvements, mode sobre et refl
   await page.getByLabel("Animations",{exact:true}).selectOption("non");
   await page.getByLabel("Taille du texte",{exact:true}).selectOption("grand");
   await page.setViewportSize({width:360,height:800});
-  await seance(page,4);await expect(page.getByRole("heading",{level:1})).toContainText("Faire évoluer une relation");
+  await seance(page,4);await expect(page.locator("#titre-capsule-4")).toContainText("Faire évoluer une relation");
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
   await page.keyboard.press("Tab");const focus=await page.evaluate(()=>document.activeElement?.tagName);expect(focus).not.toBe("BODY");
 });
@@ -314,79 +318,69 @@ test("verrouillage automatique averti, reprise et changement de largeur",async({
   for(const width of[430,768,390]){await page.setViewportSize({width,height:500});await nav(page,"Mon parcours");expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);}
 });
 
-test("continuité : déplacement réel, inversion sans saut et un seul espace accessible",async({page})=>{
+test("classeur : feuilles distinctes, capsule à sa place et voisins repoussés",async({page})=>{
   await page.emulateMedia({reducedMotion:"no-preference"});
-  await page.goto("/");await page.getByRole("button",{name:"Ouvrir la démonstration",exact:true}).click();await settled(page);
-  const cells=await page.locator('.plan-case').evaluateAll(nodes=>nodes.map(node=>{const r=node.getBoundingClientRect();return{x:r.x,y:r.y};}));
-  expect(cells).toHaveLength(6);
-  for(let i=0;i<6;i+=2){expect(cells[i].x).toBeLessThan(cells[i+1].x);expect(Math.abs(cells[i].y-cells[i+1].y)).toBeLessThan(1);}
-  expect(cells[2].y).toBeGreaterThan(cells[0].y);expect(cells[4].y).toBeGreaterThan(cells[2].y);
-  const home=page.locator('.continuite-panneau[data-panel="Mon accueil"]');
-  // Extend the native transition in this measurement so a loaded runner can
-  // observe it; the actual property, destinations and interruption remain native.
-  await page.addStyleTag({content:".continuite-panneau { transition-duration: 4s !important; transition-timing-function: linear !important; }"});
-  const reversal=await page.evaluate(()=>new Promise<{observed:number,before:number,after:number}>((resolve,reject)=>{
-    const panel=document.querySelector<HTMLElement>('.continuite-panneau[data-panel="Mon accueil"]')!;
-    const coordinate=(translate:string)=>parseFloat(translate.trim().split(/\s+/)[1] || "0");
-    const y=()=>coordinate(getComputedStyle(panel).translate);
-    const button=(name:string)=>[...document.querySelectorAll<HTMLElement>('[role="button"]')].find(node=>node.textContent===name)!;
-    let phase=0,observed=0,start=0,end=0,duration=0,before:number|null=null,after:number|null=null;
-    const remove=()=>{document.removeEventListener("transitionrun",observe);document.removeEventListener("transitioncancel",observe);};
-    const timeout=setTimeout(()=>{remove();reject(new Error("La transition native attendue n’a pas démarré."));},8000);
-    function finish(){
-      if(before!==null && after!==null){remove();clearTimeout(timeout);resolve({observed,before,after});}
+  await page.goto("/");await page.getByRole("button",{name:"Ouvrir la démonstration",exact:true}).click();await nav(page,"Mon parcours");
+  await expect(page.getByRole("tab")).toHaveCount(6);await expect(page.getByRole("tabpanel")).toHaveCount(1);
+  await expect(page.getByRole("button",{name:"Ouvrir cette capsule",exact:true})).toHaveCount(12);
+  await expect(page.getByRole("button",{name:"Ouvrir ce bilan",exact:true})).toHaveCount(3);
+  // Observe the native expansion at a comfortable duration. No clock seeking,
+  // no simulated application state, and no fixed short sampling interval.
+  await page.addStyleTag({content:".capsule-corps, .capsule-titre { transition-duration: 2s !important; transition-timing-function: linear !important; }"});
+  const motion=await page.evaluate(()=>new Promise<{middle:number,displacement:number,growth:number,sameTitle:boolean}>(resolve=>{
+    const one=document.querySelector<HTMLElement>('#capsule-1')!,two=document.querySelector<HTMLElement>('#capsule-2')!;
+    const title=one.querySelector('.capsule-titre'),body=one.querySelector<HTMLElement>('.capsule-corps')!;
+    const baseline={height:one.getBoundingClientRect().height,next:two.getBoundingClientRect().top+scrollY};
+    (one.querySelector('.capsule-ouvrir') as HTMLElement).click();
+    function sample(){
+      const animation=body.getAnimations().find(a=>"transitionProperty" in a && a.transitionProperty==="grid-template-rows");
+      const progress=animation?.effect?.getComputedTiming().progress;
+      if(typeof progress==="number" && progress>.2 && progress<.8){
+        resolve({middle:body.getBoundingClientRect().height,displacement:two.getBoundingClientRect().top+scrollY-baseline.next,growth:one.getBoundingClientRect().height-baseline.height,sameTitle:title===one.querySelector('.capsule-titre')});
+      }else requestAnimationFrame(sample);
     }
-    function observe(event:Event){
-      const change=event as TransitionEvent;
-      if(change.target!==panel || change.propertyName!=="translate")return;
-      if(event.type==="transitioncancel"){
-        // elapsedTime is the native cancellation instant, including the frames
-        // during which Elm prepares the destination after the user's click.
-        before=start+(end-start)*Math.min(1,change.elapsedTime*1000/duration);
-        finish();return;
-      }
-      if(phase===0){
-        phase=1;
-        const departing=panel.getAnimations().find(animation=>"transitionProperty" in animation && animation.transitionProperty==="translate")!;
-        const frames=(departing.effect as KeyframeEffect).getKeyframes();
-        start=coordinate(frames[0].translate as string);end=coordinate(frames[1].translate as string);
-        duration=Number(departing.effect!.getComputedTiming().duration);
-        function interrupt(){
-          const actual=y();
-          if(actual < -100 && actual > -500){observed=actual;button("Mon accueil").click();}
-          else if(phase===1)requestAnimationFrame(interrupt);
-        }
-        requestAnimationFrame(interrupt);
-      }else if(phase===1 && panel.dataset.active==="true"){
-        phase=2;
-        const returning=panel.getAnimations().find(animation=>"transitionProperty" in animation && animation.transitionProperty==="translate")!;
-        after=coordinate((returning.effect as KeyframeEffect).getKeyframes()[0].translate as string);
-        finish();
-      }
-    }
-    document.addEventListener("transitionrun",observe);document.addEventListener("transitioncancel",observe);
-    button("Mes objectifs").click();
+    requestAnimationFrame(sample);
   }));
-  expect(reversal.observed).toBeLessThan(-60);expect(reversal.observed).toBeGreaterThan(-600);
-  expect(Math.abs(reversal.after-reversal.before)).toBeLessThan(2);
-  await expect(page.getByRole("heading",{level:1})).toHaveCount(1);
-  await expect(page.getByRole("heading",{level:1})).toHaveText("Un moment pour moi.");
-  // The departing editor is excluded from assistive technology AND keyboard focus.
-  const inertButton=page.locator('[inert] button').first();
-  if(await inertButton.count()){
-    await inertButton.evaluate((button:HTMLButtonElement)=>button.focus());
-    expect(await page.evaluate(()=>!!document.activeElement?.closest('[inert]'))).toBe(false);
-  }
-  await settled(page);
-  expect(await home.evaluate(el=>el.getBoundingClientRect().y-el.parentElement!.getBoundingClientRect().y)).toBeCloseTo(0,4);
-  await expect(page.getByRole("button",{name:"Mon accueil",exact:true})).toHaveAttribute("aria-pressed","true");
+  expect(motion.middle).toBeGreaterThan(20);expect(motion.displacement).toBeGreaterThan(20);
+  expect(Math.abs(motion.displacement-motion.growth)).toBeLessThan(2);expect(motion.sameTitle).toBe(true);
+  await expect(page.getByRole("tab",{name:"Mon parcours",exact:true})).toHaveAttribute("aria-selected","true");
+  await expect(page.locator('#titre-page')).toHaveAttribute("data-panel","Mon parcours");await settled(page);
+  const full=await page.locator('#corps-capsule-1').evaluate(e=>e.getBoundingClientRect().height);expect(full).toBeGreaterThan(motion.middle);
+  await page.evaluate(()=>scrollTo(0,900));
+  await expect.poll(()=>page.locator("#plan-carnet").evaluate(e=>e.getBoundingClientRect().top)).toBeLessThan(20);
+  await page.locator('#capsule-1 .capsule-ouvrir').click();await expect(page.locator('#capsule-1 .capsule-ouvrir')).toHaveAttribute("aria-expanded","false");await settled(page);
+  expect(await page.locator('#corps-capsule-1').evaluate(e=>e.getBoundingClientRect().height)).toBe(0);
+  await expect(page.getByLabel("Ma note personnelle · facultatif",{exact:true})).toHaveCount(0);
+  // A quick change of mind before preparation finishes must leave no phantom
+  // movement. Reopening during a real collapse also keeps the same capsule.
+  await page.locator('#capsule-1 .capsule-ouvrir').click();
+  await expect(page.locator('#capsule-1 .capsule-ouvrir')).toHaveAttribute("aria-expanded","true");await settled(page);
+  await page.evaluate(()=>new Promise<void>(resolve=>{
+    const button=document.querySelector<HTMLButtonElement>('#capsule-1 .capsule-ouvrir')!;
+    const observer=new MutationObserver(()=>{if(button.getAttribute('aria-expanded')==='false'){observer.disconnect();button.click();resolve();}});
+    observer.observe(button,{attributes:true,attributeFilter:['aria-expanded']});button.click();
+  }));
+  await expect(page.locator('#capsule-1 .capsule-ouvrir')).toHaveAttribute("aria-expanded","true");await settled(page);
+  const closingHeight=await page.evaluate(()=>new Promise<number>(resolve=>{
+    const body=document.querySelector<HTMLElement>('#corps-capsule-1')!;
+    (document.querySelector('#capsule-1 .capsule-ouvrir') as HTMLElement).click();
+    function sample(){
+      const animation=body.getAnimations().find(a=>"transitionProperty" in a && a.transitionProperty==="grid-template-rows");
+      const progress=animation?.effect?.getComputedTiming().progress;
+      if(typeof progress==="number" && progress>.2 && progress<.8){const height=body.getBoundingClientRect().height;(document.querySelector('#capsule-1 .capsule-ouvrir') as HTMLElement).click();resolve(height);}
+      else requestAnimationFrame(sample);
+    }
+    requestAnimationFrame(sample);
+  }));
+  await expect(page.locator('#capsule-1 .capsule-ouvrir')).toHaveAttribute("aria-expanded","true");await settled(page);
+  expect(await page.locator('#corps-capsule-1').evaluate(e=>e.getBoundingClientRect().height)).toBeGreaterThan(closingHeight);
+  await expect(page.getByLabel("Ma note personnelle · facultatif",{exact:true})).toBeVisible();
+  // The tab list is a real keyboard-operated binder, with one selected sheet.
+  await page.getByRole("tab",{name:"Mon parcours",exact:true}).focus();await page.keyboard.press("ArrowRight");
+  await expect(page.getByRole("tab",{name:"Mes objectifs",exact:true})).toBeFocused();await settled(page);
+  await expect(page.getByRole("tabpanel")).toHaveCount(1);await expect(page.locator('#titre-page')).toHaveAttribute("data-panel","Mes objectifs");
+  await page.keyboard.press("Home");await expect(page.getByRole("tab",{name:"Mon accueil",exact:true})).toBeFocused();await settled(page);
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
-  // Several choices in the same frame cancel the pending journey, without a stuck window.
-  await page.evaluate(()=>{
-    const buttons=[...document.querySelectorAll<HTMLElement>('[role="button"]')];
-    for(const name of["Mes objectifs","Mon accueil","Mes repères","Mon accueil"]){buttons.find(button=>button.textContent===name)!.click();}
-  });
-  await settled(page);await expect(page.getByRole("heading",{level:1})).toHaveText("Un moment pour moi.");
 });
 
 test("continuité : retour au même moment, écrits et reformulation en cours conservés",async({page})=>{
@@ -397,37 +391,40 @@ test("continuité : retour au même moment, écrits et reformulation en cours co
   await page.getByRole("button",{name:"Retrouver mes objectifs et mes défis",exact:true}).click();await settled(page);
   await page.getByRole("button",{name:"Reformuler cet objectif",exact:true}).click();
   await page.getByLabel("Ma nouvelle formulation",{exact:true}).fill("Ma reformulation fictive encore en cours.");
-  await nav(page,"Mes repères");await nav(page,"Mes objectifs");
+  await nav(page,"Mes repères");await nav(page,"Mon parcours");
+  await expect(page.getByRole("button",{name:"Entre les séances",exact:true})).toHaveAttribute("aria-pressed","true");
+  await expect.poll(()=>page.locator('#titre-capsule-1').evaluate(el=>el.getBoundingClientRect().top-document.querySelector('.classeur-navigation')!.getBoundingClientRect().bottom)).toBeGreaterThanOrEqual(0);
+  await nav(page,"Mes objectifs");
   await expect(page.getByLabel("Ma nouvelle formulation",{exact:true})).toHaveValue("Ma reformulation fictive encore en cours.");
   await page.getByRole("button",{name:"Revenir à la séance 1 · Entre les séances",exact:true}).click();await settled(page);
   await expect(page.getByRole("button",{name:"Entre les séances",exact:true})).toHaveAttribute("aria-pressed","true");
   await expect(page.getByRole("heading",{name:"Je comprends mieux",exact:true})).toBeVisible();
   await page.getByRole("button",{name:"Avant",exact:true}).click();await settled(page);
   await expect(page.getByLabel("Ma note personnelle · facultatif",{exact:true})).toHaveValue("Une note fictive conservée pendant les déplacements.");
-  await page.getByRole("button",{name:"Retrouver le plan du carnet",exact:true}).click();
+  await page.getByRole("button",{name:"Retrouver les onglets",exact:true}).click();
   await expect(page.locator('#plan-carnet')).toBeFocused();
 });
 
 test("continuité : réduction dynamique, préférence sauvegardée et verrouillage immédiat",async({page})=>{
   await page.emulateMedia({reducedMotion:"no-preference"});
   await page.goto("/");await page.getByRole("button",{name:"Ouvrir la démonstration",exact:true}).click();await settled(page);
-  await page.getByRole("button",{name:"Mes objectifs",exact:true}).evaluate((button:HTMLButtonElement)=>button.click());
-  await expect(page.locator('.continuite-fenetre[data-moving="true"]')).toHaveCount(1);
+  await page.getByRole("tab",{name:"Mes objectifs",exact:true}).evaluate((button:HTMLButtonElement)=>button.click());
+  await expect(page.locator('[data-moving="true"]')).toHaveCount(1);
   await page.emulateMedia({reducedMotion:"reduce"});await settled(page);
   await expect.poll(()=>page.locator('#titre-page').evaluate(el=>{const r=el.getBoundingClientRect(),p=el.parentElement!.getBoundingClientRect();return[r.x-p.x,r.y-p.y];})).toEqual([0,0]);
   await page.emulateMedia({reducedMotion:"no-preference"});
   await nav(page,"Mes réglages");await page.getByLabel("Animations",{exact:true}).selectOption("non");
   await nav(page,"Mon parcours");await expect.poll(()=>page.locator('#titre-page').evaluate(el=>{const r=el.getBoundingClientRect(),p=el.parentElement!.getBoundingClientRect();return[r.x-p.x,r.y-p.y];})).toEqual([0,0]);
-  await expect(page.locator('.continuite-fenetre[data-moving="true"]')).toHaveCount(0);
+  await expect(page.locator('[data-moving="true"]')).toHaveCount(0);
   await expect(page.locator(".save-status")).toContainText("Chiffré sur cet appareil");
   await page.reload();await page.getByRole("button",{name:"Ouvrir la démonstration",exact:true}).click();await settled(page);
   await nav(page,"Mes réglages");await expect(page.getByLabel("Animations",{exact:true})).toHaveValue("non");
   await page.getByLabel("Animations",{exact:true}).selectOption("oui");
-  await page.getByRole("button",{name:"Mes objectifs",exact:true}).evaluate((button:HTMLButtonElement)=>button.click());
-  await expect(page.locator('.continuite-fenetre[data-moving="true"]')).toHaveCount(1);
+  await page.getByRole("tab",{name:"Mes objectifs",exact:true}).evaluate((button:HTMLButtonElement)=>button.click());
+  await expect(page.locator('[data-moving="true"]')).toHaveCount(1);
   await page.getByRole("button",{name:"Masquer / verrouiller",exact:true}).click();
   await expect(page.getByRole("heading",{name:"Votre carnet est fermé",exact:true})).toBeVisible();
-  await expect(page.locator('.continuite-fenetre')).toHaveCount(0);
+  await expect(page.locator('.classeur-feuilles')).toHaveCount(0);
   await expect(page.getByText("Construire des relations où je peux être moi-même.",{exact:true})).toHaveCount(0);
 });
 

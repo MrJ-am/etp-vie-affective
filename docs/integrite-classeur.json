@@ -1,0 +1,52 @@
+{
+  "date": "2026-10-06",
+  "baselineCommit": "933ad198c4249df4277f0fbe35e6dd380617d52f",
+  "comparison": "Avant/après refonte en classeur, feuilles et capsules",
+  "checks": [
+    {
+      "file": "content/parcours.json",
+      "sha256": "75af8bfc66e7b79872d57de20c57860f85b277f68f7c8f7577ce09c48a1d6cb8",
+      "unchanged": true
+    },
+    {
+      "file": "frontend/src/Carnet.elm",
+      "sha256": "72c6d83abe6f05f57736d650e04770fe79d26580719241fb27d06cd6204aa89f",
+      "unchanged": true
+    },
+    {
+      "file": "frontend/src/Contenu.elm",
+      "sha256": "0c193b84909c829dcf5d0c36cc2df0e3c4831ced0bf7a086c952d202eabccb59",
+      "unchanged": true
+    },
+    {
+      "file": "bridge/crypto.ts",
+      "sha256": "510b85ed5caa3cbe2097628816e23e7e08bc634b94bd8fa95817835d3c79d60d",
+      "unchanged": true
+    },
+    {
+      "file": "bridge/worker.ts",
+      "sha256": "a7e792dad42173fe14518da6eef5550376bdb5310c0661deb432224cbbb2df49",
+      "unchanged": true
+    },
+    {
+      "file": "backend/server.lisp",
+      "sha256": "ed00294771bd1d6788657ce4a9c75d8ce6cc94c42728669c99a180d48d641ec6",
+      "unchanged": true
+    },
+    {
+      "file": "backend/Dockerfile",
+      "sha256": "cd89dbd5540af63553d79da39ffd7c51df9855b05f2d973ed0c8ac363f03d858",
+      "unchanged": true
+    },
+    {
+      "file": "backend/migrations/001.sql",
+      "sha256": "d62096032a02d0af1f617fb9de30cdd567a7b841e6da1daa420cd164ce8a2776",
+      "unchanged": true
+    },
+    {
+      "file": "style.lock.json",
+      "sha256": "77349cd8b1a46ce31a4dda728c51ffd6b4eb183b02bea043b9f930913b6fc94e",
+      "unchanged": true
+    }
+  ]
+}

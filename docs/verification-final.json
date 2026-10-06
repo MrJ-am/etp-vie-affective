@@ -1,26 +1,39 @@
 {
   "date": "2026-10-06",
+  "version": "Classeur à six feuilles, douze capsules et trois bilans",
   "unitTests": 13,
   "apiTests": 9,
   "browserTests": 63,
   "total": 85,
+  "testsExecutedForThisPresentation": 63,
+  "reusedUnitAndApiTests": 22,
+  "reusedUnitAndApiPhase": "Refonte continue précédente du même jour ; fichiers de contenu, modèle, crypto et backend inchangés par SHA-256.",
   "browsers": [
     "Chromium",
     "WebKit",
     "Firefox"
   ],
-  "browserDurationMs": 673626.442,
+  "browserDurationMs": 582622.642,
   "skipped": 0,
   "retries": 0,
+  "browserEvidence": "Une exécution complète : browser-results.json, rapport Playwright brut. Rapports de développement distincts dans historique/.",
+  "sourceIntegrityFiles": 9,
+  "sourceIntegrityEvidence": "integrite-classeur.json",
+  "testedBundlesSha256": {
+    "elm.js": "8a91e05e511f6855fe92602d76c8e4d4b10d21e0a81074e6094ec51c68e2482d",
+    "bridge.js": "cbf577f84cad7aafd5eafe9e02ae06dd91fe87d4aa15e3cfc2d8f7eea1c03be3",
+    "worker.js": "458c128c99a38694c1d21b824b7ba50ad8e6f9122982878e3488999f0da78989",
+    "carnet.css": "7a6bd3ad86cad304a8006197ebc12ccdc62d963cb80e3a81c6cb5ccb48e3bf8f",
+    "catalogue.json": "75af8bfc66e7b79872d57de20c57860f85b277f68f7c8f7577ce09c48a1d6cb8"
+  },
+  "staticDemoValidation": "passed",
+  "staticDemoEvidence": "site-classeur-results.json",
   "restoreExercise": "passed",
   "storageAndIndependentScrypt": "passed",
   "inputExifRemoval": "passed",
+  "restoreAndStoragePhase": "Livraison initiale du même jour ; backend et chiffrement inchangés.",
   "clinicalValidation": false,
   "independentSecurityAudit": false,
   "physicalDeviceTesting": false,
-  "browserEvidence": "Deux exécutions : régression complète et contrôle de mesure corrigé sur trois moteurs ; voir browser-results.json.",
-  "explicitRerunTests": 3,
-  "sourceIntegrityFiles": 8,
-  "staticDemoValidation": "passed",
-  "restoreAndStoragePhase": "Livraison initiale du même jour, avant refonte ; backend et chiffrement inchangés."
+  "humanUsabilityTesting": false
 }

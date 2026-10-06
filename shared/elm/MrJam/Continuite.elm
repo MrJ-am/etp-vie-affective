@@ -1,6 +1,6 @@
-module MrJam.Continuite exposing (Panneau, Point, plan, repere, ruban)
+module MrJam.Continuite exposing (Onglet, Panneau, Point, capsule, feuilles, onglets, plan, repere, ruban, titreCapsule)
 
-{-| Fenêtres dans un plan, sans état métier. Elm Animator produit les transitions
+{-| Feuilles de classeur, capsules et fenêtres internes, sans état métier. Elm Animator produit les transitions
 CSS natives ; le navigateur conserve les positions intermédiaires lors d'un
 nouveau choix. Une seule mise en page ElmUI inclut les panneaux. Les propriétés
 finales sont explicites, y compris sans mouvement.
@@ -8,10 +8,249 @@ finales sont explicites, y compris sans mouvement.
 
 import Animator
 import Element as U exposing (Element)
+import Element.Region as R
 import Html
 import Html.Attributes as A
 import Html.Events as Events
 import Json.Decode as D
+
+
+type alias Onglet msg =
+    { id : String, libelle : String, selectionne : Bool, choisir : msg, clavier : msg }
+
+
+{-| Les onglets appartiennent au classeur ; le clavier conserve le focus sur
+l'onglet choisi. Une activation par clic conduit à sa feuille.
+-}
+onglets : List (Onglet msg) -> Element msg
+onglets liste =
+    let
+        nombre =
+            List.length liste
+
+        bouton index onglet =
+            let
+                touche =
+                    D.field "key" D.string
+                        |> D.andThen
+                            (\key ->
+                                let
+                                    suivant =
+                                        case key of
+                                            "ArrowRight" ->
+                                                Just (modBy nombre (index + 1))
+
+                                            "ArrowLeft" ->
+                                                Just (modBy nombre (index - 1))
+
+                                            "Home" ->
+                                                Just 0
+
+                                            "End" ->
+                                                Just (nombre - 1)
+
+                                            _ ->
+                                                Nothing
+                                in
+                                case suivant |> Maybe.andThen (\i -> List.drop i liste |> List.head) of
+                                    Just destination ->
+                                        D.succeed ( destination.clavier, True )
+
+                                    Nothing ->
+                                        D.fail "Touche native de cet onglet."
+                            )
+            in
+            Html.button
+                [ A.class "classeur-onglet"
+                , A.id ("onglet-" ++ onglet.id)
+                , A.attribute "role" "tab"
+                , A.attribute "aria-controls" ("feuille-" ++ onglet.id)
+                , A.attribute "aria-selected" (bool onglet.selectionne)
+                , A.tabindex
+                    (if onglet.selectionne then
+                        0
+
+                     else
+                        -1
+                    )
+                , Events.onClick onglet.choisir
+                , Events.preventDefaultOn "keydown" touche
+                ]
+                [ Html.text onglet.libelle ]
+    in
+    U.el [ U.width U.fill, U.htmlAttribute (A.class "classeur-navigation") ] <|
+        U.html <|
+            Html.div
+                [ A.class "classeur-onglets", A.id "plan-carnet", A.tabindex -1, A.attribute "role" "tablist", A.attribute "aria-label" "Les feuilles de mon classeur" ]
+                (List.indexedMap bouton liste)
+
+
+bool : Bool -> String
+bool valeur =
+    if valeur then
+        "true"
+
+    else
+        "false"
+
+
+natif : Bool -> Float -> List Animator.Attribute -> List (Html.Attribute msg)
+natif anime duree proprietes =
+    if anime then
+        Animator.transition (Animator.ms duree) proprietes
+            |> Animator.toCss
+            |> .props
+            |> List.filter (\( nom, _ ) -> nom == "transition")
+            |> List.map (\( nom, valeur ) -> A.style nom valeur)
+
+    else
+        [ A.style "transition" "none" ]
+
+
+{-| Les feuilles partagent la même reliure. Leur mouvement fait apparaître une
+autre feuille ; il ne fait pas voyager les chapitres vers un autre emplacement.
+-}
+feuilles : { camera : Point, mouvement : Bool, anime : Bool, termine : msg } -> List (Panneau msg) -> Element msg
+feuilles config panneaux =
+    let
+        fin =
+            D.map2 Tuple.pair (D.field "propertyName" D.string) (D.at [ "target", "id" ] D.string)
+                |> D.andThen
+                    (\( propriete, id ) ->
+                        if propriete == "opacity" && id == "titre-page" then
+                            D.succeed config.termine
+
+                        else
+                            D.fail "Autre mouvement de feuille."
+                    )
+
+        panneau p =
+            let
+                id =
+                    String.fromInt (round p.position.x)
+
+                visible =
+                    p.position.x == config.camera.x
+
+                attrs =
+                    [ A.class "classeur-feuille"
+                    , A.attribute "data-panel" p.cle
+                    , A.attribute "data-active" (bool p.ouvert)
+                    , A.style "opacity" (boolFloat visible)
+                    , A.style "rotate"
+                        ("0 1 0 "
+                            ++ (if visible then
+                                    "0"
+
+                                else if p.position.x < config.camera.x then
+                                    "-0.018"
+
+                                else
+                                    "0.018"
+                               )
+                            ++ "turn"
+                        )
+                    ]
+                        ++ natif config.anime 320 [ Animator.opacity 1, Animator.rotationAround { x = 0, y = 1, z = 0 } 0.018 ]
+                        ++ (if p.ouvert then
+                                [ A.id "titre-page", A.tabindex -1, Events.on "transitionend" fin ]
+
+                            else
+                                [ A.attribute "inert" "", A.attribute "aria-hidden" "true" ]
+                           )
+            in
+            U.el ([ U.width U.fill ] ++ List.map U.htmlAttribute attrs)
+                (U.column
+                    [ U.width U.fill
+                    , U.htmlAttribute (A.attribute "role" "tabpanel")
+                    , U.htmlAttribute (A.id ("feuille-" ++ id))
+                    , U.htmlAttribute (A.attribute "aria-labelledby" ("onglet-" ++ id))
+                    ]
+                    [ p.contenu ]
+                )
+    in
+    U.column
+        [ U.width U.fill, U.spacing 0, U.htmlAttribute (A.class "classeur-feuilles"), U.htmlAttribute (A.attribute "data-moving" (bool config.mouvement)) ]
+        (List.map panneau panneaux)
+
+
+boolFloat : Bool -> String
+boolFloat valeur =
+    if valeur then
+        "1"
+
+    else
+        "0"
+
+
+titreCapsule : Int -> Bool -> Bool -> String -> Element msg
+titreCapsule id ouvert anime titre =
+    U.paragraph
+        ([ U.width U.fill, R.heading 2 ]
+            ++ List.map U.htmlAttribute
+                ([ A.class "capsule-titre"
+                 , A.id ("titre-capsule-" ++ String.fromInt id)
+                 , A.tabindex -1
+                 , A.style "font-size"
+                    (if ouvert then
+                        "2rem"
+
+                     else
+                        "1.2rem"
+                    )
+                 ]
+                    ++ natif anime 520 [ Animator.px "font-size" 1 ]
+                )
+        )
+        [ U.text titre ]
+
+
+{-| La piste intrinsèque se déploie dans le flux de la feuille : les capsules
+suivantes sont repoussées à chaque image, sans positions absolues ni nouvelle page.
+Animator fournit les propriétés et la courbe de transition native.
+-}
+capsule : { id : Int, ouverte : Bool, lisible : Bool, anime : Bool, mouvement : Bool, termine : msg } -> Element msg -> Element msg
+capsule config contenu =
+    let
+        id =
+            "corps-capsule-" ++ String.fromInt config.id
+
+        fin =
+            D.map2 Tuple.pair (D.field "propertyName" D.string) (D.at [ "target", "id" ] D.string)
+                |> D.andThen
+                    (\( propriete, cible ) ->
+                        if propriete == "grid-template-rows" && cible == id then
+                            D.succeed config.termine
+
+                        else
+                            D.fail "Autre mouvement dans cette capsule."
+                    )
+    in
+    U.el
+        ([ U.width U.fill ]
+            ++ List.map U.htmlAttribute
+                ([ A.class "capsule-corps"
+                 , A.id id
+                 , A.attribute "data-moving" (bool config.mouvement)
+                 , A.style "grid-template-rows"
+                    (if config.ouverte then
+                        "1fr"
+
+                     else
+                        "0fr"
+                    )
+                 , Events.on "transitionend" fin
+                 ]
+                    ++ natif config.anime 520 [ Animator.float "grid-template-rows" 1 ]
+                    ++ (if config.lisible then
+                            []
+
+                        else
+                            [ A.attribute "inert" "", A.attribute "aria-hidden" "true" ]
+                       )
+                )
+        )
+        (U.el [ U.width U.fill, U.htmlAttribute (A.class "capsule-interieur") ] contenu)
 
 
 type alias Point =

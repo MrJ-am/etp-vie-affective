@@ -41,13 +41,43 @@ body { background: var(--papier); }
 .theme-carnet .skip-link { position: absolute !important; left: 10px; top: -90px; z-index: 200; background: white; color: #623451; padding: 14px; border: 2px solid #623451; }
 .theme-carnet .skip-link:focus { top: 10px; }
 .theme-carnet .carnet-panneau { transition: border-color .15s ease; }
+/* Un onglet change de feuille. Une capsule se déploie dans le flux de la sienne. */
+.theme-carnet .classeur, .theme-carnet .classeur-papier, .theme-carnet .classeur-feuilles, .theme-carnet .feuille-parcours, .theme-carnet .capsule { flex: 0 0 auto !important; height: auto !important; min-height: auto !important; min-width: 0; }
+.theme-carnet .classeur-navigation { position: sticky !important; top: 0; z-index: 40; flex: 0 0 auto !important; height: auto !important; background: var(--papier); padding-top: 9px; }
+.theme-carnet .classeur-onglets { display: flex; align-items: stretch; gap: 5px; width: 100%; padding: 0 10px; }
+.theme-carnet .classeur-onglet { position: relative; flex: 1 1 0; min-width: 0; min-height: 54px; padding: 13px 12px; border: 1px solid #c9b4c1; border-bottom: 0; border-radius: 15px 15px 0 0; color: var(--prune); background: #ede3e9; font: inherit; font-size: .9375rem; line-height: 1.35; cursor: pointer; white-space: normal; overflow-wrap: anywhere; }
+.theme-carnet .classeur-onglet[aria-selected="true"] { z-index: 2; background: #fffffd; border: 2px solid var(--prune); border-bottom: 0; font-weight: 700; box-shadow: 0 3px 0 #fffffd; }
+.theme-carnet .classeur-papier { background: #fffffd; border: 1px solid #c9b4c1; border-left: 7px solid var(--prune); border-radius: 6px 8px 8px 6px; box-shadow: 4px 5px 0 #eee5dc, 7px 8px 0 #f7f0e8; }
+.theme-carnet .classeur-feuilles { position: relative; width: 100%; overflow: hidden; isolation: isolate; perspective: 1800px; }
+.theme-carnet .classeur-feuille { min-width: 0; width: 100%; transform-origin: left center; background: #fffffd; }
+.theme-carnet .classeur-feuille[data-active="true"] { position: relative; z-index: 1; }
+.theme-carnet .classeur-feuille[data-active="false"] { position: absolute; top: 0; left: 0; pointer-events: none; }
+.theme-carnet .classeur-feuilles[data-moving="false"] > .classeur-feuille[data-active="false"] { display: none !important; }
+.theme-carnet .classeur-feuilles[data-moving="true"] > .classeur-feuille { will-change: opacity, rotate; }
+.theme-carnet .capsule { border: 1px solid var(--ligne); border-radius: 20px; background: var(--papier); overflow: hidden; }
+.theme-carnet .capsule[data-open="true"] { border: 1px solid #a67c95; background: #fffffd; }
+.theme-carnet .capsule[data-nature="bilan"] { border-left: 4px solid #a5b9a3; }
+.theme-carnet .capsule-titre { margin: 0; line-height: 1.3 !important; letter-spacing: -.012em; overflow-wrap: anywhere; scroll-margin-top: 150px; }
+.theme-carnet .capsule-ouvrir { min-height: 44px; align-self: flex-start; background: #fffffd; }
+.theme-carnet .capsule-ouvrir[aria-expanded="true"] { background: #efe1e9; }
+.theme-carnet .capsule-corps { display: grid !important; grid-template-columns: minmax(0, 1fr); flex: 0 0 auto !important; height: auto !important; min-height: 0 !important; width: 100%; overflow: hidden; }
+.theme-carnet .capsule-interieur { height: auto !important; min-height: 0 !important; min-width: 0; overflow: hidden; align-self: stretch !important; }
+html[data-sober="true"] .classeur-papier { box-shadow: none; border-left-width: 2px; }
+html[data-sober="true"] .classeur-onglet { background: #fff; }
+html[data-sober="true"] .capsule { background: #fff; border-radius: 4px; }
+@media (max-width: 620px) {
+  .theme-carnet .classeur-onglets { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; padding: 0 3px; }
+  .theme-carnet .classeur-onglet { padding: 11px 7px; font-size: .875rem; border-bottom: 1px solid #c9b4c1; min-height: 52px; }
+  .theme-carnet .classeur-onglet[aria-selected="true"] { border: 2px solid var(--prune); box-shadow: none; }
+  .theme-carnet .classeur-papier { border-left-width: 4px; }
+}
 /* ElmUI shrink utilise flex-basis:0 ; les fenêtres avec overflow et les grilles
    ont besoin de leur hauteur intrinsèque, aussi sur WebKit/Firefox. */
 .theme-carnet .continuite-fenetre { flex: 0 0 auto !important; height: auto !important; min-height: auto !important; position: relative; width: 100%; min-width: 0; overflow: hidden; isolation: isolate; }
 .theme-carnet .continuite-panneau { width: 100%; min-width: 0; }
 .theme-carnet .continuite-panneau[data-active="true"] { z-index: 1; background: var(--papier); }
 .theme-carnet .continuite-panneau[data-active="false"] { position: absolute; top: 0; left: 0; pointer-events: none; }
-.theme-carnet .continuite-fenetre[data-moving="false"] > .continuite-panneau[data-active="false"] { visibility: hidden; }
+.theme-carnet .continuite-fenetre[data-moving="false"] > .continuite-panneau[data-active="false"] { display: none !important; }
 .theme-carnet .continuite-fenetre[data-moving="true"] > .continuite-panneau { will-change: translate; }
 .theme-carnet .plan-grille { flex: 0 0 auto !important; height: auto !important; min-height: auto !important; display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(3, 1fr); gap: 0; align-items: stretch; position: relative; overflow: hidden; border: 1px solid var(--ligne); border-radius: 12px; }
 .theme-carnet .plan-case { height: auto !important; align-self: stretch !important; width: 100% !important; padding: 10px 8px; min-height: 108px !important; border-bottom: 1px solid var(--ligne); }
@@ -59,6 +89,10 @@ body { background: var(--papier); }
 .theme-carnet .continuite-ruban { width: 100%; height: 3px; background: var(--ligne); overflow: hidden; }
 .theme-carnet .continuite-ruban-repere { height: 3px; background: var(--prune); }
 .theme-carnet .moments-navigation .carnet-onglet { width: 100% !important; white-space: normal; }
+.theme-carnet .moments-ligne { display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; flex: 0 0 auto !important; height: auto !important; }
+.theme-carnet .moments-ligne > * { min-width: 0 !important; width: 100% !important; }
+.theme-carnet .carnet-onglet > .s.p, .theme-carnet .carnet-bouton > .s.p { width: 100% !important; min-width: 0; max-width: 100%; }
+.theme-carnet .carnet-onglet .s.t, .theme-carnet .carnet-bouton .s.t { white-space: normal !important; display: inline; overflow-wrap: anywhere; }
 .theme-carnet .moments-navigation .carnet-petit { font-size: .82rem; }
 .theme-carnet .carnet-chemin .carnet-petit { width: auto !important; flex-grow: 0 !important; flex-basis: auto !important; }
 .theme-carnet .sommaire-grid { flex: 0 0 auto !important; height: auto !important; min-height: auto !important; display: grid !important; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 16px; align-items: stretch !important; }

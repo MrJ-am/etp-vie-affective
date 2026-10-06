@@ -2,7 +2,7 @@
 
 Prototype fonctionnel du compagnon de séances pour adultes autistes. Quinze étapes, sept rubriques regroupées en Avant / Pendant / Entre, objectifs et formulations successives, défis persistants, expérimentations et paysage personnel. Usage réservé aux **données fictives**. Aucune validation clinique ou certification de sécurité n’est revendiquée.
 
-La navigation suit un plan permanent et des fenêtres animées avec Elm Animator 2.0.0. Le parcours contient les séances, puis leurs moments ; objectifs et repères restent transversaux. Lire `docs/CONTINUITE.md` pour les relations, les animations et les garanties de conservation du fond. La réduction des mouvements du navigateur et le réglage sans animation conservent tous les chemins.
+La navigation prend la forme d’un classeur avec six onglets : chacun ouvre une feuille distincte. Les douze chapitres sont des capsules sur la même feuille du parcours, accompagnées des trois bilans. Une capsule s’agrandit à sa place et repousse les suivantes ; elle ne devient pas une autre feuille. Les objectifs et les repères ont leurs propres onglets. Elm Animator 2.0.0 anime ces relations. Lire `docs/CONTINUITE.md` pour le modèle de navigation et la conservation du fond. La réduction des mouvements du navigateur et le réglage sans animation conservent les mêmes feuilles, capsules et fonctions.
 
 La démonstration privée publiée utilise uniquement le stockage du navigateur. Elle se lance avec « Ouvrir la démonstration », puis « Reprendre mon carnet ». La version complète ci-dessous possède de vrais comptes, une API Common Lisp et PostgreSQL. Les fichiers internes ayant servi au travail ne sont pas inclus.
 

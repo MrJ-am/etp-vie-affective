@@ -1,0 +1,17 @@
+{
+  "date": "2026-10-06",
+  "mode": "static-demo-only",
+  "scope": "Artefact dist sur localhost avant publication, mêmes sources que la version finale",
+  "browser": "Chromium",
+  "viewport": 390,
+  "onglets": 6,
+  "feuillesAccessibles": 1,
+  "capsulesChapitre": 12,
+  "bilans": 3,
+  "retourMomentParOnglet": true,
+  "retourMomentParBouton": true,
+  "lienSource": true,
+  "apiRequests": [],
+  "pageErrors": [],
+  "result": "passed"
+}

@@ -472,6 +472,11 @@ async function command(command: Command): Promise<void> {
       if (heading) heading.tabIndex = -1;
       (heading ?? target)?.focus({ preventScroll: true });
       if (data.scroll) window.scrollTo({ top: 0, behavior: "instant" });
+      else if (data.reveal && target) {
+        const tabs = document.querySelector<HTMLElement>(".classeur-navigation");
+        const inset = (tabs?.getBoundingClientRect().height ?? 0) + 24;
+        window.scrollTo({ top: Math.max(0, window.scrollY + target.getBoundingClientRect().top - inset), behavior: "instant" });
+      }
     });
   } else if (action === "newVault") {
     if (!account) throw new Error("Connectez-vous d’abord à votre compte.");
