@@ -6,7 +6,7 @@ La refonte d’orientation distingue deux gestes : **changer de plan conceptuel*
 
 | Onglet | Rôle de la feuille |
 |---|---|
-| Mon parcours | Les douze capsules de chapitre sur un même plan, avec les bilans avant et après |
+| Mon parcours | Les quinze capsules 0–14 dans une seule suite, comprenant douze chapitres et trois bilans |
 | Mes objectifs | Directions, formulations successives et défis persistants |
 | Mes repères | Traces, étapes personnelles et sélection choisie à partager |
 
@@ -14,9 +14,9 @@ Les trois onglets forment le bord supérieur de la feuille : leurs contours et c
 
 La démo, la reprise et l’ouverture du coffre montrent directement le parcours et ses trois onglets. Il n’existe pas de vue `Accueil`. Le bandeau fixe porte « ETP TSA vie amoureuse », selon le titre du document source, sans baseline ni état technique visible. L’icône de compte possède le nom accessible « Mon espace ». Son menu contient les réglages, le verrouillage, À propos & sources, l’explication du classeur et la déconnexion. La vue d’ensemble a été supprimée : sa carte doublonnait la feuille du parcours. Les vues utilitaires ne portent pas d’onglet sélectionné ; « Revenir au carnet » retrouve la feuille et la capsule quittées. L’état de sauvegarde reste annoncé aux technologies d’assistance et se consulte visuellement dans les réglages.
 
-## Les douze chapitres sur la même feuille
+## Les quinze capsules sur la même feuille
 
-La feuille du parcours contient les douze chapitres 1–12, sans hiérarchie entre eux. Chaque chapitre est une capsule portant son numéro et son titre. Son objectif d’origine reste dans le contenu ouvert, ainsi que les états utiles et les intitulés propres aux bilans. Le bilan 0 précède ces capsules ; les bilans 13 et 14 les suivent et gardent leurs gabarits particuliers. Les étapes 0 et 14 conservent le même titre fourni et leurs sous-titres distincts. Rien n’est à débloquer.
+La feuille du parcours contient les douze chapitres 1–12, sans hiérarchie entre eux. Chaque chapitre est une capsule portant son numéro et son titre. Son objectif d’origine reste dans le contenu ouvert, ainsi que les états utiles et les intitulés propres aux bilans. Les capsules 0, 13 et 14 gardent leurs gabarits de bilan ; aucun intertitre ne sépare la suite 0–14. Les étapes 0 et 14 conservent le même titre fourni et leurs sous-titres distincts. Rien n’est à débloquer.
 
 Appuyer sur l’en-tête d’une capsule garde la taille de son titre, rapproche son contenu par un zoom continu et le déploie **à son emplacement dans la feuille**. Sa hauteur augmente progressivement ; les capsules suivantes sont repoussées dans le flux réel de la page. Le titre conserve le même élément DOM et l’onglet « Mon parcours » reste sélectionné. Refermer rétracte cette même capsule et rapproche ses voisines. Aucun déplacement vers un écran de chapitre séparé n’intervient. Cette déformation locale matérialise la « feuille en caoutchouc » : on se rapproche d’un contenu encapsulé, puis on retrouve l’ensemble du parcours en le refermant.
 
@@ -74,3 +74,9 @@ Les contraintes observables sont testées dans le navigateur, plutôt que par El
 `tests/browser/ancrage.spec.ts` ouvre 3 puis 4, ferme 4, ouvre puis ferme le dernier bilan 14. Chaque image native est observée après son layout, à 390 et 1440 px, en mouvement normal puis réduit. Le même titre DOM doit rester à sa position initiale à moins de 1,5 CSS px, avec exactement la même taille de police. Ce test a d’abord détecté l’agrandissement du titre sur la version précédente, puis un déplacement de plus de 1600 px avant la compensation complète. Les tests utilisent uniquement des contenus fictifs ; ils ne prouvent pas tous les gestes possibles sur chaque appareil.
 
 Consultées le 6 octobre 2026 : [documentation du package 2.0.0](https://package.elm-lang.org/packages/mdgriffith/elm-animator/2.0.0/), [README et philosophie de Continuous UI](https://github.com/mdgriffith/elm-animator/blob/2.0.0/README.md), [API Animator et transitions natives](https://github.com/mdgriffith/elm-animator/blob/2.0.0/src/Animator.elm). La continuité retenue rend visibles les relations entre les éléments. Son efficacité pour les personnes destinataires, et leur compréhension de la métaphore du classeur, restent à évaluer avec elles, avec et sans mouvement.
+
+## Glisser entre les moments
+
+Un geste horizontal sur le texte de navigation ou dans le contenu de la capsule fait suivre les trois panneaux au doigt. Glisser vers la gauche avance vers Pendant puis Après ; vers la droite revient au moment précédent. Au relâchement, Elm choisit le moment et Elm Animator termine le déplacement, sans retour préalable à l’origine. Les contenus voisins sont déjà construits. Un geste trop court revient au moment actuel ; les extrémités amortissent le geste sans boucler.
+
+`bridge/glissement.ts` distingue le geste horizontal de la lecture verticale et ignore les champs de saisie, liens et commandes d’action. Les événements annulés, le verrouillage et le changement de fenêtre nettoient la prévisualisation. Le focus rejoint le texte du moment sélectionné sans commande de défilement. La réduction des mouvements conserve le choix du moment. Les rubriques pédagogiques restent présentes ; seuls les rappels redondants « avant/pendant/entre les séances » sous cette navigation sont retirés.

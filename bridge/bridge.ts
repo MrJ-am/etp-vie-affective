@@ -1,6 +1,7 @@
 import { recoveryCode, type Keyring, type Envelope } from "./crypto";
 import { imageDimensions } from "./image";
 import { installerContinuite } from "./continuite";
+import { installerGlissement } from "./glissement";
 type ElmApp = { ports: { commande: { subscribe: (fn: (v: Command) => void) => void }; evenement: { send: (v: unknown) => void } } };
 type Command = { action: string; data: any };
 type Payload = { keyring: Keyring; envelope: Envelope };
@@ -248,6 +249,7 @@ async function beginDemo(): Promise<void> {
 }
 async function lock(show = true): Promise<void> {
   annulerAncrage();
+  annulerGlissement();
   // Retrait immédiat des vues ; dernière sauvegarde locale terminée avant retrait des clés.
   if (unlocked || show) emit("locked", { demo: mode === "demo" });
   unlocked = false; clearPreviews();
@@ -344,6 +346,7 @@ async function waitForNativeMotion(): Promise<void> {
 
 let focusVersion = 0;
 const annulerAncrage = installerContinuite(waitForNativeMotion);
+const annulerGlissement = installerGlissement((id,direction)=>emit("swipeMoment",{id,direction}));
 
 async function command(command: Command): Promise<void> {
   const { action, data } = command;

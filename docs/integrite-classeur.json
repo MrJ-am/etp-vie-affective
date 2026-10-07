@@ -1,7 +1,7 @@
 {
   "date": "2026-10-07",
-  "baselineCommit": "048561f5cde25bbf715e8169b3e39c5753a06841",
-  "comparison": "Avant/après suppression de la vue d’ensemble, bandeau fixe, navigation des moments et ancrage des titres",
+  "baselineCommit": "51780521bce7baaee82c457b175eabd80494c6fe",
+  "comparison": "Avant/après suite continue de capsules 0–14 et swipe des moments",
   "checks": [
     {
       "file": "content/parcours.json",

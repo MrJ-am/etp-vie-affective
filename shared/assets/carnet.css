@@ -99,6 +99,8 @@ html[data-sober="true"] .capsule { background: #fff; border-radius: 4px; }
 .theme-carnet .continuite-panneau[data-active="false"] { position: absolute; top: 0; left: 0; pointer-events: none; }
 .theme-carnet .continuite-fenetre[data-moving="false"] > .continuite-panneau[data-active="false"] { display: none !important; }
 .theme-carnet .continuite-fenetre[data-moving="true"] > .continuite-panneau { will-change: translate; }
+.theme-carnet [data-swipe-moment] { touch-action: pan-y pinch-zoom; }
+.theme-carnet .continuite-fenetre[data-glissement="true"] > .continuite-panneau[data-active="false"] { display: flex !important; }
 .theme-carnet .plan-grille { flex: 0 0 auto !important; height: auto !important; min-height: auto !important; display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(3, 1fr); gap: 0; align-items: stretch; position: relative; overflow: hidden; border: 1px solid var(--ligne); border-radius: 12px; }
 .theme-carnet .plan-case { height: auto !important; align-self: stretch !important; width: 100% !important; padding: 10px 8px; min-height: 108px !important; border-bottom: 1px solid var(--ligne); }
 .theme-carnet .plan-case .carnet-petit { font-size: .76rem; line-height: 1.45 !important; }

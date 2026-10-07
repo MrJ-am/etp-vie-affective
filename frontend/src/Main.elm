@@ -45,6 +45,7 @@ type GesteNavigation
     = OngletPointe
     | OngletAuClavier
     | DestinationChoisie
+    | MomentGlisse
 
 
 type Vue
@@ -281,6 +282,32 @@ update msg modele =
 
                         Err _ ->
                             ( { modele | ecran = Verrouille, vue = Parcours, camera = position Parcours, momentCamera = 0, preparation = 0, sortie = Nothing, momentSortie = Nothing, retourSeance = Nothing, parcoursVue = Parcours, carnetVue = Parcours, compteMenu = False, capsule = Nothing, capsuleSortie = Nothing, capsulesMouvement = [], carnet = K.vide, busy = False, erreur = "Le carnet a un format non pris en charge. Il reste conservé chiffré." }, envoyer "lock" E.null )
+
+                "swipeMoment" ->
+                    case modele.vue of
+                        ChapitreVue id moment ->
+                            if modele.ecran == Ouvert && lire (D.field "id" D.int) -1 data == id then
+                                let
+                                    index =
+                                        clamp 0 2 (round (momentPosition moment) + lire (D.field "direction" D.int) 0 data)
+
+                                    destination =
+                                        if index == 0 then
+                                            Avant
+
+                                        else if index == 1 then
+                                            Pendant
+
+                                        else
+                                            Entre
+                                in
+                                naviguer MomentGlisse (ChapitreVue id destination) modele
+
+                            else
+                                ( modele, Cmd.none )
+
+                        _ ->
+                            ( modele, Cmd.none )
 
                 "motionPreference" ->
                     let
@@ -1028,6 +1055,14 @@ naviguer geste vue modele =
 
                 OngletAuClavier ->
                     envoyer "focus" (E.object [ ( "id", E.string ("onglet-" ++ String.fromInt (round (position vue).x)) ), ( "scroll", E.bool False ) ])
+
+                MomentGlisse ->
+                    case vue of
+                        ChapitreVue id moment ->
+                            envoyer "focus" (E.object [ ( "id", E.string ("moment-capsule-" ++ String.fromInt id ++ "-onglet-" ++ String.fromInt (round (momentPosition moment))) ), ( "scroll", E.bool False ) ])
+
+                        _ ->
+                            Cmd.none
 
                 DestinationChoisie ->
                     case vue of
@@ -2095,18 +2130,7 @@ pageParcours modele =
                         ChapitreVue chapitre.id Avant
             in
             U.column [ width fill, U.spacing 0 ]
-                [ if chapitre.id == 0 then
-                    C.surTitre "AVANT LES CAPSULES"
-
-                  else if chapitre.id == 1 then
-                    U.el [ U.paddingXY 0 18 ] (C.surTitre "LES DOUZE CAPSULES · CHAPITRES 1 À 12")
-
-                  else if chapitre.id == 13 then
-                    U.el [ U.paddingXY 0 18 ] (C.surTitre "APRÈS LES CAPSULES")
-
-                  else
-                    U.none
-                , U.column
+                [ U.column
                     [ width fill
                     , U.spacing 0
                     , C.classe "capsule"
@@ -2159,15 +2183,22 @@ pageParcours modele =
                 ]
     in
     U.column [ width fill, U.spacing 18 ]
-        [ pageTitre "LA FEUILLE DU PARCOURS" "Mon parcours"
-        , C.paragraphe "Douze capsules à explorer, avec mes bilans avant et après. Rien n’est à débloquer."
+        [ C.titre 1 "Mon parcours"
         , U.column [ width fill, U.spacing 14, C.classe "feuille-parcours" ] (List.map capsule modele.chapitres)
         ]
 
 
 pageChapitre : Modele -> Chapitre -> Moment -> Element Msg
 pageChapitre modele chapitre moment =
-    U.column [ width fill, U.spacing 23 ]
+    U.column
+        ([ width fill, U.spacing 23 ]
+            ++ (if chapitre.nature == "chapitre" then
+                    [ U.htmlAttribute (A.attribute "data-swipe-moment" (String.fromInt chapitre.id)) ]
+
+                else
+                    []
+               )
+        )
         [ if chapitre.nature == "bilan" then
             C.petit chapitre.sousTitre
 
@@ -2235,19 +2266,15 @@ momentsVue modele chapitre actuel =
             , position = { x = momentPosition moment, y = 0 }
             , ouvert = moment == actuel
             , contenu =
-                if moment == actuel || modele.momentSortie == Just moment then
-                    case moment of
-                        Avant ->
-                            avantVue modele chapitre
+                case moment of
+                    Avant ->
+                        avantVue modele chapitre
 
-                        Pendant ->
-                            pendantVue modele chapitre
+                    Pendant ->
+                        pendantVue modele chapitre
 
-                        Entre ->
-                            entreVue modele chapitre
-
-                else
-                    C.panneau [ C.titre 2 (roleMoment moment) ]
+                    Entre ->
+                        entreVue modele chapitre
             }
     in
     Continuite.plan
@@ -2295,8 +2322,7 @@ avantVue modele chapitre =
     U.column [ width fill, U.spacing 24 ]
         [ colonnes modele
             (C.panneau
-                [ C.surTitre "AVANT LA SÉANCE"
-                , C.titre 2 "Je me prépare"
+                [ C.titre 2 "Je me prépare"
                 , C.paragraphe chapitre.intro
                 , C.titre 3 "L’essentiel"
                 , U.column [ width fill, U.spacing 16 ]
@@ -2335,7 +2361,7 @@ avantVue modele chapitre =
 pendantVue : Modele -> Chapitre -> Element Msg
 pendantVue modele chapitre =
     U.column [ width fill, U.spacing 24 ]
-        [ U.column [ width fill, U.spacing 10 ] [ C.surTitre "PENDANT LA SÉANCE", C.titre 2 "J’expérimente" ]
+        [ C.titre 2 "J’expérimente"
         , if chapitre.id == 1 then
             paysageVue modele
 
@@ -2367,8 +2393,7 @@ entreVue modele chapitre =
             List.filter (\x -> x.seance == chapitre.id) modele.carnet.experiences
     in
     U.column [ width fill, U.spacing 24 ]
-        [ C.surTitre "ENTRE LES SÉANCES"
-        , C.panneau
+        [ C.panneau
             [ C.titre 2 "Je comprends mieux"
             , C.paragraphe (String.join " " chapitre.essentiel)
             , C.petit chapitre.statutLecture

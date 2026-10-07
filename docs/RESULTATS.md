@@ -1,8 +1,8 @@
 # Vérifications de la livraison du 7 octobre 2026
 
-Cette livraison supprime la vue d’ensemble redondante, réduit le bandeau au nom du programme et à l’icône du compte, déplace le verrouillage dans ce menu et maintient le bandeau en haut pendant la lecture. Les capsules fermées portent leur numéro et leur titre ; les objectifs source restent dans leur contenu ouvert. Le titre garde sa taille et sa position à l’écran pendant le mouvement. Avant / Pendant / Après sont trois textes alignés au-dessus d’un seul soulignement mobile. Les douze chapitres, les trois bilans et les sept rubriques sont conservés.
+Cette livraison présente les capsules 0–14 dans une seule suite, ajoute le swipe horizontal dans leur contenu et retire les rappels redondants sous Avant / Pendant / Après. Le bandeau reste réduit au nom du programme et à l’icône du compte, avec le verrouillage dans ce menu, et reste en haut pendant la lecture. La vue d’ensemble redondante reste supprimée. Les capsules fermées portent leur numéro et leur titre ; les objectifs source restent dans leur contenu ouvert. Le titre garde sa taille et sa position à l’écran pendant le mouvement. Avant / Pendant / Après sont trois textes alignés au-dessus d’un seul soulignement mobile. Les douze chapitres, les trois bilans et les sept rubriques sont conservés.
 
-**72 cas navigateur ont passé dans une exécution complète, sans échec, cas ignoré ou retry : 24 sur chacun des trois moteurs.**
+**75 cas navigateur ont passé dans une exécution complète, sans échec, cas ignoré ou retry : 25 sur chacun des trois moteurs.**
 
 Les 13 tests unitaires et 9 cas API réels ont passé dans la livraison du 6 octobre ; leurs fichiers métier, crypto et backend sont identiques par SHA-256. Ces 22 preuves sont conservées sans nouvelle exécution. Les exercices de restauration, d’inspection du stockage et de retrait des métadonnées proviennent également de la livraison initiale, sur les mêmes contrats. Les cas des rapports de développement ou des livraisons précédentes ne sont pas additionnés aux résultats actuels. Tous les comptes, notes et photos d’essai sont inventés.
 
@@ -16,6 +16,7 @@ Les 13 tests unitaires et 9 cas API réels ont passé dans la livraison du 6 oct
 | Ancrage du titre | Ouverture de 3 puis 4, fermeture de 4, ouverture et fermeture du dernier bilan 14 ; chaque image native observée après layout à 390 et 1440 CSS px, avec et sans mouvement réduit ; même titre DOM, écart inférieur à 1,5 CSS px, taille de police exactement constante |
 | Bandeau et moments | Bandeau accessible après défilement ; nom du programme et icône avec nom accessible ; verrouillage dans le menu, vue d’ensemble absente ; Avant / Pendant / Après sur une même ligne, hauteurs et largeurs égales, fond transparent et absence de contour, à 360, 390 et 1440 px avec texte normal et agrandi ; flèches et focus clavier |
 | Onglets du carnet | Position de la barre et `scrollY` observés pendant chaque image du fondu ; aucune commande de défilement pour parcours/repères/objectifs à 390 et 1440 px, depuis 0 et 60 px de lecture, avec et sans mouvement réduit |
+| Swipe | Navigation dans le contenu et sur le texte des moments ; suivi du doigt, geste court et annulé, extrémités sans boucle, note conservée, saisie ignorée, lecture verticale préservée, mouvement réduit ; événements tactiles synthétiques sur les trois moteurs, flux tactile Chromium via CDP pour le défilement natif et le swipe |
 | Accessibilité | Axe sur parcours, objectifs, repères, réglages et paysage ; noms, rôles d’onglets et clavier, réduction dynamique, mode sobre et reflow à 360 px ; le statut de sauvegarde reste annoncé et se consulte dans les réglages |
 | Visuel | Quinze références à 360, 390, 430, 768 et 1440 px, pour Chromium, WebKit et Firefox ; mise à jour explicite pour cette interface, inspection puis comparaison complète sans mise à jour ; captures complémentaires du bandeau, des onglets, du menu et des moments |
 
@@ -29,7 +30,7 @@ La démo statique destinée à Sites est ouverte sur localhost avant publication
 
 ## Conservation du fond
 
-`integrite-classeur.json` compare neuf fichiers au commit livré avant cette modification : catalogue, modèle privé, décodeur de contenu, crypto, Worker, serveur Lisp, image backend, migration SQL et révision de style-mrjam. Le nouveau module `bridge/continuite.ts` ne traite que la géométrie : hauteur du bandeau, repère du titre cliqué et réserve de papier nécessaire à la fin de la feuille. Le pont conserve les contrats de chiffrement, de stockage et de réseau.
+`integrite-classeur.json` compare neuf fichiers au commit livré avant cette modification : catalogue, modèle privé, décodeur de contenu, crypto, Worker, serveur Lisp, image backend, migration SQL et révision de style-mrjam. Le module `bridge/glissement.ts` ne traite que le geste horizontal local et émet une direction vers Elm. Le module `bridge/continuite.ts` ne traite que la géométrie : hauteur du bandeau, repère du titre cliqué et réserve de papier nécessaire à la fin de la feuille. Le pont conserve les contrats de chiffrement, de stockage et de réseau.
 
 Les titres, objectifs et contenus pédagogiques restent dans le catalogue. Les sous-titres redondants des chapitres ne sont plus affichés dans les capsules fermées ; les intitulés distinctifs des bilans restent à l’intérieur. Les sept rubriques gardent leur contenu et leur provenance. Le renommage « Après » concerne la navigation ; l’expérimentation entre séances reste le même concept métier.
 
