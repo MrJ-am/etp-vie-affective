@@ -13,6 +13,7 @@ import Element.Input as Input
 import Element.Region as R
 import Html
 import Html.Attributes as A
+import Html.Events as Events
 import Json.Decode as D
 import Json.Encode as E
 import MrJam.Carnet as C
@@ -57,10 +58,12 @@ type alias Modele =
     , camera : Continuite.Point
     , momentCamera : Float
     , preparation : Int
+    , mouvementVersion : Int
     , sortie : Maybe Vue
     , momentSortie : Maybe Moment
     , retourSeance : Maybe Vue
     , parcoursVue : Vue
+    , carnetVue : Vue
     , capsule : Maybe Int
     , capsuleSortie : Maybe ( Int, Moment )
     , capsulesMouvement : List Int
@@ -72,6 +75,7 @@ type alias Modele =
     , reducedMotion : Bool
     , formulaires : Dict String String
     , menu : Bool
+    , compteMenu : Bool
     , erreur : String
     , notice : String
     , busy : Bool
@@ -107,6 +111,8 @@ type Msg
     | Demander String
     | Annuler
     | AfficherMenu
+    | AfficherCompte
+    | FermerCompte
     | RetrouverPlan
     | ToggleApprofondissement
     | ToggleSources
@@ -152,10 +158,12 @@ init flags =
       , camera = position Accueil
       , momentCamera = 0
       , preparation = 0
+      , mouvementVersion = 0
       , sortie = Nothing
       , momentSortie = Nothing
       , retourSeance = Nothing
       , parcoursVue = Parcours
+      , carnetVue = Parcours
       , capsule = Nothing
       , capsuleSortie = Nothing
       , capsulesMouvement = []
@@ -167,6 +175,7 @@ init flags =
       , reducedMotion = lire (D.field "reducedMotion" D.bool) False flags
       , formulaires = Dict.empty
       , menu = False
+      , compteMenu = False
       , erreur = ""
       , notice = ""
       , busy = False
@@ -198,6 +207,11 @@ lire decoder defaut valeur =
 envoyer : String -> E.Value -> Cmd Msg
 envoyer action donnees =
     commande (E.object [ ( "action", E.string action ), ( "data", donnees ) ])
+
+
+surveillerMouvement : Int -> Cmd Msg
+surveillerMouvement version =
+    envoyer "settleMotion" (E.object [ ( "version", E.int version ) ])
 
 
 focus : Cmd Msg
@@ -252,10 +266,10 @@ update msg modele =
                 "opened" ->
                     case D.decodeValue (D.field "journal" K.decoder) data of
                         Ok doc ->
-                            ( { modele | ecran = Ouvert, vue = Accueil, camera = position Accueil, momentCamera = 0, preparation = 0, sortie = Nothing, momentSortie = Nothing, retourSeance = Nothing, parcoursVue = Parcours, capsule = Nothing, capsuleSortie = Nothing, capsulesMouvement = [], carnet = doc, demo = lire (D.field "demo" D.bool) False data, formulaires = Dict.empty, erreur = "", notice = "", busy = False, photosUrls = Dict.empty, confirmation = "", menu = False }, focus )
+                            ( { modele | ecran = Ouvert, vue = Accueil, camera = position Accueil, momentCamera = 0, preparation = 0, sortie = Nothing, momentSortie = Nothing, retourSeance = Nothing, parcoursVue = Parcours, carnetVue = Parcours, compteMenu = False, capsule = Nothing, capsuleSortie = Nothing, capsulesMouvement = [], carnet = doc, demo = lire (D.field "demo" D.bool) False data, formulaires = Dict.empty, erreur = "", notice = "", busy = False, photosUrls = Dict.empty, confirmation = "", menu = False }, focus )
 
                         Err _ ->
-                            ( { modele | ecran = Verrouille, camera = position Accueil, momentCamera = 0, preparation = 0, sortie = Nothing, momentSortie = Nothing, retourSeance = Nothing, parcoursVue = Parcours, capsule = Nothing, capsuleSortie = Nothing, capsulesMouvement = [], carnet = K.vide, busy = False, erreur = "Le carnet a un format non pris en charge. Il reste conservé chiffré." }, envoyer "lock" E.null )
+                            ( { modele | ecran = Verrouille, vue = Accueil, camera = position Accueil, momentCamera = 0, preparation = 0, sortie = Nothing, momentSortie = Nothing, retourSeance = Nothing, parcoursVue = Parcours, carnetVue = Parcours, compteMenu = False, capsule = Nothing, capsuleSortie = Nothing, capsulesMouvement = [], carnet = K.vide, busy = False, erreur = "Le carnet a un format non pris en charge. Il reste conservé chiffré." }, envoyer "lock" E.null )
 
                 "motionPreference" ->
                     let
@@ -265,10 +279,10 @@ update msg modele =
                     ( stabiliserSiNecessaire suivant, Cmd.none )
 
                 "locked" ->
-                    ( { modele | ecran = Verrouille, camera = position Accueil, momentCamera = 0, preparation = 0, sortie = Nothing, momentSortie = Nothing, retourSeance = Nothing, parcoursVue = Parcours, capsule = Nothing, capsuleSortie = Nothing, capsulesMouvement = [], carnet = K.vide, demo = lire (D.field "demo" D.bool) False data, formulaires = Dict.empty, photosUrls = Dict.empty, selection = [], kit = Nothing, coffreRecupere = "", authRecupere = "", busy = False, confirmation = "", menu = False, notice = "" }, Cmd.none )
+                    ( { modele | ecran = Verrouille, vue = Accueil, camera = position Accueil, momentCamera = 0, preparation = 0, sortie = Nothing, momentSortie = Nothing, retourSeance = Nothing, parcoursVue = Parcours, carnetVue = Parcours, compteMenu = False, capsule = Nothing, capsuleSortie = Nothing, capsulesMouvement = [], carnet = K.vide, demo = lire (D.field "demo" D.bool) False data, formulaires = Dict.empty, photosUrls = Dict.empty, selection = [], kit = Nothing, coffreRecupere = "", authRecupere = "", busy = False, confirmation = "", menu = False, notice = "" }, Cmd.none )
 
                 "entry" ->
-                    ( { modele | ecran = Entree, camera = position Accueil, momentCamera = 0, preparation = 0, sortie = Nothing, momentSortie = Nothing, retourSeance = Nothing, parcoursVue = Parcours, capsule = Nothing, capsuleSortie = Nothing, capsulesMouvement = [], carnet = K.vide, formulaires = Dict.empty, photosUrls = Dict.empty, selection = [], kit = Nothing, busy = False, erreur = "", notice = "", confirmation = "", demo = False }, focus )
+                    ( { modele | ecran = Entree, vue = Accueil, camera = position Accueil, momentCamera = 0, preparation = 0, sortie = Nothing, momentSortie = Nothing, retourSeance = Nothing, parcoursVue = Parcours, carnetVue = Parcours, compteMenu = False, capsule = Nothing, capsuleSortie = Nothing, capsulesMouvement = [], carnet = K.vide, formulaires = Dict.empty, photosUrls = Dict.empty, selection = [], kit = Nothing, busy = False, erreur = "", notice = "", confirmation = "", demo = False }, focus )
 
                 "busy" ->
                     ( { modele | busy = True, erreur = "", notice = texte }, Cmd.none )
@@ -278,6 +292,15 @@ update msg modele =
 
                 "status" ->
                     ( { modele | sauvegarde = lire (D.field "state" D.string) "" data, sauvegardeMessage = texte }, Cmd.none )
+
+                "motionSettled" ->
+                    ( if modele.ecran == Ouvert && modele.preparation == 0 && lire (D.field "version" D.int) -1 data == modele.mouvementVersion then
+                        { modele | sortie = Nothing, momentSortie = Nothing, capsuleSortie = Nothing, capsulesMouvement = [] }
+
+                      else
+                        modele
+                    , Cmd.none
+                    )
 
                 "error" ->
                     ( { modele | erreur = texte, busy = False }, Cmd.none )
@@ -339,7 +362,11 @@ update msg modele =
 
               else
                 { modele | preparation = modele.preparation - 1 }
-            , Cmd.none
+            , if modele.preparation <= 1 then
+                surveillerMouvement modele.mouvementVersion
+
+              else
+                Cmd.none
             )
 
         CapsuleTerminee id ->
@@ -463,7 +490,14 @@ update msg modele =
                 suivant =
                     { modele
                         | vue = vue
+                        , mouvementVersion = modele.mouvementVersion + 1
                         , parcoursVue = parcours
+                        , carnetVue =
+                            if estFeuille vue then
+                                vue
+
+                            else
+                                modele.carnetVue
                         , camera =
                             if anime then
                                 modele.camera
@@ -527,6 +561,7 @@ update msg modele =
                             else
                                 []
                         , menu = False
+                        , compteMenu = False
                         , erreur = ""
                         , notice = ""
                         , confirmation = ""
@@ -561,10 +596,19 @@ update msg modele =
                         _ ->
                             focus
             in
-            ( suivant, focaliser )
+            ( suivant
+            , Cmd.batch
+                [ focaliser
+                , if suivant.preparation == 0 && anime then
+                    surveillerMouvement suivant.mouvementVersion
+
+                  else
+                    Cmd.none
+                ]
+            )
 
         OuvrirCompte ecran ->
-            ( { modele | ecran = ecran, formulaires = Dict.empty, erreur = "", notice = "", confirmation = "" }, focus )
+            ( { modele | ecran = ecran, vue = Accueil, compteMenu = False, formulaires = Dict.empty, erreur = "", notice = "", confirmation = "" }, focus )
 
         Saisie cle valeur ->
             ( { modele | formulaires = Dict.insert cle valeur modele.formulaires }, Cmd.none )
@@ -586,7 +630,13 @@ update msg modele =
             ( modele, envoyer "focus" (E.object [ ( "id", E.string "plan-carnet" ), ( "scroll", E.bool True ) ]) )
 
         AfficherMenu ->
-            ( { modele | menu = not modele.menu }, Cmd.none )
+            ( { modele | menu = not modele.menu, compteMenu = False }, Cmd.none )
+
+        AfficherCompte ->
+            ( { modele | compteMenu = not modele.compteMenu }, Cmd.none )
+
+        FermerCompte ->
+            ( { modele | compteMenu = False }, envoyer "focus" (E.object [ ( "id", E.string "compte-commande" ), ( "scroll", E.bool False ) ]) )
 
         ToggleApprofondissement ->
             ( { modele | approfondi = not modele.approfondi }, Cmd.none )
@@ -994,6 +1044,11 @@ feuille vue =
             vue
 
 
+estFeuille : Vue -> Bool
+estFeuille vue =
+    List.member (feuille vue) [ Parcours, Objectifs, Reperes ]
+
+
 capsuleDe : Vue -> Maybe Int
 capsuleDe vue =
     case vue of
@@ -1089,6 +1144,21 @@ subscriptions modele =
     Sub.batch
         [ evenement Evenement
         , Browser.Events.onResize Taille
+        , if modele.compteMenu then
+            Browser.Events.onKeyDown
+                (D.field "key" D.string
+                    |> D.andThen
+                        (\key ->
+                            if key == "Escape" then
+                                D.succeed FermerCompte
+
+                            else
+                                D.fail "Autre touche du compte."
+                        )
+                )
+
+          else
+            Sub.none
         , if modele.ecran == Ouvert && animations modele && modele.preparation > 0 then
             Browser.Events.onAnimationFrameDelta PreparerMouvement
 
@@ -1261,7 +1331,7 @@ enTetePublic modele =
         , U.spacing 18
         ]
         [ marque
-        , U.el [ U.alignRight ] (C.discret "À propos" (Naviguer Apropos))
+        , U.el [ U.alignRight ] (menuCompte modele)
         ]
 
 
@@ -1466,7 +1536,6 @@ verrouVue modele =
                 [ C.titre 2 "Reprendre l’essai"
                 , C.paragraphe "La démo utilise une clé propre à ce navigateur. Son verrouillage masque les données fictives ; il ne demande pas une phrase."
                 , C.bouton "Reprendre la démonstration" (Action "demo")
-                , C.discret "Quitter la démo" (Action "logout")
                 ]
 
           else
@@ -1495,7 +1564,6 @@ verrouVue modele =
                 , C.petit "Ce secret est utilisé seulement sur cet appareil. Il n’est pas envoyé au serveur."
                 , C.discret "Je n’ai plus ma phrase ni mon kit" (Demander "newVault")
                 , C.secondaire "Exporter la copie chiffrée disponible" (Action "encryptedExport")
-                , C.discret "Me déconnecter" (Action "logout")
                 ]
         , if modele.authRecupere /= "" then
             C.panneau [ C.titre 2 "Nouveau code de compte", C.paragraphe "Conservez ce nouveau code : l’ancien a été révoqué.", codeSecret modele.authRecupere ]
@@ -1539,7 +1607,11 @@ shell modele =
             , U.spacing 0
             , C.classe "classeur"
             ]
-            [ navigation modele
+            [ if estFeuille modele.vue then
+                navigation modele
+
+              else
+                U.none
             , U.column
                 [ width fill
                 , U.padding
@@ -1550,7 +1622,13 @@ shell modele =
                         32
                     )
                 , U.spacing 22
-                , C.classe "classeur-papier"
+                , C.classe
+                    (if estFeuille modele.vue then
+                        "classeur-papier"
+
+                     else
+                        "carnet-annexe"
+                    )
                 , R.mainContent
                 ]
                 [ messages modele
@@ -1564,7 +1642,11 @@ shell modele =
                 , chemin modele
                 , fenetreCarnet modele
                 , U.el [ width fill, U.paddingXY 0 18 ] (C.petit "Tout est facultatif. Vous pouvez laisser une rubrique vide, la reprendre ou la mettre de côté.")
-                , C.discret "Retrouver les onglets" RetrouverPlan
+                , if estFeuille modele.vue then
+                    C.discret "Retrouver les onglets" RetrouverPlan
+
+                  else
+                    U.none
                 ]
             ]
         ]
@@ -1646,12 +1728,22 @@ navigation modele =
                 in
                 { id = String.fromInt (round (position vue).x)
                 , libelle = nomEspace vue
+                , court =
+                    case vue of
+                        Parcours ->
+                            "Parcours"
+
+                        Objectifs ->
+                            "Objectifs"
+
+                        _ ->
+                            "Repères"
                 , selectionne = feuille modele.vue == vue
                 , choisir = Naviguer destination
                 , clavier = OngletClavier destination
                 }
             )
-            [ Accueil, Parcours, Objectifs, Reperes, Reglages, Apropos ]
+            [ Parcours, Objectifs, Reperes ]
         )
 
 
@@ -1685,7 +1777,28 @@ chemin : Modele -> Element Msg
 chemin modele =
     U.column [ width fill, U.spacing 10, C.classe "carnet-chemin" ]
         [ U.wrappedRow [ width fill, U.spacing 6, R.navigation, U.htmlAttribute (A.attribute "aria-label" "Ma position dans le carnet") ]
-            ([ C.discret "Classeur" (Naviguer Accueil) ]
+            ([ C.discret
+                (if modele.vue /= Accueil && not (estFeuille modele.vue) then
+                    "Revenir au carnet"
+
+                 else if estFeuille modele.vue then
+                    "Classeur"
+
+                 else
+                    "Mon carnet"
+                )
+                (Naviguer
+                    (if modele.vue /= Accueil && not (estFeuille modele.vue) then
+                        modele.carnetVue
+
+                     else if estFeuille modele.vue then
+                        Parcours
+
+                     else
+                        Accueil
+                    )
+                )
+             ]
                 ++ (case modele.vue of
                         ChapitreVue _ _ ->
                             [ C.petit "› Mon parcours" ]
@@ -1757,12 +1870,13 @@ fenetreCarnet modele =
 enTeteCarnet : Modele -> Element Msg
 enTeteCarnet modele =
     U.column [ width fill, U.spacing 0, Bg.color C.couleurs.blanc, B.widthEach { top = 0, bottom = 1, left = 0, right = 0 }, B.color C.couleurs.ligne ]
-        [ U.wrappedRow [ width fill, U.paddingXY 24 14, U.spacing 16 ]
-            [ U.el [ width (px 170) ] marque
-            , U.el [ width fill, C.classe "save-status", U.htmlAttribute (A.attribute "role" "status"), U.htmlAttribute (A.attribute "aria-live" "polite") ] (C.petit (sauvegardeTexte modele))
-            , C.secondaire "Masquer / verrouiller" (Action "lock")
-            , C.discret "Comprendre le classeur" AfficherMenu
-            , C.discret "Me déconnecter" (Action "logout")
+        [ U.row [ width fill, U.paddingXY 20 14, U.spacing 16 ]
+            [ Input.button [ C.classe "marque-commande", U.htmlAttribute (A.attribute "aria-label" "Mon accueil") ] { onPress = Just (Naviguer Accueil), label = marque }
+            , U.el [ U.alignRight ] (menuCompte modele)
+            ]
+        , U.wrappedRow [ width fill, U.paddingXY 20 4, U.spacing 8 ]
+            [ U.el [ width fill, C.classe "save-status", U.htmlAttribute (A.attribute "role" "status"), U.htmlAttribute (A.attribute "aria-live" "polite") ] (C.petit (sauvegardeTexte modele))
+            , C.discret "Masquer / verrouiller" (Action "lock")
             ]
         , if modele.menu then
             U.column [ width fill, U.padding 24, U.spacing 12 ]
@@ -1771,6 +1885,66 @@ enTeteCarnet modele =
                 , C.paragraphe "La feuille des objectifs donne une direction et garde les défis disponibles dans la durée. Les expérimentations restent liées aux séances. La feuille des repères réunit les traces, les formulations et les étapes que je souhaite garder. Je choisis ce que je partage."
                 , C.petit "Je peux changer de feuille puis retrouver la capsule et son moment. Les mêmes feuilles et les mêmes contenus sont disponibles sans animation dans Mes réglages. Rien n’est à débloquer."
                 , C.discret "Refermer l’explication" AfficherMenu
+                ]
+
+          else
+            U.none
+        ]
+
+
+menuCompte : Modele -> Element Msg
+menuCompte modele =
+    U.column [ C.classe "compte-zone", U.spacing 0 ]
+        [ U.html <|
+            Html.button
+                [ A.id "compte-commande"
+                , A.class "compte-commande"
+                , A.attribute "aria-expanded"
+                    (if modele.compteMenu then
+                        "true"
+
+                     else
+                        "false"
+                    )
+                , A.attribute "aria-controls" "compte-options"
+                , Events.onClick AfficherCompte
+                ]
+                [ Html.text
+                    (if modele.ecran == Ouvert || modele.ecran == Verrouille then
+                        "Mon espace"
+
+                     else if modele.demoOnly then
+                        "Le prototype"
+
+                     else
+                        "Connexion"
+                    )
+                ]
+        , if modele.compteMenu then
+            U.column [ C.classe "compte-options", U.spacing 0, width (px 280), U.padding 12, U.htmlAttribute (A.id "compte-options"), R.navigation, U.htmlAttribute (A.attribute "aria-label" "Compte et site") ]
+                [ U.html (Html.button [ A.class "compte-fond", A.tabindex -1, A.attribute "aria-label" "Fermer le menu du compte", Events.onClick FermerCompte ] [])
+                , if modele.ecran == Ouvert then
+                    C.discret "Mes réglages" (Naviguer Reglages)
+
+                  else if modele.ecran == Verrouille then
+                    C.petit "Ouvrez votre coffre pour retrouver vos réglages."
+
+                  else if modele.demoOnly then
+                    C.petit "Cette version propose la démonstration sur cet appareil."
+
+                  else
+                    C.discret "Me connecter" (OuvrirCompte Connexion)
+                , C.discret "À propos & sources" (Naviguer Apropos)
+                , if modele.ecran == Ouvert then
+                    C.discret "Comprendre le classeur" AfficherMenu
+
+                  else
+                    U.none
+                , if modele.ecran == Ouvert || modele.ecran == Verrouille then
+                    C.discret "Me déconnecter" (Action "logout")
+
+                  else
+                    U.none
                 ]
 
           else
@@ -1979,19 +2153,15 @@ pageParcours modele =
                         )
 
                 contenu =
-                    if lisible || sortant /= Nothing then
-                        pageChapitre
-                            (if lisible then
-                                modele
+                    pageChapitre
+                        (if lisible then
+                            modele
 
-                             else
-                                { modele | momentCamera = momentPosition momentAffiche, momentSortie = Nothing }
-                            )
-                            chapitre
-                            momentAffiche
-
-                    else
-                        U.none
+                         else
+                            { modele | vue = ChapitreVue chapitre.id momentAffiche, momentCamera = momentPosition momentAffiche, momentSortie = Nothing, approfondi = False, sources = False }
+                        )
+                        chapitre
+                        momentAffiche
 
                 ouvrir =
                     if lisible then
@@ -1999,20 +2169,6 @@ pageParcours modele =
 
                     else
                         ChapitreVue chapitre.id Avant
-
-                libelle =
-                    if lisible then
-                        if chapitre.nature == "bilan" then
-                            "Refermer ce bilan"
-
-                        else
-                            "Refermer cette capsule"
-
-                    else if chapitre.nature == "bilan" then
-                        "Ouvrir ce bilan"
-
-                    else
-                        "Ouvrir cette capsule"
             in
             U.column [ width fill, U.spacing 0 ]
                 [ if chapitre.id == 0 then
@@ -2072,30 +2228,10 @@ pageParcours modele =
                                                 ""
                                            )
                                     )
-                                , Continuite.titreCapsule chapitre.id ouverte (animations modele) chapitre.titre
+                                , Continuite.titreCapsule { id = chapitre.id, ouverte = ouverte, lisible = lisible, anime = animations modele, choisir = Naviguer ouvrir } chapitre.titre
                                 ]
                             ]
                         , C.petit chapitre.objectif
-                        , Input.button
-                            [ C.classe "carnet-bouton"
-                            , C.classe "capsule-ouvrir"
-                            , U.paddingXY 16 12
-                            , B.rounded 8
-                            , B.width 1
-                            , B.color C.couleurs.prune
-                            , F.color C.couleurs.prune
-                            , U.htmlAttribute
-                                (A.attribute "aria-expanded"
-                                    (if lisible then
-                                        "true"
-
-                                     else
-                                        "false"
-                                    )
-                                )
-                            , U.htmlAttribute (A.attribute "aria-controls" ("corps-capsule-" ++ String.fromInt chapitre.id))
-                            ]
-                            { onPress = Just (Naviguer ouvrir), label = U.text libelle }
                         ]
                     , Continuite.capsule { id = chapitre.id, ouverte = ouverte, lisible = lisible, anime = animations modele, mouvement = enPreparation || List.member chapitre.id modele.capsulesMouvement, termine = CapsuleTerminee chapitre.id }
                         (U.el
@@ -2220,7 +2356,7 @@ momentsVue modele chapitre actuel =
         , anime = animations modele && modele.momentSortie /= Nothing
         , duree = 380
         , termine = TransitionTerminee "moment"
-        , identifiant = "moment-ouvert"
+        , identifiant = "moment-capsule-" ++ String.fromInt chapitre.id
         }
         (List.map panneau [ Avant, Pendant, Entre ])
 
@@ -2888,7 +3024,11 @@ pageReglages modele =
 pageApropos : Modele -> Element Msg
 pageApropos modele =
     U.column [ width fill, U.spacing 24 ]
-        [ C.discret "Retour au carnet" (Naviguer Accueil)
+        [ if modele.ecran == Ouvert then
+            U.none
+
+          else
+            C.discret "Retour au carnet" (Naviguer Accueil)
         , pageTitre "À PROPOS & SOURCES" "Un prototype à explorer"
         , if modele.demoOnly then
             C.panneau

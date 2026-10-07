@@ -465,6 +465,19 @@ async function command(command: Command): Promise<void> {
     await store("demo-vault", undefined, true);
     for (const prefix of ["draft:demo:", "object:demo:", "delete:demo:"]) await erasePrefix(prefix);
     await beginDemo();
+  } else if (action === "settleMotion") {
+    const sessionEpoch = epoch;
+    // Attendre l'application des styles Elm, puis la fin réelle des transitions.
+    // Une transition annulée ou non démarrée ne doit pas retenir une feuille.
+    for (let frame = 0; frame < 3; frame++) await new Promise<void>(resolve => requestAnimationFrame(() => resolve()));
+    const transitions = new Set<Animation>();
+    for (const element of document.querySelectorAll<HTMLElement>('[data-moving="true"]')) {
+      for (const animation of element.getAnimations({ subtree: true })) {
+        if ("transitionProperty" in animation && ["opacity", "grid-template-rows", "font-size", "scale", "translate"].includes(String(animation.transitionProperty))) transitions.add(animation);
+      }
+    }
+    await Promise.allSettled([...transitions].map(animation => animation.finished));
+    if (sessionEpoch === epoch) emit("motionSettled", { version: data.version });
   } else if (action === "focus") {
     requestAnimationFrame(() => {
       const target = document.getElementById(data.id);

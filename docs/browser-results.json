@@ -111,12 +111,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 11553,
+                  "duration": 10640,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-06T16:54:50.744Z",
+                  "startTime": "2026-10-07T00:00:56.953Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -126,7 +126,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-574f21b685e3c52613bf",
           "file": "carnet.spec.ts",
-          "line": 86,
+          "line": 95,
           "column": 1
         },
         {
@@ -145,12 +145,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 32161,
+                  "duration": 31171,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-06T16:55:02.450Z",
+                  "startTime": "2026-10-07T00:01:07.723Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -160,7 +160,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-bc72197c7b19454da412",
           "file": "carnet.spec.ts",
-          "line": 108,
+          "line": 118,
           "column": 1
         },
         {
@@ -179,12 +179,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 4962,
+                  "duration": 5375,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-06T16:55:34.620Z",
+                  "startTime": "2026-10-07T00:01:38.903Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -194,7 +194,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-96d3f93e614c2fbb3472",
           "file": "carnet.spec.ts",
-          "line": 127,
+          "line": 137,
           "column": 1
         },
         {
@@ -213,12 +213,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 12619,
+                  "duration": 12066,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-06T16:55:39.589Z",
+                  "startTime": "2026-10-07T00:01:44.285Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -228,7 +228,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-a9b922ffd861737d2690",
           "file": "carnet.spec.ts",
-          "line": 151,
+          "line": 161,
           "column": 1
         },
         {
@@ -247,12 +247,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 12741,
+                  "duration": 14308,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-06T16:55:52.220Z",
+                  "startTime": "2026-10-07T00:01:56.361Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -262,7 +262,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-fd0f59396f8704f640c3",
           "file": "carnet.spec.ts",
-          "line": 166,
+          "line": 176,
           "column": 1
         },
         {
@@ -281,12 +281,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 11867,
+                  "duration": 11513,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-06T16:56:04.969Z",
+                  "startTime": "2026-10-07T00:02:10.681Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -296,7 +296,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-fb06b3c893fbd5a33625",
           "file": "carnet.spec.ts",
-          "line": 184,
+          "line": 193,
           "column": 1
         },
         {
@@ -315,12 +315,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 9149,
+                  "duration": 8863,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-06T16:56:16.845Z",
+                  "startTime": "2026-10-07T00:02:22.205Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -330,7 +330,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-5f9c774e6d66c56e1960",
           "file": "carnet.spec.ts",
-          "line": 204,
+          "line": 213,
           "column": 1
         },
         {
@@ -349,12 +349,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 9281,
+                  "duration": 9241,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-06T16:56:26.002Z",
+                  "startTime": "2026-10-07T00:02:31.079Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -364,7 +364,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-3c6bf1b4836013a1c776",
           "file": "carnet.spec.ts",
-          "line": 215,
+          "line": 224,
           "column": 1
         },
         {
@@ -383,12 +383,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 8876,
+                  "duration": 8925,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-06T16:56:35.291Z",
+                  "startTime": "2026-10-07T00:02:40.329Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -398,7 +398,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-f54b64273660179b28c1",
           "file": "carnet.spec.ts",
-          "line": 232,
+          "line": 241,
           "column": 1
         },
         {
@@ -417,12 +417,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 5437,
+                  "duration": 5209,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-06T16:56:44.180Z",
+                  "startTime": "2026-10-07T00:02:49.264Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -432,7 +432,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-e8e4d3bfcf955281b77d",
           "file": "carnet.spec.ts",
-          "line": 251,
+          "line": 260,
           "column": 1
         },
         {
@@ -451,12 +451,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 8054,
+                  "duration": 7582,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-06T16:56:49.626Z",
+                  "startTime": "2026-10-07T00:02:54.482Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -466,7 +466,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-2530472518fda1e49eeb",
           "file": "carnet.spec.ts",
-          "line": 271,
+          "line": 280,
           "column": 1
         },
         {
@@ -485,12 +485,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 8852,
+                  "duration": 8443,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-06T16:56:57.691Z",
+                  "startTime": "2026-10-07T00:03:02.072Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -500,7 +500,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-bbe095d85cdd9b859eac",
           "file": "carnet.spec.ts",
-          "line": 285,
+          "line": 294,
           "column": 1
         },
         {
@@ -519,12 +519,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 2514,
+                  "duration": 2487,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-06T16:57:06.554Z",
+                  "startTime": "2026-10-07T00:03:10.524Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -534,7 +534,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-f0f3fa9bb6aab6ac2909",
           "file": "carnet.spec.ts",
-          "line": 308,
+          "line": 317,
           "column": 1
         },
         {
@@ -553,743 +553,7 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 11593,
-                  "errors": [],
-                  "stdout": [],
-                  "stderr": [],
-                  "retry": 0,
-                  "steps": [
-                    {
-                      "title": "Expect \"poll toBeLessThan\"",
-                      "duration": 14
-                    }
-                  ],
-                  "startTime": "2026-10-06T16:57:09.080Z",
-                  "annotations": [],
-                  "attachments": []
-                }
-              ],
-              "status": "expected"
-            }
-          ],
-          "id": "75ad7d8441bc6b7a4c05-f691a2f87b848129a944",
-          "file": "carnet.spec.ts",
-          "line": 321,
-          "column": 1
-        },
-        {
-          "title": "continuité : retour au même moment, écrits et reformulation en cours conservés",
-          "ok": true,
-          "tags": [],
-          "tests": [
-            {
-              "timeout": 45000,
-              "annotations": [],
-              "expectedStatus": "passed",
-              "projectId": "chromium",
-              "projectName": "chromium",
-              "results": [
-                {
-                  "workerIndex": 0,
-                  "parallelIndex": 0,
-                  "status": "passed",
-                  "duration": 5986,
-                  "errors": [],
-                  "stdout": [],
-                  "stderr": [],
-                  "retry": 0,
-                  "steps": [
-                    {
-                      "title": "Expect \"poll toBeGreaterThanOrEqual\"",
-                      "duration": 15
-                    }
-                  ],
-                  "startTime": "2026-10-06T16:57:20.682Z",
-                  "annotations": [],
-                  "attachments": []
-                }
-              ],
-              "status": "expected"
-            }
-          ],
-          "id": "75ad7d8441bc6b7a4c05-1eaca1e54ba804021e55",
-          "file": "carnet.spec.ts",
-          "line": 386,
-          "column": 1
-        },
-        {
-          "title": "continuité : réduction dynamique, préférence sauvegardée et verrouillage immédiat",
-          "ok": true,
-          "tags": [],
-          "tests": [
-            {
-              "timeout": 45000,
-              "annotations": [],
-              "expectedStatus": "passed",
-              "projectId": "chromium",
-              "projectName": "chromium",
-              "results": [
-                {
-                  "workerIndex": 0,
-                  "parallelIndex": 0,
-                  "status": "passed",
-                  "duration": 2469,
-                  "errors": [],
-                  "stdout": [],
-                  "stderr": [],
-                  "retry": 0,
-                  "steps": [
-                    {
-                      "title": "Expect \"poll toEqual\"",
-                      "duration": 7
-                    },
-                    {
-                      "title": "Expect \"poll toEqual\"",
-                      "duration": 7
-                    }
-                  ],
-                  "startTime": "2026-10-06T16:57:26.677Z",
-                  "annotations": [],
-                  "attachments": []
-                }
-              ],
-              "status": "expected"
-            }
-          ],
-          "id": "75ad7d8441bc6b7a4c05-3c2ef880dc429c6b61fe",
-          "file": "carnet.spec.ts",
-          "line": 408,
-          "column": 1
-        },
-        {
-          "title": "rendu de référence 360 pixels : accueil et titre long",
-          "ok": true,
-          "tags": [],
-          "tests": [
-            {
-              "timeout": 45000,
-              "annotations": [],
-              "expectedStatus": "passed",
-              "projectId": "chromium",
-              "projectName": "chromium",
-              "results": [
-                {
-                  "workerIndex": 0,
-                  "parallelIndex": 0,
-                  "status": "passed",
-                  "duration": 2472,
-                  "errors": [],
-                  "stdout": [],
-                  "stderr": [],
-                  "retry": 0,
-                  "startTime": "2026-10-06T16:57:29.161Z",
-                  "annotations": [],
-                  "attachments": []
-                }
-              ],
-              "status": "expected"
-            }
-          ],
-          "id": "75ad7d8441bc6b7a4c05-7dd28c7769f93bb16ce2",
-          "file": "carnet.spec.ts",
-          "line": 432,
-          "column": 3
-        },
-        {
-          "title": "rendu de référence 390 pixels : accueil et titre long",
-          "ok": true,
-          "tags": [],
-          "tests": [
-            {
-              "timeout": 45000,
-              "annotations": [],
-              "expectedStatus": "passed",
-              "projectId": "chromium",
-              "projectName": "chromium",
-              "results": [
-                {
-                  "workerIndex": 0,
-                  "parallelIndex": 0,
-                  "status": "passed",
-                  "duration": 2437,
-                  "errors": [],
-                  "stdout": [],
-                  "stderr": [],
-                  "retry": 0,
-                  "startTime": "2026-10-06T16:57:31.642Z",
-                  "annotations": [],
-                  "attachments": []
-                }
-              ],
-              "status": "expected"
-            }
-          ],
-          "id": "75ad7d8441bc6b7a4c05-3378f541d0af46dbd46c",
-          "file": "carnet.spec.ts",
-          "line": 432,
-          "column": 3
-        },
-        {
-          "title": "rendu de référence 430 pixels : accueil et titre long",
-          "ok": true,
-          "tags": [],
-          "tests": [
-            {
-              "timeout": 45000,
-              "annotations": [],
-              "expectedStatus": "passed",
-              "projectId": "chromium",
-              "projectName": "chromium",
-              "results": [
-                {
-                  "workerIndex": 0,
-                  "parallelIndex": 0,
-                  "status": "passed",
-                  "duration": 2462,
-                  "errors": [],
-                  "stdout": [],
-                  "stderr": [],
-                  "retry": 0,
-                  "startTime": "2026-10-06T16:57:34.091Z",
-                  "annotations": [],
-                  "attachments": []
-                }
-              ],
-              "status": "expected"
-            }
-          ],
-          "id": "75ad7d8441bc6b7a4c05-c79731ef1296b23a980a",
-          "file": "carnet.spec.ts",
-          "line": 432,
-          "column": 3
-        },
-        {
-          "title": "rendu de référence 768 pixels : accueil et titre long",
-          "ok": true,
-          "tags": [],
-          "tests": [
-            {
-              "timeout": 45000,
-              "annotations": [],
-              "expectedStatus": "passed",
-              "projectId": "chromium",
-              "projectName": "chromium",
-              "results": [
-                {
-                  "workerIndex": 0,
-                  "parallelIndex": 0,
-                  "status": "passed",
-                  "duration": 2596,
-                  "errors": [],
-                  "stdout": [],
-                  "stderr": [],
-                  "retry": 0,
-                  "startTime": "2026-10-06T16:57:36.562Z",
-                  "annotations": [],
-                  "attachments": []
-                }
-              ],
-              "status": "expected"
-            }
-          ],
-          "id": "75ad7d8441bc6b7a4c05-44c2113bf61409215a80",
-          "file": "carnet.spec.ts",
-          "line": 432,
-          "column": 3
-        },
-        {
-          "title": "rendu de référence 1440 pixels : accueil et titre long",
-          "ok": true,
-          "tags": [],
-          "tests": [
-            {
-              "timeout": 45000,
-              "annotations": [],
-              "expectedStatus": "passed",
-              "projectId": "chromium",
-              "projectName": "chromium",
-              "results": [
-                {
-                  "workerIndex": 0,
-                  "parallelIndex": 0,
-                  "status": "passed",
-                  "duration": 2860,
-                  "errors": [],
-                  "stdout": [],
-                  "stderr": [],
-                  "retry": 0,
-                  "startTime": "2026-10-06T16:57:39.176Z",
-                  "annotations": [],
-                  "attachments": []
-                }
-              ],
-              "status": "expected"
-            }
-          ],
-          "id": "75ad7d8441bc6b7a4c05-881bd34e1b801b9f41c8",
-          "file": "carnet.spec.ts",
-          "line": 432,
-          "column": 3
-        },
-        {
-          "title": "démo : paysage au clavier, hésitation, trace, retour et isolation navigateur",
-          "ok": true,
-          "tags": [],
-          "tests": [
-            {
-              "timeout": 45000,
-              "annotations": [],
-              "expectedStatus": "passed",
-              "projectId": "webkit",
-              "projectName": "webkit",
-              "results": [
-                {
-                  "workerIndex": 1,
-                  "parallelIndex": 0,
-                  "status": "passed",
-                  "duration": 15705,
-                  "errors": [],
-                  "stdout": [],
-                  "stderr": [],
-                  "retry": 0,
-                  "startTime": "2026-10-06T16:57:42.745Z",
-                  "annotations": [],
-                  "attachments": []
-                }
-              ],
-              "status": "expected"
-            }
-          ],
-          "id": "75ad7d8441bc6b7a4c05-fbebb6e37418eb1675c4",
-          "file": "carnet.spec.ts",
-          "line": 86,
-          "column": 1
-        },
-        {
-          "title": "quinze séances sans verrouillage, bilans adaptés et sept rubriques opérationnelles",
-          "ok": true,
-          "tags": [],
-          "tests": [
-            {
-              "timeout": 90000,
-              "annotations": [],
-              "expectedStatus": "passed",
-              "projectId": "webkit",
-              "projectName": "webkit",
-              "results": [
-                {
-                  "workerIndex": 1,
-                  "parallelIndex": 0,
-                  "status": "passed",
-                  "duration": 39997,
-                  "errors": [],
-                  "stdout": [],
-                  "stderr": [],
-                  "retry": 0,
-                  "startTime": "2026-10-06T16:57:58.949Z",
-                  "annotations": [],
-                  "attachments": []
-                }
-              ],
-              "status": "expected"
-            }
-          ],
-          "id": "75ad7d8441bc6b7a4c05-7ed6f1265a8decd175ab",
-          "file": "carnet.spec.ts",
-          "line": 108,
-          "column": 1
-        },
-        {
-          "title": "objectifs reformulés, trois défis maximum et expérimentation reprise sans duplication",
-          "ok": true,
-          "tags": [],
-          "tests": [
-            {
-              "timeout": 45000,
-              "annotations": [],
-              "expectedStatus": "passed",
-              "projectId": "webkit",
-              "projectName": "webkit",
-              "results": [
-                {
-                  "workerIndex": 1,
-                  "parallelIndex": 0,
-                  "status": "passed",
-                  "duration": 6385,
-                  "errors": [],
-                  "stdout": [],
-                  "stderr": [],
-                  "retry": 0,
-                  "startTime": "2026-10-06T16:58:38.960Z",
-                  "annotations": [],
-                  "attachments": []
-                }
-              ],
-              "status": "expected"
-            }
-          ],
-          "id": "75ad7d8441bc6b7a4c05-9d1163392fd9437a3da1",
-          "file": "carnet.spec.ts",
-          "line": 127,
-          "column": 1
-        },
-        {
-          "title": "compte réel : rafraîchissement verrouillé, autre navigateur et isolation entre comptes",
-          "ok": true,
-          "tags": [],
-          "tests": [
-            {
-              "timeout": 45000,
-              "annotations": [],
-              "expectedStatus": "passed",
-              "projectId": "webkit",
-              "projectName": "webkit",
-              "results": [
-                {
-                  "workerIndex": 1,
-                  "parallelIndex": 0,
-                  "status": "passed",
-                  "duration": 15145,
-                  "errors": [],
-                  "stdout": [],
-                  "stderr": [],
-                  "retry": 0,
-                  "startTime": "2026-10-06T16:58:45.357Z",
-                  "annotations": [],
-                  "attachments": []
-                }
-              ],
-              "status": "expected"
-            }
-          ],
-          "id": "75ad7d8441bc6b7a4c05-9608b8552fb112efed08",
-          "file": "carnet.spec.ts",
-          "line": 151,
-          "column": 1
-        },
-        {
-          "title": "hors connexion puis reprise, conflit entre appareils et résolution explicite",
-          "ok": true,
-          "tags": [],
-          "tests": [
-            {
-              "timeout": 45000,
-              "annotations": [],
-              "expectedStatus": "passed",
-              "projectId": "webkit",
-              "projectName": "webkit",
-              "results": [
-                {
-                  "workerIndex": 1,
-                  "parallelIndex": 0,
-                  "status": "passed",
-                  "duration": 15048,
-                  "errors": [],
-                  "stdout": [],
-                  "stderr": [],
-                  "retry": 0,
-                  "startTime": "2026-10-06T16:59:00.515Z",
-                  "annotations": [],
-                  "attachments": []
-                }
-              ],
-              "status": "expected"
-            }
-          ],
-          "id": "75ad7d8441bc6b7a4c05-3cf4cee12cfa84a619f7",
-          "file": "carnet.spec.ts",
-          "line": 166,
-          "column": 1
-        },
-        {
-          "title": "export chiffré et réimport réel, sélection lisible volontaire et présentation locale",
-          "ok": true,
-          "tags": [],
-          "tests": [
-            {
-              "timeout": 45000,
-              "annotations": [],
-              "expectedStatus": "passed",
-              "projectId": "webkit",
-              "projectName": "webkit",
-              "results": [
-                {
-                  "workerIndex": 1,
-                  "parallelIndex": 0,
-                  "status": "passed",
-                  "duration": 13503,
-                  "errors": [],
-                  "stdout": [],
-                  "stderr": [],
-                  "retry": 0,
-                  "startTime": "2026-10-06T16:59:15.576Z",
-                  "annotations": [],
-                  "attachments": []
-                }
-              ],
-              "status": "expected"
-            }
-          ],
-          "id": "75ad7d8441bc6b7a4c05-4a4c9313edd1f0e75359",
-          "file": "carnet.spec.ts",
-          "line": 184,
-          "column": 1
-        },
-        {
-          "title": "récupération du coffre sur navigateur vierge et changement de phrase",
-          "ok": true,
-          "tags": [],
-          "tests": [
-            {
-              "timeout": 45000,
-              "annotations": [],
-              "expectedStatus": "passed",
-              "projectId": "webkit",
-              "projectName": "webkit",
-              "results": [
-                {
-                  "workerIndex": 1,
-                  "parallelIndex": 0,
-                  "status": "passed",
-                  "duration": 11341,
-                  "errors": [],
-                  "stdout": [],
-                  "stderr": [],
-                  "retry": 0,
-                  "startTime": "2026-10-06T16:59:29.089Z",
-                  "annotations": [],
-                  "attachments": []
-                }
-              ],
-              "status": "expected"
-            }
-          ],
-          "id": "75ad7d8441bc6b7a4c05-77463206387516158133",
-          "file": "carnet.spec.ts",
-          "line": 204,
-          "column": 1
-        },
-        {
-          "title": "images préparées localement, métadonnées retirées, format refusé et suppression du compte",
-          "ok": true,
-          "tags": [],
-          "tests": [
-            {
-              "timeout": 45000,
-              "annotations": [],
-              "expectedStatus": "passed",
-              "projectId": "webkit",
-              "projectName": "webkit",
-              "results": [
-                {
-                  "workerIndex": 1,
-                  "parallelIndex": 0,
-                  "status": "passed",
-                  "duration": 11012,
-                  "errors": [],
-                  "stdout": [],
-                  "stderr": [],
-                  "retry": 0,
-                  "startTime": "2026-10-06T16:59:40.441Z",
-                  "annotations": [],
-                  "attachments": []
-                }
-              ],
-              "status": "expected"
-            }
-          ],
-          "id": "75ad7d8441bc6b7a4c05-3db6e0f62e86bf9738a4",
-          "file": "carnet.spec.ts",
-          "line": 215,
-          "column": 1
-        },
-        {
-          "title": "sentinelle absente du réseau et du stockage, texte XSS inerte et URL neutre",
-          "ok": true,
-          "tags": [],
-          "tests": [
-            {
-              "timeout": 45000,
-              "annotations": [],
-              "expectedStatus": "passed",
-              "projectId": "webkit",
-              "projectName": "webkit",
-              "results": [
-                {
-                  "workerIndex": 1,
-                  "parallelIndex": 0,
-                  "status": "passed",
-                  "duration": 9573,
-                  "errors": [],
-                  "stdout": [],
-                  "stderr": [],
-                  "retry": 0,
-                  "startTime": "2026-10-06T16:59:51.467Z",
-                  "annotations": [],
-                  "attachments": []
-                }
-              ],
-              "status": "expected"
-            }
-          ],
-          "id": "75ad7d8441bc6b7a4c05-8d75fcde0cf1b84cf05f",
-          "file": "carnet.spec.ts",
-          "line": 232,
-          "column": 1
-        },
-        {
-          "title": "accessibilité axe, clavier, réduction des mouvements, mode sobre et reflow",
-          "ok": true,
-          "tags": [],
-          "tests": [
-            {
-              "timeout": 45000,
-              "annotations": [],
-              "expectedStatus": "passed",
-              "projectId": "webkit",
-              "projectName": "webkit",
-              "results": [
-                {
-                  "workerIndex": 1,
-                  "parallelIndex": 0,
-                  "status": "passed",
-                  "duration": 6282,
-                  "errors": [],
-                  "stdout": [],
-                  "stderr": [],
-                  "retry": 0,
-                  "startTime": "2026-10-06T17:00:01.051Z",
-                  "annotations": [],
-                  "attachments": []
-                }
-              ],
-              "status": "expected"
-            }
-          ],
-          "id": "75ad7d8441bc6b7a4c05-c07c93a7e90e731b33d3",
-          "file": "carnet.spec.ts",
-          "line": 251,
-          "column": 1
-        },
-        {
-          "title": "import altéré et JSON malformé refusés sans remplacer la note",
-          "ok": true,
-          "tags": [],
-          "tests": [
-            {
-              "timeout": 45000,
-              "annotations": [],
-              "expectedStatus": "passed",
-              "projectId": "webkit",
-              "projectName": "webkit",
-              "results": [
-                {
-                  "workerIndex": 1,
-                  "parallelIndex": 0,
-                  "status": "passed",
-                  "duration": 9052,
-                  "errors": [],
-                  "stdout": [],
-                  "stderr": [],
-                  "retry": 0,
-                  "startTime": "2026-10-06T17:00:07.346Z",
-                  "annotations": [],
-                  "attachments": []
-                }
-              ],
-              "status": "expected"
-            }
-          ],
-          "id": "75ad7d8441bc6b7a4c05-3c0f5a7af1f8d61d7ca7",
-          "file": "carnet.spec.ts",
-          "line": 271,
-          "column": 1
-        },
-        {
-          "title": "retour navigateur fermé, récupération du compte et nouveau coffre préservant l’ancien",
-          "ok": true,
-          "tags": [],
-          "tests": [
-            {
-              "timeout": 45000,
-              "annotations": [],
-              "expectedStatus": "passed",
-              "projectId": "webkit",
-              "projectName": "webkit",
-              "results": [
-                {
-                  "workerIndex": 1,
-                  "parallelIndex": 0,
-                  "status": "passed",
-                  "duration": 9604,
-                  "errors": [],
-                  "stdout": [],
-                  "stderr": [],
-                  "retry": 0,
-                  "startTime": "2026-10-06T17:00:16.406Z",
-                  "annotations": [],
-                  "attachments": []
-                }
-              ],
-              "status": "expected"
-            }
-          ],
-          "id": "75ad7d8441bc6b7a4c05-308b2c1679029b13a09c",
-          "file": "carnet.spec.ts",
-          "line": 285,
-          "column": 1
-        },
-        {
-          "title": "verrouillage automatique averti, reprise et changement de largeur",
-          "ok": true,
-          "tags": [],
-          "tests": [
-            {
-              "timeout": 45000,
-              "annotations": [],
-              "expectedStatus": "passed",
-              "projectId": "webkit",
-              "projectName": "webkit",
-              "results": [
-                {
-                  "workerIndex": 1,
-                  "parallelIndex": 0,
-                  "status": "passed",
-                  "duration": 2928,
-                  "errors": [],
-                  "stdout": [],
-                  "stderr": [],
-                  "retry": 0,
-                  "startTime": "2026-10-06T17:00:26.024Z",
-                  "annotations": [],
-                  "attachments": []
-                }
-              ],
-              "status": "expected"
-            }
-          ],
-          "id": "75ad7d8441bc6b7a4c05-56bee25fdb9d4e7744b9",
-          "file": "carnet.spec.ts",
-          "line": 308,
-          "column": 1
-        },
-        {
-          "title": "classeur : feuilles distinctes, capsule à sa place et voisins repoussés",
-          "ok": true,
-          "tags": [],
-          "tests": [
-            {
-              "timeout": 45000,
-              "annotations": [],
-              "expectedStatus": "passed",
-              "projectId": "webkit",
-              "projectName": "webkit",
-              "results": [
-                {
-                  "workerIndex": 1,
-                  "parallelIndex": 0,
-                  "status": "passed",
-                  "duration": 12301,
+                  "duration": 14581,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
@@ -1300,7 +564,743 @@
                       "duration": 8
                     }
                   ],
-                  "startTime": "2026-10-06T17:00:28.963Z",
+                  "startTime": "2026-10-07T00:03:13.020Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-f691a2f87b848129a944",
+          "file": "carnet.spec.ts",
+          "line": 330,
+          "column": 1
+        },
+        {
+          "title": "continuité : retour au même moment, écrits et reformulation en cours conservés",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6072,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBeGreaterThanOrEqual\"",
+                      "duration": 14
+                    }
+                  ],
+                  "startTime": "2026-10-07T00:03:27.608Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-1eaca1e54ba804021e55",
+          "file": "carnet.spec.ts",
+          "line": 423,
+          "column": 1
+        },
+        {
+          "title": "continuité : réduction dynamique, préférence sauvegardée et verrouillage immédiat",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3261,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toEqual\"",
+                      "duration": 5
+                    },
+                    {
+                      "title": "Expect \"poll toEqual\"",
+                      "duration": 5
+                    }
+                  ],
+                  "startTime": "2026-10-07T00:03:33.688Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-3c2ef880dc429c6b61fe",
+          "file": "carnet.spec.ts",
+          "line": 448,
+          "column": 1
+        },
+        {
+          "title": "rendu de référence 360 pixels : accueil et titre long",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2236,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-07T00:03:36.957Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-7dd28c7769f93bb16ce2",
+          "file": "carnet.spec.ts",
+          "line": 472,
+          "column": 3
+        },
+        {
+          "title": "rendu de référence 390 pixels : accueil et titre long",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2204,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-07T00:03:39.200Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-3378f541d0af46dbd46c",
+          "file": "carnet.spec.ts",
+          "line": 472,
+          "column": 3
+        },
+        {
+          "title": "rendu de référence 430 pixels : accueil et titre long",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2213,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-07T00:03:41.411Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-c79731ef1296b23a980a",
+          "file": "carnet.spec.ts",
+          "line": 472,
+          "column": 3
+        },
+        {
+          "title": "rendu de référence 768 pixels : accueil et titre long",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2259,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-07T00:03:43.632Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-44c2113bf61409215a80",
+          "file": "carnet.spec.ts",
+          "line": 472,
+          "column": 3
+        },
+        {
+          "title": "rendu de référence 1440 pixels : accueil et titre long",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2541,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-07T00:03:45.899Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-881bd34e1b801b9f41c8",
+          "file": "carnet.spec.ts",
+          "line": 472,
+          "column": 3
+        },
+        {
+          "title": "démo : paysage au clavier, hésitation, trace, retour et isolation navigateur",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 15534,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-07T00:03:49.091Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-fbebb6e37418eb1675c4",
+          "file": "carnet.spec.ts",
+          "line": 95,
+          "column": 1
+        },
+        {
+          "title": "quinze séances sans verrouillage, bilans adaptés et sept rubriques opérationnelles",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 36433,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-07T00:04:05.143Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-7ed6f1265a8decd175ab",
+          "file": "carnet.spec.ts",
+          "line": 118,
+          "column": 1
+        },
+        {
+          "title": "objectifs reformulés, trois défis maximum et expérimentation reprise sans duplication",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7576,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-07T00:04:41.586Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-9d1163392fd9437a3da1",
+          "file": "carnet.spec.ts",
+          "line": 137,
+          "column": 1
+        },
+        {
+          "title": "compte réel : rafraîchissement verrouillé, autre navigateur et isolation entre comptes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 13658,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-07T00:04:49.171Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-9608b8552fb112efed08",
+          "file": "carnet.spec.ts",
+          "line": 161,
+          "column": 1
+        },
+        {
+          "title": "hors connexion puis reprise, conflit entre appareils et résolution explicite",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 16136,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-07T00:05:02.839Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-3cf4cee12cfa84a619f7",
+          "file": "carnet.spec.ts",
+          "line": 176,
+          "column": 1
+        },
+        {
+          "title": "export chiffré et réimport réel, sélection lisible volontaire et présentation locale",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 12633,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-07T00:05:18.986Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-4a4c9313edd1f0e75359",
+          "file": "carnet.spec.ts",
+          "line": 193,
+          "column": 1
+        },
+        {
+          "title": "récupération du coffre sur navigateur vierge et changement de phrase",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 11397,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-07T00:05:31.637Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-77463206387516158133",
+          "file": "carnet.spec.ts",
+          "line": 213,
+          "column": 1
+        },
+        {
+          "title": "images préparées localement, métadonnées retirées, format refusé et suppression du compte",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 12655,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-07T00:05:43.044Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-3db6e0f62e86bf9738a4",
+          "file": "carnet.spec.ts",
+          "line": 224,
+          "column": 1
+        },
+        {
+          "title": "sentinelle absente du réseau et du stockage, texte XSS inerte et URL neutre",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9610,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-07T00:05:55.716Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-8d75fcde0cf1b84cf05f",
+          "file": "carnet.spec.ts",
+          "line": 241,
+          "column": 1
+        },
+        {
+          "title": "accessibilité axe, clavier, réduction des mouvements, mode sobre et reflow",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7255,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-07T00:06:05.338Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-c07c93a7e90e731b33d3",
+          "file": "carnet.spec.ts",
+          "line": 260,
+          "column": 1
+        },
+        {
+          "title": "import altéré et JSON malformé refusés sans remplacer la note",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9317,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-07T00:06:12.604Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-3c0f5a7af1f8d61d7ca7",
+          "file": "carnet.spec.ts",
+          "line": 280,
+          "column": 1
+        },
+        {
+          "title": "retour navigateur fermé, récupération du compte et nouveau coffre préservant l’ancien",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9829,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-07T00:06:21.929Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-308b2c1679029b13a09c",
+          "file": "carnet.spec.ts",
+          "line": 294,
+          "column": 1
+        },
+        {
+          "title": "verrouillage automatique averti, reprise et changement de largeur",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3183,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-07T00:06:31.768Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-56bee25fdb9d4e7744b9",
+          "file": "carnet.spec.ts",
+          "line": 317,
+          "column": 1
+        },
+        {
+          "title": "classeur : feuilles distinctes, capsule à sa place et voisins repoussés",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 15804,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBeLessThan\"",
+                      "duration": 10
+                    }
+                  ],
+                  "startTime": "2026-10-07T00:06:34.961Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1310,7 +1310,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-313b851cf4e81dc64432",
           "file": "carnet.spec.ts",
-          "line": 321,
+          "line": 330,
           "column": 1
         },
         {
@@ -1329,7 +1329,7 @@
                   "workerIndex": 1,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 7165,
+                  "duration": 8301,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
@@ -1337,10 +1337,10 @@
                   "steps": [
                     {
                       "title": "Expect \"poll toBeGreaterThanOrEqual\"",
-                      "duration": 29
+                      "duration": 35
                     }
                   ],
-                  "startTime": "2026-10-06T17:00:41.275Z",
+                  "startTime": "2026-10-07T00:06:50.773Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1350,7 +1350,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-00403df0128c6d5f2333",
           "file": "carnet.spec.ts",
-          "line": 386,
+          "line": 423,
           "column": 1
         },
         {
@@ -1369,7 +1369,7 @@
                   "workerIndex": 1,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 2808,
+                  "duration": 3545,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
@@ -1377,14 +1377,14 @@
                   "steps": [
                     {
                       "title": "Expect \"poll toEqual\"",
-                      "duration": 13
+                      "duration": 10
                     },
                     {
                       "title": "Expect \"poll toEqual\"",
-                      "duration": 23
+                      "duration": 18
                     }
                   ],
-                  "startTime": "2026-10-06T17:00:48.447Z",
+                  "startTime": "2026-10-07T00:06:59.083Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1394,7 +1394,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-bd3193c3e01bec5d9dda",
           "file": "carnet.spec.ts",
-          "line": 408,
+          "line": 448,
           "column": 1
         },
         {
@@ -1413,12 +1413,12 @@
                   "workerIndex": 1,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 3095,
+                  "duration": 2465,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-06T17:00:51.263Z",
+                  "startTime": "2026-10-07T00:07:02.638Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1428,7 +1428,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-7cb1e8f3bf547d2ebb0f",
           "file": "carnet.spec.ts",
-          "line": 432,
+          "line": 472,
           "column": 3
         },
         {
@@ -1447,12 +1447,12 @@
                   "workerIndex": 1,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 2552,
+                  "duration": 2555,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-06T17:00:54.365Z",
+                  "startTime": "2026-10-07T00:07:05.112Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1462,7 +1462,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-0b24edcb37253437134e",
           "file": "carnet.spec.ts",
-          "line": 432,
+          "line": 472,
           "column": 3
         },
         {
@@ -1481,12 +1481,12 @@
                   "workerIndex": 1,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 2536,
+                  "duration": 2517,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-06T17:00:56.928Z",
+                  "startTime": "2026-10-07T00:07:07.676Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1496,7 +1496,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-854e00ab00253bfab2f5",
           "file": "carnet.spec.ts",
-          "line": 432,
+          "line": 472,
           "column": 3
         },
         {
@@ -1515,12 +1515,12 @@
                   "workerIndex": 1,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 3436,
+                  "duration": 2844,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-06T17:00:59.472Z",
+                  "startTime": "2026-10-07T00:07:10.203Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1530,7 +1530,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-f9166e0e053eba53ac85",
           "file": "carnet.spec.ts",
-          "line": 432,
+          "line": 472,
           "column": 3
         },
         {
@@ -1549,12 +1549,12 @@
                   "workerIndex": 1,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 3397,
+                  "duration": 3271,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-06T17:01:02.916Z",
+                  "startTime": "2026-10-07T00:07:13.061Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1564,7 +1564,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-28d13a602ef20bd295e3",
           "file": "carnet.spec.ts",
-          "line": 432,
+          "line": 472,
           "column": 3
         },
         {
@@ -1583,12 +1583,12 @@
                   "workerIndex": 2,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 12811,
+                  "duration": 12213,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-06T17:01:07.044Z",
+                  "startTime": "2026-10-07T00:07:16.982Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1598,7 +1598,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-ea69f45000599adea636",
           "file": "carnet.spec.ts",
-          "line": 86,
+          "line": 95,
           "column": 1
         },
         {
@@ -1617,12 +1617,12 @@
                   "workerIndex": 2,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 41283,
+                  "duration": 35870,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-06T17:01:20.310Z",
+                  "startTime": "2026-10-07T00:07:29.605Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1632,7 +1632,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-f67819a70914a30dd58d",
           "file": "carnet.spec.ts",
-          "line": 108,
+          "line": 118,
           "column": 1
         },
         {
@@ -1651,12 +1651,12 @@
                   "workerIndex": 2,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 5738,
+                  "duration": 6260,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-06T17:02:01.604Z",
+                  "startTime": "2026-10-07T00:08:05.485Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1666,7 +1666,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-a64a0e8db4bb01368b64",
           "file": "carnet.spec.ts",
-          "line": 127,
+          "line": 137,
           "column": 1
         },
         {
@@ -1685,12 +1685,12 @@
                   "workerIndex": 2,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 14328,
+                  "duration": 13944,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-06T17:02:07.355Z",
+                  "startTime": "2026-10-07T00:08:11.756Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1700,7 +1700,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-86e9754672ebd210bc8f",
           "file": "carnet.spec.ts",
-          "line": 151,
+          "line": 161,
           "column": 1
         },
         {
@@ -1719,12 +1719,12 @@
                   "workerIndex": 2,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 25362,
+                  "duration": 25107,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-06T17:02:21.698Z",
+                  "startTime": "2026-10-07T00:08:25.709Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1734,7 +1734,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-d106bf1070add7a957f0",
           "file": "carnet.spec.ts",
-          "line": 166,
+          "line": 176,
           "column": 1
         },
         {
@@ -1753,12 +1753,12 @@
                   "workerIndex": 2,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 12151,
+                  "duration": 13245,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-06T17:02:47.081Z",
+                  "startTime": "2026-10-07T00:08:50.828Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1768,7 +1768,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-c70ae6c718e4b8c5db7f",
           "file": "carnet.spec.ts",
-          "line": 184,
+          "line": 193,
           "column": 1
         },
         {
@@ -1787,12 +1787,12 @@
                   "workerIndex": 2,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 10288,
+                  "duration": 10118,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-06T17:02:59.246Z",
+                  "startTime": "2026-10-07T00:09:04.083Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1802,7 +1802,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-a95532ce4f27bd0bc9f5",
           "file": "carnet.spec.ts",
-          "line": 204,
+          "line": 213,
           "column": 1
         },
         {
@@ -1821,12 +1821,12 @@
                   "workerIndex": 2,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 12952,
+                  "duration": 12379,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-06T17:03:09.544Z",
+                  "startTime": "2026-10-07T00:09:14.211Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1836,7 +1836,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-565e8b81acb59cd74108",
           "file": "carnet.spec.ts",
-          "line": 215,
+          "line": 224,
           "column": 1
         },
         {
@@ -1855,12 +1855,12 @@
                   "workerIndex": 2,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 9419,
+                  "duration": 9767,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-06T17:03:22.510Z",
+                  "startTime": "2026-10-07T00:09:26.600Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1870,7 +1870,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-01b119e0701fd6bb1db4",
           "file": "carnet.spec.ts",
-          "line": 232,
+          "line": 241,
           "column": 1
         },
         {
@@ -1889,12 +1889,12 @@
                   "workerIndex": 2,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 6265,
+                  "duration": 7560,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-06T17:03:31.940Z",
+                  "startTime": "2026-10-07T00:09:36.380Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1904,7 +1904,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-14362a93ede138e6bf1e",
           "file": "carnet.spec.ts",
-          "line": 251,
+          "line": 260,
           "column": 1
         },
         {
@@ -1923,12 +1923,12 @@
                   "workerIndex": 2,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 8623,
+                  "duration": 9252,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-06T17:03:38.222Z",
+                  "startTime": "2026-10-07T00:09:43.948Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1938,7 +1938,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-202631a7e7e9486317f9",
           "file": "carnet.spec.ts",
-          "line": 271,
+          "line": 280,
           "column": 1
         },
         {
@@ -1957,12 +1957,12 @@
                   "workerIndex": 2,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 9563,
+                  "duration": 10184,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-06T17:03:46.858Z",
+                  "startTime": "2026-10-07T00:09:53.209Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1972,7 +1972,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-724717755add69339a8f",
           "file": "carnet.spec.ts",
-          "line": 285,
+          "line": 294,
           "column": 1
         },
         {
@@ -1991,12 +1991,12 @@
                   "workerIndex": 2,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 3050,
+                  "duration": 3372,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-06T17:03:56.432Z",
+                  "startTime": "2026-10-07T00:10:03.404Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -2006,7 +2006,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-811af5d615662c08e486",
           "file": "carnet.spec.ts",
-          "line": 308,
+          "line": 317,
           "column": 1
         },
         {
@@ -2025,7 +2025,7 @@
                   "workerIndex": 2,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 11804,
+                  "duration": 15448,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
@@ -2033,10 +2033,10 @@
                   "steps": [
                     {
                       "title": "Expect \"poll toBeLessThan\"",
-                      "duration": 9
+                      "duration": 12
                     }
                   ],
-                  "startTime": "2026-10-06T17:03:59.491Z",
+                  "startTime": "2026-10-07T00:10:06.787Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -2046,7 +2046,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-470bda17dc0d24e7f531",
           "file": "carnet.spec.ts",
-          "line": 321,
+          "line": 330,
           "column": 1
         },
         {
@@ -2065,7 +2065,7 @@
                   "workerIndex": 2,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 5793,
+                  "duration": 7124,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
@@ -2073,10 +2073,10 @@
                   "steps": [
                     {
                       "title": "Expect \"poll toBeGreaterThanOrEqual\"",
-                      "duration": 32
+                      "duration": 34
                     }
                   ],
-                  "startTime": "2026-10-06T17:04:11.305Z",
+                  "startTime": "2026-10-07T00:10:22.246Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -2086,7 +2086,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-2ec569c878ae60ca3332",
           "file": "carnet.spec.ts",
-          "line": 386,
+          "line": 423,
           "column": 1
         },
         {
@@ -2105,7 +2105,7 @@
                   "workerIndex": 2,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 2817,
+                  "duration": 4192,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
@@ -2120,7 +2120,7 @@
                       "duration": 10
                     }
                   ],
-                  "startTime": "2026-10-06T17:04:17.108Z",
+                  "startTime": "2026-10-07T00:10:29.384Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -2130,7 +2130,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-48ceafa55718407fd28e",
           "file": "carnet.spec.ts",
-          "line": 408,
+          "line": 448,
           "column": 1
         },
         {
@@ -2149,12 +2149,12 @@
                   "workerIndex": 2,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 2365,
+                  "duration": 2573,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-06T17:04:19.935Z",
+                  "startTime": "2026-10-07T00:10:33.584Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -2164,7 +2164,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-e4a0296fe1584d7fba20",
           "file": "carnet.spec.ts",
-          "line": 432,
+          "line": 472,
           "column": 3
         },
         {
@@ -2183,12 +2183,12 @@
                   "workerIndex": 2,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 2318,
+                  "duration": 2402,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-06T17:04:22.313Z",
+                  "startTime": "2026-10-07T00:10:36.165Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -2198,7 +2198,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-36c9efef681254471813",
           "file": "carnet.spec.ts",
-          "line": 432,
+          "line": 472,
           "column": 3
         },
         {
@@ -2217,12 +2217,12 @@
                   "workerIndex": 2,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 2473,
+                  "duration": 2630,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-06T17:04:24.643Z",
+                  "startTime": "2026-10-07T00:10:38.577Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -2232,7 +2232,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-9f42b8d004eed1b5b68f",
           "file": "carnet.spec.ts",
-          "line": 432,
+          "line": 472,
           "column": 3
         },
         {
@@ -2251,12 +2251,12 @@
                   "workerIndex": 2,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 2510,
+                  "duration": 2572,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-06T17:04:27.126Z",
+                  "startTime": "2026-10-07T00:10:41.218Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -2266,7 +2266,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-f21c448a94ad97277001",
           "file": "carnet.spec.ts",
-          "line": 432,
+          "line": 472,
           "column": 3
         },
         {
@@ -2285,12 +2285,12 @@
                   "workerIndex": 2,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 2577,
+                  "duration": 2623,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-06T17:04:29.644Z",
+                  "startTime": "2026-10-07T00:10:43.801Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -2300,7 +2300,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-7d18586a43e922c1ff6d",
           "file": "carnet.spec.ts",
-          "line": 432,
+          "line": 472,
           "column": 3
         }
       ]
@@ -2308,8 +2308,8 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-10-06T16:54:49.763Z",
-    "duration": 582622.642,
+    "startTime": "2026-10-07T00:00:55.963Z",
+    "duration": 590591.066,
     "expected": 63,
     "skipped": 0,
     "unexpected": 0,

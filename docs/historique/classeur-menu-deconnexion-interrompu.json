@@ -1,0 +1,1760 @@
+{
+  "config": {
+    "configFile": "/app/playwright.config.ts",
+    "rootDir": "/app/tests/browser",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "docs/browser-results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/app/runtime/browser",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/app/tests/browser",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 45000
+      },
+      {
+        "outputDir": "/app/runtime/browser",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "webkit",
+        "name": "webkit",
+        "testDir": "/app/tests/browser",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 45000
+      },
+      {
+        "outputDir": "/app/runtime/browser",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "firefox",
+        "name": "firefox",
+        "testDir": "/app/tests/browser",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 45000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.55.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "carnet.spec.ts",
+      "file": "carnet.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "démo : paysage au clavier, hésitation, trace, retour et isolation navigateur",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 11522,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-06T23:30:15.031Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-574f21b685e3c52613bf",
+          "file": "carnet.spec.ts",
+          "line": 95,
+          "column": 1
+        },
+        {
+          "title": "quinze séances sans verrouillage, bilans adaptés et sept rubriques opérationnelles",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 31804,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-06T23:30:26.689Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-bc72197c7b19454da412",
+          "file": "carnet.spec.ts",
+          "line": 118,
+          "column": 1
+        },
+        {
+          "title": "objectifs reformulés, trois défis maximum et expérimentation reprise sans duplication",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5330,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-06T23:30:58.504Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-96d3f93e614c2fbb3472",
+          "file": "carnet.spec.ts",
+          "line": 137,
+          "column": 1
+        },
+        {
+          "title": "compte réel : rafraîchissement verrouillé, autre navigateur et isolation entre comptes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 12181,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-06T23:31:03.843Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-a9b922ffd861737d2690",
+          "file": "carnet.spec.ts",
+          "line": 161,
+          "column": 1
+        },
+        {
+          "title": "hors connexion puis reprise, conflit entre appareils et résolution explicite",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 14409,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-06T23:31:16.030Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-fd0f59396f8704f640c3",
+          "file": "carnet.spec.ts",
+          "line": 176,
+          "column": 1
+        },
+        {
+          "title": "export chiffré et réimport réel, sélection lisible volontaire et présentation locale",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 11836,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-06T23:31:30.450Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-fb06b3c893fbd5a33625",
+          "file": "carnet.spec.ts",
+          "line": 194,
+          "column": 1
+        },
+        {
+          "title": "récupération du coffre sur navigateur vierge et changement de phrase",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8963,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-06T23:31:42.294Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-5f9c774e6d66c56e1960",
+          "file": "carnet.spec.ts",
+          "line": 214,
+          "column": 1
+        },
+        {
+          "title": "images préparées localement, métadonnées retirées, format refusé et suppression du compte",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9168,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-06T23:31:51.265Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-3c6bf1b4836013a1c776",
+          "file": "carnet.spec.ts",
+          "line": 225,
+          "column": 1
+        },
+        {
+          "title": "sentinelle absente du réseau et du stockage, texte XSS inerte et URL neutre",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9114,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-06T23:32:00.447Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-f54b64273660179b28c1",
+          "file": "carnet.spec.ts",
+          "line": 242,
+          "column": 1
+        },
+        {
+          "title": "accessibilité axe, clavier, réduction des mouvements, mode sobre et reflow",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5205,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-06T23:32:09.577Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-e8e4d3bfcf955281b77d",
+          "file": "carnet.spec.ts",
+          "line": 261,
+          "column": 1
+        },
+        {
+          "title": "import altéré et JSON malformé refusés sans remplacer la note",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7805,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-06T23:32:14.790Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-2530472518fda1e49eeb",
+          "file": "carnet.spec.ts",
+          "line": 281,
+          "column": 1
+        },
+        {
+          "title": "retour navigateur fermé, récupération du compte et nouveau coffre préservant l’ancien",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "timedOut",
+                  "duration": 45025,
+                  "error": {
+                    "message": "\u001b[31mTest timeout of 45000ms exceeded.\u001b[39m",
+                    "stack": "\u001b[31mTest timeout of 45000ms exceeded.\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 45000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "file": "/app/tests/browser/carnet.spec.ts",
+                        "column": 116,
+                        "line": 299
+                      },
+                      "message": "Error: locator.click: Test timeout of 45000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Me déconnecter', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <div tabindex=\"0\" role=\"button\" aria-disabled=\"false\" class=\"cptr bg-255-255-255-255 br-5 bc-255-255-255-255  bg-234-245-239-255-hv b-0 fc-98-52-81-255 p-8-10 font-size-14 s e min-height-44 hc min-width-34 wc ccx ccy sbt notxt focusable carnet-bouton\">…</div>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <button tabindex=\"-1\" class=\"compte-fond\" aria-label=\"Fermer le menu du compte\"></button> from <div class=\"hc p-48-22 spacing-18-18 s r wf cl ccy\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <button tabindex=\"-1\" class=\"compte-fond\" aria-label=\"Fermer le menu du compte\"></button> from <div class=\"hc p-48-22 spacing-18-18 s r wf cl ccy\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    77 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is visible, enabled and stable\u001b[22m\n\u001b[2m       - scrolling into view if needed\u001b[22m\n\u001b[2m       - done scrolling\u001b[22m\n\u001b[2m       - <button tabindex=\"-1\" class=\"compte-fond\" aria-label=\"Fermer le menu du compte\"></button> from <div class=\"hc p-48-22 spacing-18-18 s r wf cl ccy\">…</div> subtree intercepts pointer events\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\n\n  297 |   await page.goto(\"/favicon.svg\");await page.goBack();\n  298 |   await expect(page.getByRole(\"heading\",{name:\"Votre carnet est fermé\",exact:true})).toBeVisible();\n> 299 |   await page.locator('#compte-commande').click();await page.getByRole(\"button\",{name:\"Me déconnecter\",exact:true}).click();\n      |                                                                                                                    ^\n  300 |   await page.getByRole(\"button\",{name:\"Me connecter\",exact:true}).click();\n  301 |   await page.getByRole(\"button\",{name:\"J’ai oublié mon mot de passe de connexion\",exact:true}).click();\n  302 |   await page.getByLabel(\"Identifiant pseudonyme\",{exact:true}).filter({visible:true}).fill(account.pseudo);\n    at /app/tests/browser/carnet.spec.ts:299:116"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-06T23:32:22.605Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/app/runtime/browser/carnet-retour-navigateur-f-9298f--coffre-préservant-l’ancien-chromium/error-context.md"
+                    }
+                  ]
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-bbe095d85cdd9b859eac",
+          "file": "carnet.spec.ts",
+          "line": 295,
+          "column": 1
+        },
+        {
+          "title": "verrouillage automatique averti, reprise et changement de largeur",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2613,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-06T23:33:08.310Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-f0f3fa9bb6aab6ac2909",
+          "file": "carnet.spec.ts",
+          "line": 318,
+          "column": 1
+        },
+        {
+          "title": "classeur : feuilles distinctes, capsule à sa place et voisins repoussés",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 16255,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBeLessThan\"",
+                      "duration": 8
+                    }
+                  ],
+                  "startTime": "2026-10-06T23:33:10.998Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-f691a2f87b848129a944",
+          "file": "carnet.spec.ts",
+          "line": 331,
+          "column": 1
+        },
+        {
+          "title": "continuité : retour au même moment, écrits et reformulation en cours conservés",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6677,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBeGreaterThanOrEqual\"",
+                      "duration": 14
+                    }
+                  ],
+                  "startTime": "2026-10-06T23:33:27.262Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-1eaca1e54ba804021e55",
+          "file": "carnet.spec.ts",
+          "line": 421,
+          "column": 1
+        },
+        {
+          "title": "continuité : réduction dynamique, préférence sauvegardée et verrouillage immédiat",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2797,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toEqual\"",
+                      "duration": 6
+                    },
+                    {
+                      "title": "Expect \"poll toEqual\"",
+                      "duration": 7
+                    }
+                  ],
+                  "startTime": "2026-10-06T23:33:33.946Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-3c2ef880dc429c6b61fe",
+          "file": "carnet.spec.ts",
+          "line": 446,
+          "column": 1
+        },
+        {
+          "title": "rendu de référence 360 pixels : accueil et titre long",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2260,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-06T23:33:36.754Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-7dd28c7769f93bb16ce2",
+          "file": "carnet.spec.ts",
+          "line": 470,
+          "column": 3
+        },
+        {
+          "title": "rendu de référence 390 pixels : accueil et titre long",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2356,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-06T23:33:39.028Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-3378f541d0af46dbd46c",
+          "file": "carnet.spec.ts",
+          "line": 470,
+          "column": 3
+        },
+        {
+          "title": "rendu de référence 430 pixels : accueil et titre long",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2288,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-06T23:33:41.394Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-c79731ef1296b23a980a",
+          "file": "carnet.spec.ts",
+          "line": 470,
+          "column": 3
+        },
+        {
+          "title": "rendu de référence 768 pixels : accueil et titre long",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2543,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-06T23:33:43.698Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-44c2113bf61409215a80",
+          "file": "carnet.spec.ts",
+          "line": 470,
+          "column": 3
+        },
+        {
+          "title": "rendu de référence 1440 pixels : accueil et titre long",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2700,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-06T23:33:46.251Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-881bd34e1b801b9f41c8",
+          "file": "carnet.spec.ts",
+          "line": 470,
+          "column": 3
+        },
+        {
+          "title": "démo : paysage au clavier, hésitation, trace, retour et isolation navigateur",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 16290,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-06T23:33:49.688Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-fbebb6e37418eb1675c4",
+          "file": "carnet.spec.ts",
+          "line": 95,
+          "column": 1
+        },
+        {
+          "title": "quinze séances sans verrouillage, bilans adaptés et sept rubriques opérationnelles",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "interrupted",
+                  "duration": 2370,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveCount\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('[data-moving=\"true\"]')\nExpected: \u001b[32m0\u001b[39m\nReceived: \u001b[31m2\u001b[39m\n\nCall log:\n\u001b[2m  - Expect \"toHaveCount\" with timeout 12000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-moving=\"true\"]')\u001b[22m\n\u001b[2m    2 × locator resolved to 2 elements\u001b[22m\n\u001b[2m      - unexpected value \"2\"\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveCount\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('[data-moving=\"true\"]')\nExpected: \u001b[32m0\u001b[39m\nReceived: \u001b[31m2\u001b[39m\n\nCall log:\n\u001b[2m  - Expect \"toHaveCount\" with timeout 12000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-moving=\"true\"]')\u001b[22m\n\u001b[2m    2 × locator resolved to 2 elements\u001b[22m\n\u001b[2m      - unexpected value \"2\"\u001b[22m\n\n    at settled (/app/tests/browser/carnet.spec.ts:12:54)\n    at seance (/app/tests/browser/carnet.spec.ts:38:3)\n    at /app/tests/browser/carnet.spec.ts:122:5",
+                    "location": {
+                      "file": "/app/tests/browser/carnet.spec.ts",
+                      "column": 54,
+                      "line": 12
+                    },
+                    "snippet": "  10 | async function settled(page:Page){\n  11 |   await page.locator('#titre-page[data-active=\"true\"]').waitFor();\n> 12 |   await expect(page.locator('[data-moving=\"true\"]')).toHaveCount(0);\n     |                                                      ^\n  13 | }\n  14 | async function nav(page:Page,name:string){\n  15 |   await page.getByRole(\"button\",{name:\"Masquer / verrouiller\",exact:true}).waitFor();"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/app/tests/browser/carnet.spec.ts",
+                        "column": 54,
+                        "line": 12
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveCount\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('[data-moving=\"true\"]')\nExpected: \u001b[32m0\u001b[39m\nReceived: \u001b[31m2\u001b[39m\n\nCall log:\n\u001b[2m  - Expect \"toHaveCount\" with timeout 12000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-moving=\"true\"]')\u001b[22m\n\u001b[2m    2 × locator resolved to 2 elements\u001b[22m\n\u001b[2m      - unexpected value \"2\"\u001b[22m\n\n\n  10 | async function settled(page:Page){\n  11 |   await page.locator('#titre-page[data-active=\"true\"]').waitFor();\n> 12 |   await expect(page.locator('[data-moving=\"true\"]')).toHaveCount(0);\n     |                                                      ^\n  13 | }\n  14 | async function nav(page:Page,name:string){\n  15 |   await page.getByRole(\"button\",{name:\"Masquer / verrouiller\",exact:true}).waitFor();\n    at settled (/app/tests/browser/carnet.spec.ts:12:54)\n    at seance (/app/tests/browser/carnet.spec.ts:38:3)\n    at /app/tests/browser/carnet.spec.ts:122:5"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-06T23:34:06.498Z",
+                  "annotations": [],
+                  "attachments": [],
+                  "errorLocation": {
+                    "file": "/app/tests/browser/carnet.spec.ts",
+                    "column": 54,
+                    "line": 12
+                  }
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-7ed6f1265a8decd175ab",
+          "file": "carnet.spec.ts",
+          "line": 118,
+          "column": 1
+        },
+        {
+          "title": "objectifs reformulés, trois défis maximum et expérimentation reprise sans duplication",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-9d1163392fd9437a3da1",
+          "file": "carnet.spec.ts",
+          "line": 137,
+          "column": 1
+        },
+        {
+          "title": "compte réel : rafraîchissement verrouillé, autre navigateur et isolation entre comptes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-9608b8552fb112efed08",
+          "file": "carnet.spec.ts",
+          "line": 161,
+          "column": 1
+        },
+        {
+          "title": "hors connexion puis reprise, conflit entre appareils et résolution explicite",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-3cf4cee12cfa84a619f7",
+          "file": "carnet.spec.ts",
+          "line": 176,
+          "column": 1
+        },
+        {
+          "title": "export chiffré et réimport réel, sélection lisible volontaire et présentation locale",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-4a4c9313edd1f0e75359",
+          "file": "carnet.spec.ts",
+          "line": 194,
+          "column": 1
+        },
+        {
+          "title": "récupération du coffre sur navigateur vierge et changement de phrase",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-77463206387516158133",
+          "file": "carnet.spec.ts",
+          "line": 214,
+          "column": 1
+        },
+        {
+          "title": "images préparées localement, métadonnées retirées, format refusé et suppression du compte",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-3db6e0f62e86bf9738a4",
+          "file": "carnet.spec.ts",
+          "line": 225,
+          "column": 1
+        },
+        {
+          "title": "sentinelle absente du réseau et du stockage, texte XSS inerte et URL neutre",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-8d75fcde0cf1b84cf05f",
+          "file": "carnet.spec.ts",
+          "line": 242,
+          "column": 1
+        },
+        {
+          "title": "accessibilité axe, clavier, réduction des mouvements, mode sobre et reflow",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-c07c93a7e90e731b33d3",
+          "file": "carnet.spec.ts",
+          "line": 261,
+          "column": 1
+        },
+        {
+          "title": "import altéré et JSON malformé refusés sans remplacer la note",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-3c0f5a7af1f8d61d7ca7",
+          "file": "carnet.spec.ts",
+          "line": 281,
+          "column": 1
+        },
+        {
+          "title": "retour navigateur fermé, récupération du compte et nouveau coffre préservant l’ancien",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-308b2c1679029b13a09c",
+          "file": "carnet.spec.ts",
+          "line": 295,
+          "column": 1
+        },
+        {
+          "title": "verrouillage automatique averti, reprise et changement de largeur",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-56bee25fdb9d4e7744b9",
+          "file": "carnet.spec.ts",
+          "line": 318,
+          "column": 1
+        },
+        {
+          "title": "classeur : feuilles distinctes, capsule à sa place et voisins repoussés",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-313b851cf4e81dc64432",
+          "file": "carnet.spec.ts",
+          "line": 331,
+          "column": 1
+        },
+        {
+          "title": "continuité : retour au même moment, écrits et reformulation en cours conservés",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-00403df0128c6d5f2333",
+          "file": "carnet.spec.ts",
+          "line": 421,
+          "column": 1
+        },
+        {
+          "title": "continuité : réduction dynamique, préférence sauvegardée et verrouillage immédiat",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-bd3193c3e01bec5d9dda",
+          "file": "carnet.spec.ts",
+          "line": 446,
+          "column": 1
+        },
+        {
+          "title": "rendu de référence 360 pixels : accueil et titre long",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-7cb1e8f3bf547d2ebb0f",
+          "file": "carnet.spec.ts",
+          "line": 470,
+          "column": 3
+        },
+        {
+          "title": "rendu de référence 390 pixels : accueil et titre long",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-0b24edcb37253437134e",
+          "file": "carnet.spec.ts",
+          "line": 470,
+          "column": 3
+        },
+        {
+          "title": "rendu de référence 430 pixels : accueil et titre long",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-854e00ab00253bfab2f5",
+          "file": "carnet.spec.ts",
+          "line": 470,
+          "column": 3
+        },
+        {
+          "title": "rendu de référence 768 pixels : accueil et titre long",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-f9166e0e053eba53ac85",
+          "file": "carnet.spec.ts",
+          "line": 470,
+          "column": 3
+        },
+        {
+          "title": "rendu de référence 1440 pixels : accueil et titre long",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-28d13a602ef20bd295e3",
+          "file": "carnet.spec.ts",
+          "line": 470,
+          "column": 3
+        },
+        {
+          "title": "démo : paysage au clavier, hésitation, trace, retour et isolation navigateur",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox",
+              "projectName": "firefox",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-ea69f45000599adea636",
+          "file": "carnet.spec.ts",
+          "line": 95,
+          "column": 1
+        },
+        {
+          "title": "quinze séances sans verrouillage, bilans adaptés et sept rubriques opérationnelles",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox",
+              "projectName": "firefox",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-f67819a70914a30dd58d",
+          "file": "carnet.spec.ts",
+          "line": 118,
+          "column": 1
+        },
+        {
+          "title": "objectifs reformulés, trois défis maximum et expérimentation reprise sans duplication",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox",
+              "projectName": "firefox",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-a64a0e8db4bb01368b64",
+          "file": "carnet.spec.ts",
+          "line": 137,
+          "column": 1
+        },
+        {
+          "title": "compte réel : rafraîchissement verrouillé, autre navigateur et isolation entre comptes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox",
+              "projectName": "firefox",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-86e9754672ebd210bc8f",
+          "file": "carnet.spec.ts",
+          "line": 161,
+          "column": 1
+        },
+        {
+          "title": "hors connexion puis reprise, conflit entre appareils et résolution explicite",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox",
+              "projectName": "firefox",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-d106bf1070add7a957f0",
+          "file": "carnet.spec.ts",
+          "line": 176,
+          "column": 1
+        },
+        {
+          "title": "export chiffré et réimport réel, sélection lisible volontaire et présentation locale",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox",
+              "projectName": "firefox",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-c70ae6c718e4b8c5db7f",
+          "file": "carnet.spec.ts",
+          "line": 194,
+          "column": 1
+        },
+        {
+          "title": "récupération du coffre sur navigateur vierge et changement de phrase",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox",
+              "projectName": "firefox",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-a95532ce4f27bd0bc9f5",
+          "file": "carnet.spec.ts",
+          "line": 214,
+          "column": 1
+        },
+        {
+          "title": "images préparées localement, métadonnées retirées, format refusé et suppression du compte",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox",
+              "projectName": "firefox",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-565e8b81acb59cd74108",
+          "file": "carnet.spec.ts",
+          "line": 225,
+          "column": 1
+        },
+        {
+          "title": "sentinelle absente du réseau et du stockage, texte XSS inerte et URL neutre",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox",
+              "projectName": "firefox",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-01b119e0701fd6bb1db4",
+          "file": "carnet.spec.ts",
+          "line": 242,
+          "column": 1
+        },
+        {
+          "title": "accessibilité axe, clavier, réduction des mouvements, mode sobre et reflow",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox",
+              "projectName": "firefox",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-14362a93ede138e6bf1e",
+          "file": "carnet.spec.ts",
+          "line": 261,
+          "column": 1
+        },
+        {
+          "title": "import altéré et JSON malformé refusés sans remplacer la note",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox",
+              "projectName": "firefox",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-202631a7e7e9486317f9",
+          "file": "carnet.spec.ts",
+          "line": 281,
+          "column": 1
+        },
+        {
+          "title": "retour navigateur fermé, récupération du compte et nouveau coffre préservant l’ancien",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox",
+              "projectName": "firefox",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-724717755add69339a8f",
+          "file": "carnet.spec.ts",
+          "line": 295,
+          "column": 1
+        },
+        {
+          "title": "verrouillage automatique averti, reprise et changement de largeur",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox",
+              "projectName": "firefox",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-811af5d615662c08e486",
+          "file": "carnet.spec.ts",
+          "line": 318,
+          "column": 1
+        },
+        {
+          "title": "classeur : feuilles distinctes, capsule à sa place et voisins repoussés",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox",
+              "projectName": "firefox",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-470bda17dc0d24e7f531",
+          "file": "carnet.spec.ts",
+          "line": 331,
+          "column": 1
+        },
+        {
+          "title": "continuité : retour au même moment, écrits et reformulation en cours conservés",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox",
+              "projectName": "firefox",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-2ec569c878ae60ca3332",
+          "file": "carnet.spec.ts",
+          "line": 421,
+          "column": 1
+        },
+        {
+          "title": "continuité : réduction dynamique, préférence sauvegardée et verrouillage immédiat",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox",
+              "projectName": "firefox",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-48ceafa55718407fd28e",
+          "file": "carnet.spec.ts",
+          "line": 446,
+          "column": 1
+        },
+        {
+          "title": "rendu de référence 360 pixels : accueil et titre long",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox",
+              "projectName": "firefox",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-e4a0296fe1584d7fba20",
+          "file": "carnet.spec.ts",
+          "line": 470,
+          "column": 3
+        },
+        {
+          "title": "rendu de référence 390 pixels : accueil et titre long",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox",
+              "projectName": "firefox",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-36c9efef681254471813",
+          "file": "carnet.spec.ts",
+          "line": 470,
+          "column": 3
+        },
+        {
+          "title": "rendu de référence 430 pixels : accueil et titre long",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox",
+              "projectName": "firefox",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-9f42b8d004eed1b5b68f",
+          "file": "carnet.spec.ts",
+          "line": 470,
+          "column": 3
+        },
+        {
+          "title": "rendu de référence 768 pixels : accueil et titre long",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox",
+              "projectName": "firefox",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-f21c448a94ad97277001",
+          "file": "carnet.spec.ts",
+          "line": 470,
+          "column": 3
+        },
+        {
+          "title": "rendu de référence 1440 pixels : accueil et titre long",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox",
+              "projectName": "firefox",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-7d18586a43e922c1ff6d",
+          "file": "carnet.spec.ts",
+          "line": 470,
+          "column": 3
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-06T23:30:13.946Z",
+    "duration": 235022.951,
+    "expected": 21,
+    "skipped": 41,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

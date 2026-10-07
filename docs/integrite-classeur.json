@@ -1,7 +1,7 @@
 {
-  "date": "2026-10-06",
-  "baselineCommit": "933ad198c4249df4277f0fbe35e6dd380617d52f",
-  "comparison": "Avant/après refonte en classeur, feuilles et capsules",
+  "date": "2026-10-07",
+  "baselineCommit": "3e161638781e36b778db7e30899f06f8ab4f308b",
+  "comparison": "Avant/après correction des onglets, menu du compte, fondu et zoom de capsules",
   "checks": [
     {
       "file": "content/parcours.json",

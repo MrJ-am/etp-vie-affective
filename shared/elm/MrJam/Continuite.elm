@@ -16,7 +16,7 @@ import Json.Decode as D
 
 
 type alias Onglet msg =
-    { id : String, libelle : String, selectionne : Bool, choisir : msg, clavier : msg }
+    { id : String, libelle : String, court : String, selectionne : Bool, choisir : msg, clavier : msg }
 
 
 {-| Les onglets appartiennent au classeur ; le clavier conserve le focus sur
@@ -65,6 +65,7 @@ onglets liste =
                 , A.id ("onglet-" ++ onglet.id)
                 , A.attribute "role" "tab"
                 , A.attribute "aria-controls" ("feuille-" ++ onglet.id)
+                , A.attribute "aria-label" onglet.libelle
                 , A.attribute "aria-selected" (bool onglet.selectionne)
                 , A.tabindex
                     (if onglet.selectionne then
@@ -76,7 +77,9 @@ onglets liste =
                 , Events.onClick onglet.choisir
                 , Events.preventDefaultOn "keydown" touche
                 ]
-                [ Html.text onglet.libelle ]
+                [ Html.span [ A.class "onglet-complet" ] [ Html.text onglet.libelle ]
+                , Html.span [ A.class "onglet-court", A.attribute "aria-hidden" "true" ] [ Html.text onglet.court ]
+                ]
     in
     U.el [ U.width U.fill, U.htmlAttribute (A.class "classeur-navigation") ] <|
         U.html <|
@@ -137,21 +140,8 @@ feuilles config panneaux =
                     , A.attribute "data-panel" p.cle
                     , A.attribute "data-active" (bool p.ouvert)
                     , A.style "opacity" (boolFloat visible)
-                    , A.style "rotate"
-                        ("0 1 0 "
-                            ++ (if visible then
-                                    "0"
-
-                                else if p.position.x < config.camera.x then
-                                    "-0.018"
-
-                                else
-                                    "0.018"
-                               )
-                            ++ "turn"
-                        )
                     ]
-                        ++ natif config.anime 320 [ Animator.opacity 1, Animator.rotationAround { x = 0, y = 1, z = 0 } 0.018 ]
+                        ++ natif config.anime 320 [ Animator.opacity 1 ]
                         ++ (if p.ouvert then
                                 [ A.id "titre-page", A.tabindex -1, Events.on "transitionend" fin ]
 
@@ -162,9 +152,23 @@ feuilles config panneaux =
             U.el ([ U.width U.fill ] ++ List.map U.htmlAttribute attrs)
                 (U.column
                     [ U.width U.fill
-                    , U.htmlAttribute (A.attribute "role" "tabpanel")
+                    , U.htmlAttribute
+                        (A.attribute "role"
+                            (if List.member id [ "1", "2", "3" ] then
+                                "tabpanel"
+
+                             else
+                                "region"
+                            )
+                        )
                     , U.htmlAttribute (A.id ("feuille-" ++ id))
-                    , U.htmlAttribute (A.attribute "aria-labelledby" ("onglet-" ++ id))
+                    , U.htmlAttribute
+                        (if List.member id [ "1", "2", "3" ] then
+                            A.attribute "aria-labelledby" ("onglet-" ++ id)
+
+                         else
+                            A.attribute "aria-label" p.cle
+                        )
                     ]
                     [ p.contenu ]
                 )
@@ -183,26 +187,34 @@ boolFloat valeur =
         "0"
 
 
-titreCapsule : Int -> Bool -> Bool -> String -> Element msg
-titreCapsule id ouvert anime titre =
+titreCapsule : { id : Int, ouverte : Bool, lisible : Bool, anime : Bool, choisir : msg } -> String -> Element msg
+titreCapsule config titre =
     U.paragraph
         ([ U.width U.fill, R.heading 2 ]
             ++ List.map U.htmlAttribute
                 ([ A.class "capsule-titre"
-                 , A.id ("titre-capsule-" ++ String.fromInt id)
+                 , A.id ("titre-capsule-" ++ String.fromInt config.id)
                  , A.tabindex -1
                  , A.style "font-size"
-                    (if ouvert then
-                        "2rem"
+                    (if config.ouverte then
+                        "1.75rem"
 
                      else
                         "1.2rem"
                     )
                  ]
-                    ++ natif anime 520 [ Animator.px "font-size" 1 ]
+                    ++ natif config.anime 520 [ Animator.px "font-size" 1 ]
                 )
         )
-        [ U.text titre ]
+        [ U.html <|
+            Html.button
+                [ A.class "capsule-ouvrir"
+                , A.attribute "aria-expanded" (bool config.lisible)
+                , A.attribute "aria-controls" ("corps-capsule-" ++ String.fromInt config.id)
+                , Events.onClick config.choisir
+                ]
+                [ Html.text titre ]
+        ]
 
 
 {-| La piste intrinsèque se déploie dans le flux de la feuille : les capsules
@@ -250,7 +262,25 @@ capsule config contenu =
                        )
                 )
         )
-        (U.el [ U.width U.fill, U.htmlAttribute (A.class "capsule-interieur") ] contenu)
+        (U.el [ U.width U.fill, U.htmlAttribute (A.class "capsule-interieur") ]
+            (U.el
+                ([ U.width U.fill ]
+                    ++ List.map U.htmlAttribute
+                        ([ A.class "capsule-zoom"
+                         , A.style "scale"
+                            (if config.ouverte then
+                                "1"
+
+                             else
+                                "0.88"
+                            )
+                         ]
+                            ++ natif config.anime 520 [ Animator.float "scale" 1 ]
+                        )
+                )
+                contenu
+            )
+        )
 
 
 type alias Point =
