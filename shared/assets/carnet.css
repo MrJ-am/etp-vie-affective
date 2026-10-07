@@ -75,7 +75,7 @@ body { background: var(--papier); }
 .theme-carnet .capsule-interieur { height: auto !important; min-height: 0 !important; min-width: 0; overflow: hidden; align-self: stretch !important; }
 .theme-carnet .capsule-zoom { transform-origin: center top; height: auto !important; min-height: 0; }
 .theme-carnet .capsule-corps[inert]:not([data-moving="true"]) .capsule-interieur { visibility: hidden; }
-.theme-carnet .marque-commande { padding: 0; text-align: left; }
+.theme-carnet .marque-carnet { padding: 0; text-align: left; }
 .theme-carnet .compte-zone { position: relative; z-index: 60; }
 .theme-carnet .compte-commande { padding: 10px 14px; border: 1px solid var(--ligne); border-radius: 24px; color: var(--prune); background: #fffffd; font: inherit; font-size: .875rem; white-space: nowrap; }
 .theme-carnet .compte-commande[aria-expanded="true"] { background: #eee5ea; border-color: #bda9b5; }
@@ -89,7 +89,33 @@ html[data-sober="true"] .capsule { background: #fff; border-radius: 4px; }
   .theme-carnet .classeur-onglet { padding: 12px 5px; font-size: .9375rem; min-height: 48px; }
   .theme-carnet .onglet-complet { display: none; }
   .theme-carnet .onglet-court { display: inline; }
-  .theme-carnet .marque-commande > .s.r { gap: 8px; }
+  .theme-carnet .marque-carnet > .s.r { gap: 8px; }
+}
+.theme-carnet .vue-ensemble { position: fixed; inset: 0; margin: 0; padding: 16px; width: 100%; max-width: none; height: 100%; max-height: none; border: 0; background: transparent; color: var(--encre); font: inherit; white-space: normal; overflow-wrap: anywhere; overflow: auto; overscroll-behavior: contain; }
+.theme-carnet .vue-ensemble::backdrop { background: #30282f66; }
+.theme-carnet .ensemble-contenu { max-width: 1000px; margin: 0 auto; padding: 24px; border: 1px solid #bda9b5; border-radius: 14px; background: #fffffd; }
+.theme-carnet .ensemble-entete { position: sticky; top: 0; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 8px 0 16px; border-bottom: 1px solid var(--ligne); background: #fffffd; }
+.theme-carnet .vue-ensemble h1, .theme-carnet .vue-ensemble h2 { font-family: Georgia, serif; font-weight: 400; line-height: 1.3; }
+.theme-carnet .vue-ensemble h1 { margin: 0; font-size: 1.9rem; }
+.theme-carnet .vue-ensemble h2 { margin: 0 0 12px; font-size: 1.35rem; }
+.theme-carnet .vue-ensemble p { line-height: 1.6; }
+.theme-carnet .vue-ensemble section { margin: 24px 0; }
+.theme-carnet .ensemble-petit { color: #685d65; font-size: .875rem; line-height: 1.6; }
+.theme-carnet .ensemble-action { padding: 10px 14px; border: 1px solid #bda9b5; border-radius: 8px; color: var(--prune); background: #fffffd; font: inherit; }
+.theme-carnet .ensemble-reprise { padding: 20px; border: 1px solid var(--ligne); border-radius: 12px; background: var(--papier); }
+.theme-carnet .ensemble-carte { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; margin: 0; padding: 0; list-style: none; }
+.theme-carnet .ensemble-etape { display: flex; align-items: flex-start; gap: 12px; width: 100%; height: 100%; padding: 16px; border: 1px solid var(--ligne); border-radius: 12px; color: var(--encre); background: #fffffd; font: inherit; text-align: left; }
+.theme-carnet .ensemble-etape[data-current="true"] { border: 2px solid var(--prune); background: #f5edf2; }
+.theme-carnet .ensemble-etape:hover { background: #f4edf1; }
+.theme-carnet .ensemble-numero { flex: 0 0 34px; padding: 6px 0; border-radius: 50%; background: #eee5ea; color: var(--prune); font-family: Georgia,serif; text-align: center; }
+.theme-carnet .ensemble-etape-texte { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.theme-carnet .ensemble-etape-titre { font-family: Georgia,serif; font-size: 1.125rem; line-height: 1.4; overflow-wrap: anywhere; }
+.theme-carnet .ensemble-statut { color: var(--prune); font-size: .875rem; }
+.theme-carnet .ensemble-transversal { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; }
+@media (max-width: 620px) {
+  .theme-carnet .ensemble-contenu { padding: 16px; }
+  .theme-carnet .ensemble-carte, .theme-carnet .ensemble-transversal { grid-template-columns: minmax(0,1fr); }
+  .theme-carnet .vue-ensemble h1 { font-size: 1.5rem; }
 }
 /* ElmUI shrink utilise flex-basis:0 ; les fenêtres avec overflow et les grilles
    ont besoin de leur hauteur intrinsèque, aussi sur WebKit/Firefox. */

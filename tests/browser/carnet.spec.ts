@@ -13,14 +13,12 @@ async function settled(page:Page){
 }
 async function nav(page:Page,name:string){
   await page.getByRole("button",{name:"Masquer / verrouiller",exact:true}).waitFor();
-  if(name==="Mon accueil"){
-    await page.getByRole("button",{name,exact:true}).click();
-  }else if(["Mes réglages","À propos & sources"].includes(name)){
+  if(["Mes réglages","À propos & sources"].includes(name)){
     await page.locator('#compte-commande').click();
     await page.locator('#compte-options').getByRole("button",{name,exact:true}).click();
   }else{
     if(await page.getByRole("tab").count()===0){
-      await page.getByRole("button",{name:"Voir les 15 étapes",exact:true}).or(page.getByRole("button",{name:"Revenir au carnet",exact:true})).filter({visible:true}).first().click();
+      await page.getByRole("button",{name:"Revenir au carnet",exact:true}).click();
       await expect(page.getByRole("tab")).toHaveCount(3);
     }
     await page.getByRole("tab",{name,exact:true}).click();
@@ -60,7 +58,7 @@ async function register(page:Page){
   await page.getByLabel("Confirmer la phrase de coffre",{exact:true}).filter({visible:true}).fill(phrase);
   await page.getByRole("checkbox",{name:"Je n’utilise que des données fictives pour ce prototype.",exact:true}).check();
   await page.getByRole("button",{name:"Créer mon compte et mon coffre",exact:true}).click();
-  await expect(page.getByRole("button",{name:"Reprendre mon carnet",exact:true})).toBeVisible();
+  await expect(page.getByRole("tab",{name:"Mon parcours",exact:true})).toBeVisible();
   const kit=await kitDownload(page);await synced(page);
   return{pseudo,...kit};
 }
@@ -74,7 +72,7 @@ async function login(page:Page,pseudo:string,secret=phrase,recovery=false){
   if(recovery)await page.getByRole("checkbox",{name:"Utiliser le secret de récupération du coffre",exact:true}).check();
   await page.getByLabel(recovery?"Secret du coffre · partie 2 du kit":"Phrase de coffre",{exact:true}).filter({visible:true}).fill(secret);
   await page.getByRole("button",{name:"Ouvrir mon coffre",exact:true}).click();
-  await expect(page.getByRole("button",{name:"Reprendre mon carnet",exact:true})).toBeVisible();
+  await expect(page.getByRole("tab",{name:"Mon parcours",exact:true})).toBeVisible();
 }
 async function note(page:Page,text:string){
   await seance(page,1);
@@ -94,13 +92,14 @@ async function apiState(page:Page){return page.evaluate(async()=>{const r=await 
 
 test("démo : paysage au clavier, hésitation, trace, retour et isolation navigateur",async({page,browser})=>{
   await page.goto("/");await page.getByRole("button",{name:"Ouvrir la démonstration",exact:true}).click();
-  await page.getByRole("button",{name:"Reprendre mon carnet",exact:true}).click();
-  await page.getByRole("button",{name:"Pendant",exact:true}).click();
+  await seance(page,1,"Pendant");
   const card=page.getByRole("button",{name:"＋ Le calme",exact:true});await card.focus();await page.keyboard.press("Enter");
   await page.getByLabel("Pour moi, cela signifie…",{exact:true}).filter({visible:true}).fill("Un lieu où je peux faire une pause.");
   await page.getByLabel("Placer dans…",{exact:true}).filter({visible:true}).selectOption("coeur");
   await page.getByLabel("J’hésite aussi avec… · facultatif",{exact:true}).filter({visible:true}).selectOption("autour");
+  await expect(page.getByText("J’hésite aussi : Autour · important",{exact:true})).toBeVisible();
   await page.getByRole("button",{name:"4 · Garder une trace",exact:true}).click();
+  await expect(page.getByRole("button",{name:"4 · Garder une trace",exact:true})).toHaveAttribute("aria-pressed","true");
   await page.getByRole("button",{name:"Conserver cette version du paysage",exact:true}).click();
   await expect(page.getByText("Cette version est conservée dans Mes repères. Vous pouvez continuer à modifier votre production.",{exact:true})).toBeVisible();
   await expect(page.locator(".save-status")).toContainText("Chiffré sur cet appareil");
@@ -111,7 +110,7 @@ test("démo : paysage au clavier, hésitation, trace, retour et isolation naviga
   const other=await browser.newContext();const p=await other.newPage();await p.goto("/");await p.getByRole("button",{name:"Ouvrir la démonstration",exact:true}).click();await seance(p,1,"Pendant");
   await expect(p.getByRole("button",{name:"Le calme",exact:true})).toHaveCount(0);await other.close();
   await nav(page,"Mes réglages");await page.getByRole("button",{name:"Réinitialiser le carnet fictif",exact:true}).click();await page.getByRole("button",{name:"Effacer mes modifications de la démo",exact:true}).click();
-  await expect(page.getByRole("button",{name:"Reprendre mon carnet",exact:true})).toBeVisible();
+  await expect(page.getByRole("tab",{name:"Mon parcours",exact:true})).toBeVisible();
   await seance(page,1,"Pendant");await expect(page.getByRole("button",{name:"Le calme",exact:true})).toHaveCount(0);
 });
 
@@ -179,7 +178,7 @@ test("hors connexion puis reprise, conflit entre appareils et résolution explic
   await seance(page,1);await page.context().setOffline(true);
   await page.getByLabel("Ma note personnelle · facultatif",{exact:true}).filter({visible:true}).fill("Brouillon fictif hors connexion");
   await expect(page.locator(".save-status")).toContainText("Chiffré sur cet appareil");
-  await nav(page,"Mon accueil");await seance(page,1);await expect(page.getByLabel("Ma note personnelle · facultatif",{exact:true}).filter({visible:true})).toHaveValue("Brouillon fictif hors connexion");
+  await nav(page,"Mon parcours");await seance(page,1);await expect(page.getByLabel("Ma note personnelle · facultatif",{exact:true}).filter({visible:true})).toHaveValue("Brouillon fictif hors connexion");
   await note(p,"Autre version fictive");
   await page.context().setOffline(false);
   await expect(page.getByRole("heading",{name:"Deux versions de votre carnet",exact:true})).toBeVisible({timeout:20000});
@@ -201,7 +200,7 @@ test("export chiffré et réimport réel, sélection lisible volontaire et prés
   await page.getByRole("button",{name:"Réimporter une sauvegarde",exact:true}).click();
   const chooser=page.waitForEvent("filechooser");await page.getByRole("button",{name:"Choisir et vérifier mon fichier chiffré",exact:true}).click();
   await(await chooser).setFiles({name:"sauvegarde-fictive.json",mimeType:"application/json",buffer:Buffer.from(JSON.stringify(exported))});
-  await expect(page.getByRole("button",{name:"Reprendre mon carnet",exact:true})).toBeVisible();await seance(page,1);await expect(page.getByLabel("Ma note personnelle · facultatif",{exact:true}).filter({visible:true})).toHaveValue("La version que je veux conserver.");
+  await expect(page.getByRole("tab",{name:"Mon parcours",exact:true})).toBeVisible();await seance(page,1);await expect(page.getByLabel("Ma note personnelle · facultatif",{exact:true}).filter({visible:true})).toHaveValue("La version que je veux conserver.");
   await nav(page,"Mes repères");await page.getByRole("checkbox").first().check();
   await page.getByRole("button",{name:"Présenter ma sélection sur cet écran",exact:true}).click();await expect(page.getByRole("heading",{name:"Ma sélection",exact:true})).toBeVisible();await expect(page.getByRole("heading",{name:"Ma sélection",exact:true})).toBeFocused();
   await expect(page.getByRole("main")).toHaveCount(1);
@@ -217,7 +216,7 @@ test("récupération du coffre sur navigateur vierge et changement de phrase",as
   await nav(p,"Mes réglages");await p.getByLabel("Ancienne phrase · ou secret du coffre si choisi",{exact:true}).filter({visible:true}).fill(phrase);
   const next="Une nouvelle phrase fictive pour ce coffre";await p.getByLabel("Nouvelle phrase de coffre",{exact:true}).filter({visible:true}).fill(next);await p.getByRole("button",{name:"Conserver la nouvelle phrase",exact:true}).click();await expect(p.getByText(/Nouvelle phrase conservée/)).toBeVisible();await synced(p);
   await p.getByRole("button",{name:"Masquer / verrouiller",exact:true}).click();await p.getByLabel("Phrase de coffre",{exact:true}).filter({visible:true}).fill(phrase);await p.getByRole("button",{name:"Ouvrir mon coffre",exact:true}).click();await expect(p.getByRole("alert")).toContainText("secret incorrect");
-  await p.getByLabel("Phrase de coffre",{exact:true}).filter({visible:true}).fill(next);await p.getByRole("button",{name:"Ouvrir mon coffre",exact:true}).click();await expect(p.getByRole("button",{name:"Reprendre mon carnet",exact:true})).toBeVisible();
+  await p.getByLabel("Phrase de coffre",{exact:true}).filter({visible:true}).fill(next);await p.getByRole("button",{name:"Ouvrir mon coffre",exact:true}).click();await expect(p.getByRole("tab",{name:"Mon parcours",exact:true})).toBeVisible();
   await other.close();
 });
 
@@ -260,7 +259,7 @@ test("sentinelle absente du réseau et du stockage, texte XSS inerte et URL neut
 test("accessibilité axe, clavier, réduction des mouvements, mode sobre et reflow",async({page})=>{
   await page.emulateMedia({reducedMotion:"reduce"});
   await page.goto("/");await page.getByRole("button",{name:"Ouvrir la démonstration",exact:true}).click();
-  for(const name of["Mon accueil","Mes objectifs","Mes repères","Mes réglages"]){
+  for(const name of["Mon parcours","Mes objectifs","Mes repères","Mes réglages"]){
     await nav(page,name);
     const results=await new AxeBuilder({page}).withTags(["wcag2a","wcag2aa","wcag21a","wcag21aa","wcag22aa"]).analyze();
     expect(results.violations.map(v=>({id:v.id,nodes:v.nodes.length}))).toEqual([]);
@@ -298,6 +297,7 @@ test("retour navigateur fermé, récupération du compte et nouveau coffre prés
   await page.locator('#compte-commande').click();await page.locator('#compte-options').getByRole("button",{name:"Me déconnecter",exact:true}).click();
   await page.getByRole("button",{name:"Me connecter",exact:true}).click();
   await page.getByRole("button",{name:"J’ai oublié mon mot de passe de connexion",exact:true}).click();
+  await expect(page.getByRole("heading",{name:"Récupérer ma connexion",exact:true})).toBeVisible();
   await page.getByLabel("Identifiant pseudonyme",{exact:true}).filter({visible:true}).fill(account.pseudo);
   await page.getByLabel("Nouveau mot de passe de connexion",{exact:true}).filter({visible:true}).fill("Un_nouveau_mot_de_passe_fictif_2026");
   await page.getByLabel("Code de récupération du compte · partie 1 du kit",{exact:true}).filter({visible:true}).fill(account.auth);
@@ -306,7 +306,7 @@ test("retour navigateur fermé, récupération du compte et nouveau coffre prés
   await page.getByRole("button",{name:"Je n’ai plus ma phrase ni mon kit",exact:true}).click();
   await page.getByLabel("Phrase du nouveau coffre",{exact:true}).filter({visible:true}).fill("La phrase fictive du tout nouveau coffre");
   await page.getByRole("button",{name:"Créer un nouveau coffre sans effacer l’ancien",exact:true}).click();
-  await expect(page.getByRole("button",{name:"Reprendre mon carnet",exact:true})).toBeVisible();
+  await expect(page.getByRole("tab",{name:"Mon parcours",exact:true})).toBeVisible();
   await seance(page,1);await expect(page.getByLabel("Ma note personnelle · facultatif",{exact:true}).filter({visible:true})).toHaveValue("");
   await nav(page,"Mes réglages");const wait=page.waitForEvent("download");await page.getByRole("button",{name:"Exporter les anciens coffres verrouillés",exact:true}).click();
   const path=await(await wait).path();const old=JSON.parse(await readFile(path!,"utf8"));await unlink(path!);
@@ -323,7 +323,7 @@ test("verrouillage automatique averti, reprise et changement de largeur",async({
   await page.keyboard.press("Tab");await expect(page.getByText(/Le carnet se verrouillera dans moins de 30 secondes/)).toHaveCount(0);
   await page.clock.runFor(305000);await expect(page.getByRole("heading",{name:"Votre carnet est fermé",exact:true})).toBeVisible();
   await page.getByRole("button",{name:"Reprendre la démonstration",exact:true}).click();
-  await expect(page.getByRole("button",{name:"Reprendre mon carnet",exact:true})).toBeVisible();
+  await expect(page.getByRole("tab",{name:"Mon parcours",exact:true})).toBeVisible();
   for(const width of[430,768,390]){await page.setViewportSize({width,height:500});await nav(page,"Mon parcours");expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);}
 });
 
@@ -420,6 +420,92 @@ test("classeur : feuilles distinctes, capsule à sa place et voisins repoussés"
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
 });
 
+test("intégrité du carnet : entrée directe et vue d’ensemble superposée",async({page})=>{
+  await page.emulateMedia({reducedMotion:'no-preference'});
+  await page.setViewportSize({width:390,height:900});
+  await page.goto('/');await page.getByRole('button',{name:'Ouvrir la démonstration',exact:true}).click();await settled(page);
+  await expect(page.getByRole('tab')).toHaveCount(3);await expect(page.getByRole('tab',{name:'Mon parcours',exact:true})).toHaveAttribute('aria-selected','true');
+  await expect(page.getByRole('heading',{name:'Un moment pour moi.',exact:true})).toHaveCount(0);
+  await seance(page,1);
+  const field=page.getByLabel('Ma note personnelle · facultatif',{exact:true}).filter({visible:true});
+  await field.fill('Une note fictive conservée sous la vue d’ensemble.');
+  await page.getByRole('button',{name:'Pendant',exact:true}).click();await settled(page);
+  await nav(page,'Mes objectifs');await page.getByRole('button',{name:'Reformuler cet objectif',exact:true}).click();
+  await page.getByLabel('Ma nouvelle formulation',{exact:true}).filter({visible:true}).fill('Une formulation fictive conservée sous la carte.');
+  await page.evaluate(()=>window.scrollTo({top:60,behavior:'instant'}));
+  // Atteindre le menu peut défiler ; ouvrir/fermer sa carte doit garder cette position.
+  await page.locator('#compte-commande').click();
+  const before=await page.locator('#plan-carnet').evaluate(el=>({top:el.getBoundingClientRect().top,scroll:scrollY}));
+  await page.evaluate(()=>{(window as any).carnetVueAvant=document.querySelector('.classeur');});
+  await page.getByRole('button',{name:'Vue d’ensemble',exact:true}).click();
+  const dialog=page.getByRole('dialog',{name:'Vue d’ensemble',exact:true});await expect(dialog).toBeVisible();
+  await expect(dialog.locator('.ensemble-etape')).toHaveCount(15);await expect(dialog.locator('.ensemble-etape[data-current=true]')).toHaveCount(1);
+  await expect(dialog.getByRole('heading',{name:'Vue d’ensemble',exact:true})).toBeFocused();
+  expect((await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21a','wcag21aa','wcag22aa']).analyze()).violations).toEqual([]);
+  await page.keyboard.press('Shift+Tab');expect(await page.evaluate(()=>Boolean(document.querySelector('#vue-ensemble')?.contains(document.activeElement)))).toBe(true);
+  await page.keyboard.press('Tab');expect(await page.evaluate(()=>Boolean(document.querySelector('#vue-ensemble')?.contains(document.activeElement)))).toBe(true);
+  await page.keyboard.press('Escape');await expect(dialog).toHaveCount(0);await expect(page.locator('#compte-commande')).toBeFocused();
+  expect(await page.evaluate(()=>(window as any).carnetVueAvant===document.querySelector('.classeur'))).toBe(true);
+  const after=await page.locator('#plan-carnet').evaluate(el=>({top:el.getBoundingClientRect().top,scroll:scrollY}));expect(after).toEqual(before);
+  await expect(page.getByRole('tab',{name:'Mes objectifs',exact:true})).toHaveAttribute('aria-selected','true');
+  await expect(page.getByLabel('Ma nouvelle formulation',{exact:true}).filter({visible:true})).toHaveValue('Une formulation fictive conservée sous la carte.');
+  await page.locator('#compte-commande').click();await page.getByRole('button',{name:'Vue d’ensemble',exact:true}).click();await expect(dialog).toBeVisible();
+  await dialog.locator('.ensemble-etape[data-current=true]').click();await settled(page);
+  await expect(dialog).toHaveCount(0);await expect(page.getByRole('tab',{name:'Mon parcours',exact:true})).toHaveAttribute('aria-selected','true');
+  await expect(page.getByLabel('Ma note personnelle · facultatif',{exact:true}).filter({visible:true})).toHaveValue('Une note fictive conservée sous la vue d’ensemble.');
+  await page.locator('#compte-commande').click();await page.getByRole('button',{name:'Vue d’ensemble',exact:true}).click();await expect(dialog).toBeVisible();
+  await dialog.locator('.ensemble-etape').nth(11).click();await settled(page);
+  await expect(page.locator('#capsule-11 .capsule-ouvrir')).toHaveAttribute('aria-expanded','true');
+  await expect.poll(()=>page.locator('#titre-capsule-11').evaluate(el=>el.getBoundingClientRect().top-document.querySelector('.classeur-navigation')!.getBoundingClientRect().bottom)).toBeGreaterThanOrEqual(0);
+  await expect.poll(()=>page.locator('#titre-capsule-11').evaluate(el=>el.getBoundingClientRect().bottom)).toBeLessThan(900);
+  await page.locator('#compte-commande').click();await page.getByRole('button',{name:'Vue d’ensemble',exact:true}).click();await expect(dialog).toBeVisible();
+  // Les titres et objectifs de la carte restent entièrement lisibles, même agrandis.
+  for(const width of [360,390,1440]){
+    await page.setViewportSize({width,height:900});
+    for(const large of [false,true]){
+      await page.evaluate(value=>document.documentElement.setAttribute('data-large',String(value)),large);
+      expect(await dialog.evaluate(el=>Array.from(el.querySelectorAll<HTMLElement>('h1,h2,p,button,.ensemble-etape-texte')).filter(node=>node.scrollWidth>node.clientWidth+1).map(node=>node.textContent))).toEqual([]);
+    }
+  }
+  await page.evaluate(()=>document.documentElement.setAttribute('data-large','false'));
+  await page.setViewportSize({width:390,height:900});
+  await expect(page.locator('.classeur')).toHaveCSS('padding-left','12px');
+  await dialog.getByRole('button',{name:'Fermer',exact:true}).click();await expect(dialog).toHaveCount(0);
+});
+
+test("intégrité du carnet : les onglets ne déplacent jamais la lecture",async({page})=>{
+  test.setTimeout(90000);
+  await page.goto("/");await page.getByRole("button",{name:"Ouvrir la démonstration",exact:true}).click();
+  for(const reducedMotion of ["no-preference","reduce"] as const){
+    await page.emulateMedia({reducedMotion});
+    for(const width of [390,1440]){
+      await page.setViewportSize({width,height:900});await seance(page,1,"Entre les séances");await nav(page,"Mes objectifs");
+      for(const scroll of [0,60]){
+        await page.evaluate(y=>window.scrollTo({top:y,behavior:"instant"}),scroll);
+        const before=await page.locator('#plan-carnet').evaluate(el=>({top:el.getBoundingClientRect().top,scroll:scrollY}));
+        await page.evaluate(()=>{
+          const w=window as any,original=window.scrollTo.bind(window);
+          w.carnetObservation={active:true,positions:[],calls:[]};
+          w.carnetOriginalScroll=original;
+          window.scrollTo=((...args:any[])=>{w.carnetObservation.calls.push(args);original(...args as [any]);}) as typeof window.scrollTo;
+          function observe(){
+            const tabs=document.getElementById('plan-carnet');
+            if(tabs)w.carnetObservation.positions.push({top:tabs.getBoundingClientRect().top,scroll:scrollY});
+            if(w.carnetObservation.active)requestAnimationFrame(observe);
+          }
+          requestAnimationFrame(observe);
+        });
+        for(const name of ["Mon parcours","Mes repères","Mes objectifs"]){
+          await page.getByRole('tab',{name,exact:true}).click();await settled(page);
+        }
+        const observation=await page.evaluate(()=>{const w=window as any;w.carnetObservation.active=false;window.scrollTo=w.carnetOriginalScroll;return w.carnetObservation;});
+        expect(observation.calls).toEqual([]);expect(observation.positions.length).toBeGreaterThan(0);
+        for(const position of observation.positions){expect(Math.abs(position.top-before.top)).toBeLessThan(1);expect(Math.abs(position.scroll-before.scroll)).toBeLessThan(1);}
+      }
+    }
+  }
+});
+
 test("continuité : retour au même moment, écrits et reformulation en cours conservés",async({page})=>{
   await page.goto("/");await page.getByRole("button",{name:"Ouvrir la démonstration",exact:true}).click();
   await seance(page,1);
@@ -433,12 +519,12 @@ test("continuité : retour au même moment, écrits et reformulation en cours co
   await expect(page.getByLabel("Ma nouvelle formulation",{exact:true}).filter({visible:true})).toHaveValue("Ma reformulation fictive encore en cours.");
   await nav(page,"Mes repères");await nav(page,"Mon parcours");
   await expect(page.getByRole("button",{name:"Entre les séances",exact:true})).toHaveAttribute("aria-pressed","true");
-  await expect.poll(()=>page.locator('#titre-capsule-1').evaluate(el=>el.getBoundingClientRect().top-document.querySelector('.classeur-navigation')!.getBoundingClientRect().bottom)).toBeGreaterThanOrEqual(0);
   await nav(page,"Mes objectifs");
   await expect(page.getByLabel("Ma nouvelle formulation",{exact:true}).filter({visible:true})).toHaveValue("Ma reformulation fictive encore en cours.");
   await page.getByRole("button",{name:"Revenir à la séance 1 · Entre les séances",exact:true}).click();await settled(page);
   await expect(page.getByRole("button",{name:"Entre les séances",exact:true})).toHaveAttribute("aria-pressed","true");
   await expect(page.getByRole("heading",{name:"Je comprends mieux",exact:true})).toBeVisible();
+  await expect.poll(()=>page.locator('#titre-capsule-1').evaluate(el=>el.getBoundingClientRect().top-document.querySelector('.classeur-navigation')!.getBoundingClientRect().bottom)).toBeGreaterThanOrEqual(0);
   await page.getByRole("button",{name:"Avant",exact:true}).click();await settled(page);
   await expect(page.getByLabel("Ma note personnelle · facultatif",{exact:true}).filter({visible:true})).toHaveValue("Une note fictive conservée pendant les déplacements.");
   await page.getByRole("button",{name:"Retrouver les onglets",exact:true}).click();
@@ -469,11 +555,11 @@ test("continuité : réduction dynamique, préférence sauvegardée et verrouill
 });
 
 for(const size of[360,390,430,768,1440]){
-  test("rendu de référence "+size+" pixels : accueil et titre long",async({page},testInfo)=>{
+  test("rendu de référence "+size+" pixels : carnet et titre long",async({page},testInfo)=>{
     await page.setViewportSize({width:size,height:900});await page.goto("/");await page.getByRole("button",{name:"Ouvrir la démonstration",exact:true}).click();
     await expect(page.locator(".save-status")).toContainText("Chiffré sur cet appareil");
     expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
-    await page.screenshot({path:"docs/captures/"+testInfo.project.name+"-accueil-"+size+".png",fullPage:true});
+    await page.screenshot({path:"docs/captures/"+testInfo.project.name+"-parcours-"+size+".png",fullPage:true});
     await seance(page,4);
     expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
     await page.screenshot({path:"docs/captures/"+testInfo.project.name+"-chapitre-"+size+".png",fullPage:true});

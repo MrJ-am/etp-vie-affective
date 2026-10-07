@@ -329,6 +329,19 @@ async function encryptedExport(): Promise<void> {
   emit("notice", { message: "La sauvegarde chiffrée a été générée sur cet appareil." });
 }
 
+async function waitForNativeMotion(): Promise<void> {
+  for (let frame = 0; frame < 3; frame++) await new Promise<void>(resolve => requestAnimationFrame(() => resolve()));
+  const transitions = new Set<Animation>();
+  for (const element of document.querySelectorAll<HTMLElement>('[data-moving="true"]')) {
+    for (const animation of element.getAnimations({ subtree: true })) {
+      if ("transitionProperty" in animation && ["opacity", "grid-template-rows", "font-size", "scale", "translate"].includes(String(animation.transitionProperty))) transitions.add(animation);
+    }
+  }
+  await Promise.allSettled([...transitions].map(animation => animation.finished));
+}
+
+let focusVersion = 0;
+
 async function command(command: Command): Promise<void> {
   const { action, data } = command;
   if (action === "demo") await beginDemo();
@@ -469,26 +482,33 @@ async function command(command: Command): Promise<void> {
     const sessionEpoch = epoch;
     // Attendre l'application des styles Elm, puis la fin réelle des transitions.
     // Une transition annulée ou non démarrée ne doit pas retenir une feuille.
-    for (let frame = 0; frame < 3; frame++) await new Promise<void>(resolve => requestAnimationFrame(() => resolve()));
-    const transitions = new Set<Animation>();
-    for (const element of document.querySelectorAll<HTMLElement>('[data-moving="true"]')) {
-      for (const animation of element.getAnimations({ subtree: true })) {
-        if ("transitionProperty" in animation && ["opacity", "grid-template-rows", "font-size", "scale", "translate"].includes(String(animation.transitionProperty))) transitions.add(animation);
-      }
-    }
-    await Promise.allSettled([...transitions].map(animation => animation.finished));
+    await waitForNativeMotion();
     if (sessionEpoch === epoch) emit("motionSettled", { version: data.version });
-  } else if (action === "focus") {
+  } else if (action === "showOverview") {
+    ++focusVersion;
+    const sessionEpoch = epoch;
     requestAnimationFrame(() => {
+      const dialog = document.getElementById("vue-ensemble");
+      if (sessionEpoch === epoch && dialog instanceof HTMLDialogElement && !dialog.open) {
+        dialog.showModal();
+        document.getElementById("titre-vue-ensemble")?.focus({ preventScroll: true });
+      }
+    });
+  } else if (action === "focus") {
+    const version = ++focusVersion, sessionEpoch = epoch;
+    requestAnimationFrame(async () => {
       const target = document.getElementById(data.id);
       const heading = target?.querySelector<HTMLElement>("h1");
       if (heading) heading.tabIndex = -1;
       (heading ?? target)?.focus({ preventScroll: true });
-      if (data.scroll) window.scrollTo({ top: 0, behavior: "instant" });
+      if (data.reveal) await waitForNativeMotion();
+      if (sessionEpoch !== epoch || version !== focusVersion || target !== document.getElementById(data.id)) return;
+      const behavior = data.smooth ? "smooth" : "instant";
+      if (data.scroll) window.scrollTo({ top: 0, behavior });
       else if (data.reveal && target) {
         const tabs = document.querySelector<HTMLElement>(".classeur-navigation");
         const inset = (tabs?.getBoundingClientRect().height ?? 0) + 24;
-        window.scrollTo({ top: Math.max(0, window.scrollY + target.getBoundingClientRect().top - inset), behavior: "instant" });
+        window.scrollTo({ top: Math.max(0, window.scrollY + target.getBoundingClientRect().top - inset), behavior });
       }
     });
   } else if (action === "newVault") {

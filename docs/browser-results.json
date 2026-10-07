@@ -11,7 +11,7 @@
     "grepInvert": null,
     "maxFailures": 0,
     "metadata": {
-      "actualWorkers": 1
+      "actualWorkers": 3
     },
     "preserveOutput": "always",
     "reporter": [
@@ -37,7 +37,7 @@
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
-          "actualWorkers": 1
+          "actualWorkers": 3
         },
         "id": "chromium",
         "name": "chromium",
@@ -53,7 +53,7 @@
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
-          "actualWorkers": 1
+          "actualWorkers": 3
         },
         "id": "webkit",
         "name": "webkit",
@@ -69,7 +69,7 @@
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
-          "actualWorkers": 1
+          "actualWorkers": 3
         },
         "id": "firefox",
         "name": "firefox",
@@ -85,7 +85,7 @@
     "updateSnapshots": "missing",
     "updateSourceMethod": "patch",
     "version": "1.55.1",
-    "workers": 1,
+    "workers": 3,
     "webServer": null
   },
   "suites": [
@@ -111,12 +111,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 10640,
+                  "duration": 12702,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-07T00:00:56.953Z",
+                  "startTime": "2026-10-07T01:34:38.547Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -126,7 +126,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-574f21b685e3c52613bf",
           "file": "carnet.spec.ts",
-          "line": 95,
+          "line": 93,
           "column": 1
         },
         {
@@ -145,12 +145,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 31171,
+                  "duration": 40080,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-07T00:01:07.723Z",
+                  "startTime": "2026-10-07T01:34:51.484Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -160,7 +160,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-bc72197c7b19454da412",
           "file": "carnet.spec.ts",
-          "line": 118,
+          "line": 117,
           "column": 1
         },
         {
@@ -179,12 +179,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 5375,
+                  "duration": 5816,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-07T00:01:38.903Z",
+                  "startTime": "2026-10-07T01:35:31.581Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -194,7 +194,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-96d3f93e614c2fbb3472",
           "file": "carnet.spec.ts",
-          "line": 137,
+          "line": 136,
           "column": 1
         },
         {
@@ -213,12 +213,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 12066,
+                  "duration": 12389,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-07T00:01:44.285Z",
+                  "startTime": "2026-10-07T01:35:37.411Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -228,7 +228,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-a9b922ffd861737d2690",
           "file": "carnet.spec.ts",
-          "line": 161,
+          "line": 160,
           "column": 1
         },
         {
@@ -247,12 +247,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 14308,
+                  "duration": 12443,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-07T00:01:56.361Z",
+                  "startTime": "2026-10-07T01:35:49.814Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -262,7 +262,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-fd0f59396f8704f640c3",
           "file": "carnet.spec.ts",
-          "line": 176,
+          "line": 175,
           "column": 1
         },
         {
@@ -281,12 +281,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 11513,
+                  "duration": 11945,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-07T00:02:10.681Z",
+                  "startTime": "2026-10-07T01:36:02.279Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -296,7 +296,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-fb06b3c893fbd5a33625",
           "file": "carnet.spec.ts",
-          "line": 193,
+          "line": 192,
           "column": 1
         },
         {
@@ -315,12 +315,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 8863,
+                  "duration": 9440,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-07T00:02:22.205Z",
+                  "startTime": "2026-10-07T01:36:14.237Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -330,7 +330,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-5f9c774e6d66c56e1960",
           "file": "carnet.spec.ts",
-          "line": 213,
+          "line": 212,
           "column": 1
         },
         {
@@ -349,12 +349,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 9241,
+                  "duration": 12001,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-07T00:02:31.079Z",
+                  "startTime": "2026-10-07T01:36:23.700Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -364,7 +364,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-3c6bf1b4836013a1c776",
           "file": "carnet.spec.ts",
-          "line": 224,
+          "line": 223,
           "column": 1
         },
         {
@@ -383,12 +383,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 8925,
+                  "duration": 9629,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-07T00:02:40.329Z",
+                  "startTime": "2026-10-07T01:36:35.720Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -398,7 +398,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-f54b64273660179b28c1",
           "file": "carnet.spec.ts",
-          "line": 241,
+          "line": 240,
           "column": 1
         },
         {
@@ -417,12 +417,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 5209,
+                  "duration": 7020,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-07T00:02:49.264Z",
+                  "startTime": "2026-10-07T01:36:45.358Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -432,7 +432,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-e8e4d3bfcf955281b77d",
           "file": "carnet.spec.ts",
-          "line": 260,
+          "line": 259,
           "column": 1
         },
         {
@@ -451,12 +451,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 7582,
+                  "duration": 8889,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-07T00:02:54.482Z",
+                  "startTime": "2026-10-07T01:36:52.389Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -466,7 +466,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-2530472518fda1e49eeb",
           "file": "carnet.spec.ts",
-          "line": 280,
+          "line": 279,
           "column": 1
         },
         {
@@ -485,12 +485,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 8443,
+                  "duration": 9085,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-07T00:03:02.072Z",
+                  "startTime": "2026-10-07T01:37:01.296Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -500,7 +500,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-bbe095d85cdd9b859eac",
           "file": "carnet.spec.ts",
-          "line": 294,
+          "line": 293,
           "column": 1
         },
         {
@@ -519,12 +519,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 2487,
+                  "duration": 2980,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-07T00:03:10.524Z",
+                  "startTime": "2026-10-07T01:37:10.396Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -553,7 +553,7 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 14581,
+                  "duration": 15206,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
@@ -561,10 +561,10 @@
                   "steps": [
                     {
                       "title": "Expect \"poll toBeLessThan\"",
-                      "duration": 8
+                      "duration": 25
                     }
                   ],
-                  "startTime": "2026-10-07T00:03:13.020Z",
+                  "startTime": "2026-10-07T01:37:13.389Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -575,6 +575,84 @@
           "id": "75ad7d8441bc6b7a4c05-f691a2f87b848129a944",
           "file": "carnet.spec.ts",
           "line": 330,
+          "column": 1
+        },
+        {
+          "title": "intégrité du carnet : entrée directe et vue d’ensemble superposée",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7504,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBeGreaterThanOrEqual\"",
+                      "duration": 7
+                    },
+                    {
+                      "title": "Expect \"poll toBeLessThan\"",
+                      "duration": 120
+                    }
+                  ],
+                  "startTime": "2026-10-07T01:37:28.604Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-c81c815e2c57bf0f676e",
+          "file": "carnet.spec.ts",
+          "line": 423,
+          "column": 1
+        },
+        {
+          "title": "intégrité du carnet : les onglets ne déplacent jamais la lecture",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 13971,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-07T01:37:36.126Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-1f51fde268ceabdf9c66",
+          "file": "carnet.spec.ts",
+          "line": 476,
           "column": 1
         },
         {
@@ -593,7 +671,7 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 6072,
+                  "duration": 7775,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
@@ -601,10 +679,10 @@
                   "steps": [
                     {
                       "title": "Expect \"poll toBeGreaterThanOrEqual\"",
-                      "duration": 14
+                      "duration": 43
                     }
                   ],
-                  "startTime": "2026-10-07T00:03:27.608Z",
+                  "startTime": "2026-10-07T01:37:50.115Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -614,7 +692,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-1eaca1e54ba804021e55",
           "file": "carnet.spec.ts",
-          "line": 423,
+          "line": 509,
           "column": 1
         },
         {
@@ -633,7 +711,7 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 3261,
+                  "duration": 3513,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
@@ -641,14 +719,14 @@
                   "steps": [
                     {
                       "title": "Expect \"poll toEqual\"",
-                      "duration": 5
+                      "duration": 10
                     },
                     {
                       "title": "Expect \"poll toEqual\"",
-                      "duration": 5
+                      "duration": 7
                     }
                   ],
-                  "startTime": "2026-10-07T00:03:33.688Z",
+                  "startTime": "2026-10-07T01:37:57.902Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -658,11 +736,11 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-3c2ef880dc429c6b61fe",
           "file": "carnet.spec.ts",
-          "line": 448,
+          "line": 534,
           "column": 1
         },
         {
-          "title": "rendu de référence 360 pixels : accueil et titre long",
+          "title": "rendu de référence 360 pixels : carnet et titre long",
           "ok": true,
           "tags": [],
           "tests": [
@@ -677,12 +755,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 2236,
+                  "duration": 2587,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-07T00:03:36.957Z",
+                  "startTime": "2026-10-07T01:38:01.422Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -690,115 +768,13 @@
               "status": "expected"
             }
           ],
-          "id": "75ad7d8441bc6b7a4c05-7dd28c7769f93bb16ce2",
+          "id": "75ad7d8441bc6b7a4c05-a797a06ec818ce1fb21a",
           "file": "carnet.spec.ts",
-          "line": 472,
+          "line": 558,
           "column": 3
         },
         {
-          "title": "rendu de référence 390 pixels : accueil et titre long",
-          "ok": true,
-          "tags": [],
-          "tests": [
-            {
-              "timeout": 45000,
-              "annotations": [],
-              "expectedStatus": "passed",
-              "projectId": "chromium",
-              "projectName": "chromium",
-              "results": [
-                {
-                  "workerIndex": 0,
-                  "parallelIndex": 0,
-                  "status": "passed",
-                  "duration": 2204,
-                  "errors": [],
-                  "stdout": [],
-                  "stderr": [],
-                  "retry": 0,
-                  "startTime": "2026-10-07T00:03:39.200Z",
-                  "annotations": [],
-                  "attachments": []
-                }
-              ],
-              "status": "expected"
-            }
-          ],
-          "id": "75ad7d8441bc6b7a4c05-3378f541d0af46dbd46c",
-          "file": "carnet.spec.ts",
-          "line": 472,
-          "column": 3
-        },
-        {
-          "title": "rendu de référence 430 pixels : accueil et titre long",
-          "ok": true,
-          "tags": [],
-          "tests": [
-            {
-              "timeout": 45000,
-              "annotations": [],
-              "expectedStatus": "passed",
-              "projectId": "chromium",
-              "projectName": "chromium",
-              "results": [
-                {
-                  "workerIndex": 0,
-                  "parallelIndex": 0,
-                  "status": "passed",
-                  "duration": 2213,
-                  "errors": [],
-                  "stdout": [],
-                  "stderr": [],
-                  "retry": 0,
-                  "startTime": "2026-10-07T00:03:41.411Z",
-                  "annotations": [],
-                  "attachments": []
-                }
-              ],
-              "status": "expected"
-            }
-          ],
-          "id": "75ad7d8441bc6b7a4c05-c79731ef1296b23a980a",
-          "file": "carnet.spec.ts",
-          "line": 472,
-          "column": 3
-        },
-        {
-          "title": "rendu de référence 768 pixels : accueil et titre long",
-          "ok": true,
-          "tags": [],
-          "tests": [
-            {
-              "timeout": 45000,
-              "annotations": [],
-              "expectedStatus": "passed",
-              "projectId": "chromium",
-              "projectName": "chromium",
-              "results": [
-                {
-                  "workerIndex": 0,
-                  "parallelIndex": 0,
-                  "status": "passed",
-                  "duration": 2259,
-                  "errors": [],
-                  "stdout": [],
-                  "stderr": [],
-                  "retry": 0,
-                  "startTime": "2026-10-07T00:03:43.632Z",
-                  "annotations": [],
-                  "attachments": []
-                }
-              ],
-              "status": "expected"
-            }
-          ],
-          "id": "75ad7d8441bc6b7a4c05-44c2113bf61409215a80",
-          "file": "carnet.spec.ts",
-          "line": 472,
-          "column": 3
-        },
-        {
-          "title": "rendu de référence 1440 pixels : accueil et titre long",
+          "title": "rendu de référence 390 pixels : carnet et titre long",
           "ok": true,
           "tags": [],
           "tests": [
@@ -818,7 +794,7 @@
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-07T00:03:45.899Z",
+                  "startTime": "2026-10-07T01:38:04.017Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -826,9 +802,111 @@
               "status": "expected"
             }
           ],
-          "id": "75ad7d8441bc6b7a4c05-881bd34e1b801b9f41c8",
+          "id": "75ad7d8441bc6b7a4c05-96dda15996a4369a0104",
           "file": "carnet.spec.ts",
-          "line": 472,
+          "line": 558,
+          "column": 3
+        },
+        {
+          "title": "rendu de référence 430 pixels : carnet et titre long",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3055,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-07T01:38:06.573Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-d6c94c5b4684ae5879e2",
+          "file": "carnet.spec.ts",
+          "line": 558,
+          "column": 3
+        },
+        {
+          "title": "rendu de référence 768 pixels : carnet et titre long",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2976,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-07T01:38:09.638Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-1e55a085b79c824cc8a9",
+          "file": "carnet.spec.ts",
+          "line": 558,
+          "column": 3
+        },
+        {
+          "title": "rendu de référence 1440 pixels : carnet et titre long",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3182,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-07T01:38:12.625Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-4cd0a85e196feebc801c",
+          "file": "carnet.spec.ts",
+          "line": 558,
           "column": 3
         },
         {
@@ -845,14 +923,14 @@
               "results": [
                 {
                   "workerIndex": 1,
-                  "parallelIndex": 0,
+                  "parallelIndex": 1,
                   "status": "passed",
-                  "duration": 15534,
+                  "duration": 18154,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-07T00:03:49.091Z",
+                  "startTime": "2026-10-07T01:34:38.527Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -862,7 +940,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-fbebb6e37418eb1675c4",
           "file": "carnet.spec.ts",
-          "line": 95,
+          "line": 93,
           "column": 1
         },
         {
@@ -879,14 +957,14 @@
               "results": [
                 {
                   "workerIndex": 1,
-                  "parallelIndex": 0,
+                  "parallelIndex": 1,
                   "status": "passed",
-                  "duration": 36433,
+                  "duration": 45613,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-07T00:04:05.143Z",
+                  "startTime": "2026-10-07T01:34:57.365Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -896,7 +974,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-7ed6f1265a8decd175ab",
           "file": "carnet.spec.ts",
-          "line": 118,
+          "line": 117,
           "column": 1
         },
         {
@@ -913,14 +991,14 @@
               "results": [
                 {
                   "workerIndex": 1,
-                  "parallelIndex": 0,
+                  "parallelIndex": 1,
                   "status": "passed",
-                  "duration": 7576,
+                  "duration": 9390,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-07T00:04:41.586Z",
+                  "startTime": "2026-10-07T01:35:43.005Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -930,7 +1008,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-9d1163392fd9437a3da1",
           "file": "carnet.spec.ts",
-          "line": 137,
+          "line": 136,
           "column": 1
         },
         {
@@ -947,14 +1025,14 @@
               "results": [
                 {
                   "workerIndex": 1,
-                  "parallelIndex": 0,
+                  "parallelIndex": 1,
                   "status": "passed",
-                  "duration": 13658,
+                  "duration": 14020,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-07T00:04:49.171Z",
+                  "startTime": "2026-10-07T01:35:52.402Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -964,7 +1042,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-9608b8552fb112efed08",
           "file": "carnet.spec.ts",
-          "line": 161,
+          "line": 160,
           "column": 1
         },
         {
@@ -981,14 +1059,14 @@
               "results": [
                 {
                   "workerIndex": 1,
-                  "parallelIndex": 0,
+                  "parallelIndex": 1,
                   "status": "passed",
-                  "duration": 16136,
+                  "duration": 13726,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-07T00:05:02.839Z",
+                  "startTime": "2026-10-07T01:36:06.430Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -998,7 +1076,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-3cf4cee12cfa84a619f7",
           "file": "carnet.spec.ts",
-          "line": 176,
+          "line": 175,
           "column": 1
         },
         {
@@ -1015,14 +1093,14 @@
               "results": [
                 {
                   "workerIndex": 1,
-                  "parallelIndex": 0,
+                  "parallelIndex": 1,
                   "status": "passed",
-                  "duration": 12633,
+                  "duration": 13503,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-07T00:05:18.986Z",
+                  "startTime": "2026-10-07T01:36:20.170Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1032,7 +1110,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-4a4c9313edd1f0e75359",
           "file": "carnet.spec.ts",
-          "line": 193,
+          "line": 192,
           "column": 1
         },
         {
@@ -1049,14 +1127,14 @@
               "results": [
                 {
                   "workerIndex": 1,
-                  "parallelIndex": 0,
+                  "parallelIndex": 1,
                   "status": "passed",
-                  "duration": 11397,
+                  "duration": 10407,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-07T00:05:31.637Z",
+                  "startTime": "2026-10-07T01:36:33.688Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1066,7 +1144,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-77463206387516158133",
           "file": "carnet.spec.ts",
-          "line": 213,
+          "line": 212,
           "column": 1
         },
         {
@@ -1083,14 +1161,14 @@
               "results": [
                 {
                   "workerIndex": 1,
-                  "parallelIndex": 0,
+                  "parallelIndex": 1,
                   "status": "passed",
-                  "duration": 12655,
+                  "duration": 13145,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-07T00:05:43.044Z",
+                  "startTime": "2026-10-07T01:36:44.106Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1100,7 +1178,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-3db6e0f62e86bf9738a4",
           "file": "carnet.spec.ts",
-          "line": 224,
+          "line": 223,
           "column": 1
         },
         {
@@ -1117,14 +1195,14 @@
               "results": [
                 {
                   "workerIndex": 1,
-                  "parallelIndex": 0,
+                  "parallelIndex": 1,
                   "status": "passed",
-                  "duration": 9610,
+                  "duration": 9901,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-07T00:05:55.716Z",
+                  "startTime": "2026-10-07T01:36:57.268Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1134,7 +1212,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-8d75fcde0cf1b84cf05f",
           "file": "carnet.spec.ts",
-          "line": 241,
+          "line": 240,
           "column": 1
         },
         {
@@ -1151,14 +1229,14 @@
               "results": [
                 {
                   "workerIndex": 1,
-                  "parallelIndex": 0,
+                  "parallelIndex": 1,
                   "status": "passed",
-                  "duration": 7255,
+                  "duration": 8642,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-07T00:06:05.338Z",
+                  "startTime": "2026-10-07T01:37:07.180Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1168,7 +1246,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-c07c93a7e90e731b33d3",
           "file": "carnet.spec.ts",
-          "line": 260,
+          "line": 259,
           "column": 1
         },
         {
@@ -1185,14 +1263,14 @@
               "results": [
                 {
                   "workerIndex": 1,
-                  "parallelIndex": 0,
+                  "parallelIndex": 1,
                   "status": "passed",
-                  "duration": 9317,
+                  "duration": 11523,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-07T00:06:12.604Z",
+                  "startTime": "2026-10-07T01:37:15.833Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1202,7 +1280,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-3c0f5a7af1f8d61d7ca7",
           "file": "carnet.spec.ts",
-          "line": 280,
+          "line": 279,
           "column": 1
         },
         {
@@ -1219,14 +1297,14 @@
               "results": [
                 {
                   "workerIndex": 1,
-                  "parallelIndex": 0,
+                  "parallelIndex": 1,
                   "status": "passed",
-                  "duration": 9829,
+                  "duration": 10735,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-07T00:06:21.929Z",
+                  "startTime": "2026-10-07T01:37:27.387Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1236,7 +1314,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-308b2c1679029b13a09c",
           "file": "carnet.spec.ts",
-          "line": 294,
+          "line": 293,
           "column": 1
         },
         {
@@ -1253,14 +1331,14 @@
               "results": [
                 {
                   "workerIndex": 1,
-                  "parallelIndex": 0,
+                  "parallelIndex": 1,
                   "status": "passed",
-                  "duration": 3183,
+                  "duration": 4476,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-07T00:06:31.768Z",
+                  "startTime": "2026-10-07T01:37:38.131Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1287,9 +1365,9 @@
               "results": [
                 {
                   "workerIndex": 1,
-                  "parallelIndex": 0,
+                  "parallelIndex": 1,
                   "status": "passed",
-                  "duration": 15804,
+                  "duration": 16847,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
@@ -1297,10 +1375,10 @@
                   "steps": [
                     {
                       "title": "Expect \"poll toBeLessThan\"",
-                      "duration": 10
+                      "duration": 9
                     }
                   ],
-                  "startTime": "2026-10-07T00:06:34.961Z",
+                  "startTime": "2026-10-07T01:37:42.619Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1311,6 +1389,84 @@
           "id": "75ad7d8441bc6b7a4c05-313b851cf4e81dc64432",
           "file": "carnet.spec.ts",
           "line": 330,
+          "column": 1
+        },
+        {
+          "title": "intégrité du carnet : entrée directe et vue d’ensemble superposée",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 9924,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBeGreaterThanOrEqual\"",
+                      "duration": 10
+                    },
+                    {
+                      "title": "Expect \"poll toBeLessThan\"",
+                      "duration": 13
+                    }
+                  ],
+                  "startTime": "2026-10-07T01:37:59.484Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-747a035b3b454f687f35",
+          "file": "carnet.spec.ts",
+          "line": 423,
+          "column": 1
+        },
+        {
+          "title": "intégrité du carnet : les onglets ne déplacent jamais la lecture",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "webkit",
+              "projectName": "webkit",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 15903,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-07T01:38:09.418Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-8bfdc127f44a4b6d8e1d",
+          "file": "carnet.spec.ts",
+          "line": 476,
           "column": 1
         },
         {
@@ -1327,9 +1483,9 @@
               "results": [
                 {
                   "workerIndex": 1,
-                  "parallelIndex": 0,
+                  "parallelIndex": 1,
                   "status": "passed",
-                  "duration": 8301,
+                  "duration": 9709,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
@@ -1337,10 +1493,10 @@
                   "steps": [
                     {
                       "title": "Expect \"poll toBeGreaterThanOrEqual\"",
-                      "duration": 35
+                      "duration": 23
                     }
                   ],
-                  "startTime": "2026-10-07T00:06:50.773Z",
+                  "startTime": "2026-10-07T01:38:25.332Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1350,7 +1506,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-00403df0128c6d5f2333",
           "file": "carnet.spec.ts",
-          "line": 423,
+          "line": 509,
           "column": 1
         },
         {
@@ -1367,9 +1523,9 @@
               "results": [
                 {
                   "workerIndex": 1,
-                  "parallelIndex": 0,
+                  "parallelIndex": 1,
                   "status": "passed",
-                  "duration": 3545,
+                  "duration": 4754,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
@@ -1377,14 +1533,14 @@
                   "steps": [
                     {
                       "title": "Expect \"poll toEqual\"",
-                      "duration": 10
+                      "duration": 26
                     },
                     {
                       "title": "Expect \"poll toEqual\"",
-                      "duration": 18
+                      "duration": 16
                     }
                   ],
-                  "startTime": "2026-10-07T00:06:59.083Z",
+                  "startTime": "2026-10-07T01:38:35.050Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1394,11 +1550,11 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-bd3193c3e01bec5d9dda",
           "file": "carnet.spec.ts",
-          "line": 448,
+          "line": 534,
           "column": 1
         },
         {
-          "title": "rendu de référence 360 pixels : accueil et titre long",
+          "title": "rendu de référence 360 pixels : carnet et titre long",
           "ok": true,
           "tags": [],
           "tests": [
@@ -1411,14 +1567,14 @@
               "results": [
                 {
                   "workerIndex": 1,
-                  "parallelIndex": 0,
+                  "parallelIndex": 1,
                   "status": "passed",
-                  "duration": 2465,
+                  "duration": 2680,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-07T00:07:02.638Z",
+                  "startTime": "2026-10-07T01:38:39.816Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1426,13 +1582,13 @@
               "status": "expected"
             }
           ],
-          "id": "75ad7d8441bc6b7a4c05-7cb1e8f3bf547d2ebb0f",
+          "id": "75ad7d8441bc6b7a4c05-6a688b21d02c8685aad5",
           "file": "carnet.spec.ts",
-          "line": 472,
+          "line": 558,
           "column": 3
         },
         {
-          "title": "rendu de référence 390 pixels : accueil et titre long",
+          "title": "rendu de référence 390 pixels : carnet et titre long",
           "ok": true,
           "tags": [],
           "tests": [
@@ -1445,14 +1601,14 @@
               "results": [
                 {
                   "workerIndex": 1,
-                  "parallelIndex": 0,
+                  "parallelIndex": 1,
                   "status": "passed",
-                  "duration": 2555,
+                  "duration": 2680,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-07T00:07:05.112Z",
+                  "startTime": "2026-10-07T01:38:42.508Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1460,13 +1616,13 @@
               "status": "expected"
             }
           ],
-          "id": "75ad7d8441bc6b7a4c05-0b24edcb37253437134e",
+          "id": "75ad7d8441bc6b7a4c05-a499183c1014cec06636",
           "file": "carnet.spec.ts",
-          "line": 472,
+          "line": 558,
           "column": 3
         },
         {
-          "title": "rendu de référence 430 pixels : accueil et titre long",
+          "title": "rendu de référence 430 pixels : carnet et titre long",
           "ok": true,
           "tags": [],
           "tests": [
@@ -1479,14 +1635,14 @@
               "results": [
                 {
                   "workerIndex": 1,
-                  "parallelIndex": 0,
+                  "parallelIndex": 1,
                   "status": "passed",
-                  "duration": 2517,
+                  "duration": 2647,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-07T00:07:07.676Z",
+                  "startTime": "2026-10-07T01:38:45.200Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1494,13 +1650,13 @@
               "status": "expected"
             }
           ],
-          "id": "75ad7d8441bc6b7a4c05-854e00ab00253bfab2f5",
+          "id": "75ad7d8441bc6b7a4c05-45f945bca5a82d1fcc2d",
           "file": "carnet.spec.ts",
-          "line": 472,
+          "line": 558,
           "column": 3
         },
         {
-          "title": "rendu de référence 768 pixels : accueil et titre long",
+          "title": "rendu de référence 768 pixels : carnet et titre long",
           "ok": true,
           "tags": [],
           "tests": [
@@ -1513,14 +1669,14 @@
               "results": [
                 {
                   "workerIndex": 1,
-                  "parallelIndex": 0,
+                  "parallelIndex": 1,
                   "status": "passed",
-                  "duration": 2844,
+                  "duration": 3344,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-07T00:07:10.203Z",
+                  "startTime": "2026-10-07T01:38:47.859Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1528,13 +1684,13 @@
               "status": "expected"
             }
           ],
-          "id": "75ad7d8441bc6b7a4c05-f9166e0e053eba53ac85",
+          "id": "75ad7d8441bc6b7a4c05-9bfdeda152d54c38fd0a",
           "file": "carnet.spec.ts",
-          "line": 472,
+          "line": 558,
           "column": 3
         },
         {
-          "title": "rendu de référence 1440 pixels : accueil et titre long",
+          "title": "rendu de référence 1440 pixels : carnet et titre long",
           "ok": true,
           "tags": [],
           "tests": [
@@ -1547,14 +1703,14 @@
               "results": [
                 {
                   "workerIndex": 1,
-                  "parallelIndex": 0,
+                  "parallelIndex": 1,
                   "status": "passed",
-                  "duration": 3271,
+                  "duration": 3130,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-07T00:07:13.061Z",
+                  "startTime": "2026-10-07T01:38:51.212Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1562,9 +1718,9 @@
               "status": "expected"
             }
           ],
-          "id": "75ad7d8441bc6b7a4c05-28d13a602ef20bd295e3",
+          "id": "75ad7d8441bc6b7a4c05-e085724b60610f5e46a6",
           "file": "carnet.spec.ts",
-          "line": 472,
+          "line": 558,
           "column": 3
         },
         {
@@ -1581,14 +1737,14 @@
               "results": [
                 {
                   "workerIndex": 2,
-                  "parallelIndex": 0,
+                  "parallelIndex": 2,
                   "status": "passed",
-                  "duration": 12213,
+                  "duration": 15168,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-07T00:07:16.982Z",
+                  "startTime": "2026-10-07T01:34:38.515Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1598,7 +1754,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-ea69f45000599adea636",
           "file": "carnet.spec.ts",
-          "line": 95,
+          "line": 93,
           "column": 1
         },
         {
@@ -1615,14 +1771,14 @@
               "results": [
                 {
                   "workerIndex": 2,
-                  "parallelIndex": 0,
+                  "parallelIndex": 2,
                   "status": "passed",
-                  "duration": 35870,
+                  "duration": 43428,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-07T00:07:29.605Z",
+                  "startTime": "2026-10-07T01:34:54.319Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1632,7 +1788,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-f67819a70914a30dd58d",
           "file": "carnet.spec.ts",
-          "line": 118,
+          "line": 117,
           "column": 1
         },
         {
@@ -1649,14 +1805,14 @@
               "results": [
                 {
                   "workerIndex": 2,
-                  "parallelIndex": 0,
+                  "parallelIndex": 2,
                   "status": "passed",
-                  "duration": 6260,
+                  "duration": 7225,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-07T00:08:05.485Z",
+                  "startTime": "2026-10-07T01:35:37.775Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1666,7 +1822,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-a64a0e8db4bb01368b64",
           "file": "carnet.spec.ts",
-          "line": 137,
+          "line": 136,
           "column": 1
         },
         {
@@ -1683,14 +1839,14 @@
               "results": [
                 {
                   "workerIndex": 2,
-                  "parallelIndex": 0,
+                  "parallelIndex": 2,
                   "status": "passed",
-                  "duration": 13944,
+                  "duration": 15683,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-07T00:08:11.756Z",
+                  "startTime": "2026-10-07T01:35:45.011Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1700,7 +1856,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-86e9754672ebd210bc8f",
           "file": "carnet.spec.ts",
-          "line": 161,
+          "line": 160,
           "column": 1
         },
         {
@@ -1717,14 +1873,14 @@
               "results": [
                 {
                   "workerIndex": 2,
-                  "parallelIndex": 0,
+                  "parallelIndex": 2,
                   "status": "passed",
-                  "duration": 25107,
+                  "duration": 25295,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-07T00:08:25.709Z",
+                  "startTime": "2026-10-07T01:36:00.708Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1734,7 +1890,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-d106bf1070add7a957f0",
           "file": "carnet.spec.ts",
-          "line": 176,
+          "line": 175,
           "column": 1
         },
         {
@@ -1751,14 +1907,14 @@
               "results": [
                 {
                   "workerIndex": 2,
-                  "parallelIndex": 0,
+                  "parallelIndex": 2,
                   "status": "passed",
-                  "duration": 13245,
+                  "duration": 13042,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-07T00:08:50.828Z",
+                  "startTime": "2026-10-07T01:36:26.019Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1768,7 +1924,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-c70ae6c718e4b8c5db7f",
           "file": "carnet.spec.ts",
-          "line": 193,
+          "line": 192,
           "column": 1
         },
         {
@@ -1785,14 +1941,14 @@
               "results": [
                 {
                   "workerIndex": 2,
-                  "parallelIndex": 0,
+                  "parallelIndex": 2,
                   "status": "passed",
-                  "duration": 10118,
+                  "duration": 10902,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-07T00:09:04.083Z",
+                  "startTime": "2026-10-07T01:36:39.074Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1802,7 +1958,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-a95532ce4f27bd0bc9f5",
           "file": "carnet.spec.ts",
-          "line": 213,
+          "line": 212,
           "column": 1
         },
         {
@@ -1819,14 +1975,14 @@
               "results": [
                 {
                   "workerIndex": 2,
-                  "parallelIndex": 0,
+                  "parallelIndex": 2,
                   "status": "passed",
-                  "duration": 12379,
+                  "duration": 12808,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-07T00:09:14.211Z",
+                  "startTime": "2026-10-07T01:36:49.986Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1836,7 +1992,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-565e8b81acb59cd74108",
           "file": "carnet.spec.ts",
-          "line": 224,
+          "line": 223,
           "column": 1
         },
         {
@@ -1853,14 +2009,14 @@
               "results": [
                 {
                   "workerIndex": 2,
-                  "parallelIndex": 0,
+                  "parallelIndex": 2,
                   "status": "passed",
-                  "duration": 9767,
+                  "duration": 10136,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-07T00:09:26.600Z",
+                  "startTime": "2026-10-07T01:37:02.805Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1870,7 +2026,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-01b119e0701fd6bb1db4",
           "file": "carnet.spec.ts",
-          "line": 241,
+          "line": 240,
           "column": 1
         },
         {
@@ -1887,14 +2043,14 @@
               "results": [
                 {
                   "workerIndex": 2,
-                  "parallelIndex": 0,
+                  "parallelIndex": 2,
                   "status": "passed",
-                  "duration": 7560,
+                  "duration": 9616,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-07T00:09:36.380Z",
+                  "startTime": "2026-10-07T01:37:12.959Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1904,7 +2060,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-14362a93ede138e6bf1e",
           "file": "carnet.spec.ts",
-          "line": 260,
+          "line": 259,
           "column": 1
         },
         {
@@ -1921,14 +2077,14 @@
               "results": [
                 {
                   "workerIndex": 2,
-                  "parallelIndex": 0,
+                  "parallelIndex": 2,
                   "status": "passed",
-                  "duration": 9252,
+                  "duration": 10056,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-07T00:09:43.948Z",
+                  "startTime": "2026-10-07T01:37:22.589Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1938,7 +2094,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-202631a7e7e9486317f9",
           "file": "carnet.spec.ts",
-          "line": 280,
+          "line": 279,
           "column": 1
         },
         {
@@ -1955,14 +2111,14 @@
               "results": [
                 {
                   "workerIndex": 2,
-                  "parallelIndex": 0,
+                  "parallelIndex": 2,
                   "status": "passed",
-                  "duration": 10184,
+                  "duration": 11460,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-07T00:09:53.209Z",
+                  "startTime": "2026-10-07T01:37:32.660Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1972,7 +2128,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-724717755add69339a8f",
           "file": "carnet.spec.ts",
-          "line": 294,
+          "line": 293,
           "column": 1
         },
         {
@@ -1989,14 +2145,14 @@
               "results": [
                 {
                   "workerIndex": 2,
-                  "parallelIndex": 0,
+                  "parallelIndex": 2,
                   "status": "passed",
-                  "duration": 3372,
+                  "duration": 5014,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-07T00:10:03.404Z",
+                  "startTime": "2026-10-07T01:37:44.137Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -2023,9 +2179,9 @@
               "results": [
                 {
                   "workerIndex": 2,
-                  "parallelIndex": 0,
+                  "parallelIndex": 2,
                   "status": "passed",
-                  "duration": 15448,
+                  "duration": 15953,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
@@ -2036,7 +2192,7 @@
                       "duration": 12
                     }
                   ],
-                  "startTime": "2026-10-07T00:10:06.787Z",
+                  "startTime": "2026-10-07T01:37:49.176Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -2047,6 +2203,84 @@
           "id": "75ad7d8441bc6b7a4c05-470bda17dc0d24e7f531",
           "file": "carnet.spec.ts",
           "line": 330,
+          "column": 1
+        },
+        {
+          "title": "intégrité du carnet : entrée directe et vue d’ensemble superposée",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox",
+              "projectName": "firefox",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 8928,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Expect \"poll toBeGreaterThanOrEqual\"",
+                      "duration": 12
+                    },
+                    {
+                      "title": "Expect \"poll toBeLessThan\"",
+                      "duration": 18
+                    }
+                  ],
+                  "startTime": "2026-10-07T01:38:05.145Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-5d9e08a172d196696307",
+          "file": "carnet.spec.ts",
+          "line": 423,
+          "column": 1
+        },
+        {
+          "title": "intégrité du carnet : les onglets ne déplacent jamais la lecture",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "firefox",
+              "projectName": "firefox",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 13537,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-07T01:38:14.085Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "75ad7d8441bc6b7a4c05-9b5f062ad13dc52b85e5",
+          "file": "carnet.spec.ts",
+          "line": 476,
           "column": 1
         },
         {
@@ -2063,9 +2297,9 @@
               "results": [
                 {
                   "workerIndex": 2,
-                  "parallelIndex": 0,
+                  "parallelIndex": 2,
                   "status": "passed",
-                  "duration": 7124,
+                  "duration": 8629,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
@@ -2073,10 +2307,10 @@
                   "steps": [
                     {
                       "title": "Expect \"poll toBeGreaterThanOrEqual\"",
-                      "duration": 34
+                      "duration": 65
                     }
                   ],
-                  "startTime": "2026-10-07T00:10:22.246Z",
+                  "startTime": "2026-10-07T01:38:27.634Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -2086,7 +2320,7 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-2ec569c878ae60ca3332",
           "file": "carnet.spec.ts",
-          "line": 423,
+          "line": 509,
           "column": 1
         },
         {
@@ -2103,9 +2337,9 @@
               "results": [
                 {
                   "workerIndex": 2,
-                  "parallelIndex": 0,
+                  "parallelIndex": 2,
                   "status": "passed",
-                  "duration": 4192,
+                  "duration": 4162,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
@@ -2113,14 +2347,14 @@
                   "steps": [
                     {
                       "title": "Expect \"poll toEqual\"",
-                      "duration": 11
+                      "duration": 20
                     },
                     {
                       "title": "Expect \"poll toEqual\"",
-                      "duration": 10
+                      "duration": 14
                     }
                   ],
-                  "startTime": "2026-10-07T00:10:29.384Z",
+                  "startTime": "2026-10-07T01:38:36.282Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -2130,11 +2364,11 @@
           ],
           "id": "75ad7d8441bc6b7a4c05-48ceafa55718407fd28e",
           "file": "carnet.spec.ts",
-          "line": 448,
+          "line": 534,
           "column": 1
         },
         {
-          "title": "rendu de référence 360 pixels : accueil et titre long",
+          "title": "rendu de référence 360 pixels : carnet et titre long",
           "ok": true,
           "tags": [],
           "tests": [
@@ -2147,14 +2381,14 @@
               "results": [
                 {
                   "workerIndex": 2,
-                  "parallelIndex": 0,
+                  "parallelIndex": 2,
                   "status": "passed",
-                  "duration": 2573,
+                  "duration": 2511,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-07T00:10:33.584Z",
+                  "startTime": "2026-10-07T01:38:40.454Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -2162,13 +2396,13 @@
               "status": "expected"
             }
           ],
-          "id": "75ad7d8441bc6b7a4c05-e4a0296fe1584d7fba20",
+          "id": "75ad7d8441bc6b7a4c05-ba93813fb383b933cbd7",
           "file": "carnet.spec.ts",
-          "line": 472,
+          "line": 558,
           "column": 3
         },
         {
-          "title": "rendu de référence 390 pixels : accueil et titre long",
+          "title": "rendu de référence 390 pixels : carnet et titre long",
           "ok": true,
           "tags": [],
           "tests": [
@@ -2181,14 +2415,14 @@
               "results": [
                 {
                   "workerIndex": 2,
-                  "parallelIndex": 0,
+                  "parallelIndex": 2,
                   "status": "passed",
-                  "duration": 2402,
+                  "duration": 2328,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-07T00:10:36.165Z",
+                  "startTime": "2026-10-07T01:38:42.977Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -2196,13 +2430,13 @@
               "status": "expected"
             }
           ],
-          "id": "75ad7d8441bc6b7a4c05-36c9efef681254471813",
+          "id": "75ad7d8441bc6b7a4c05-2ba1e7f2d0950f8bd135",
           "file": "carnet.spec.ts",
-          "line": 472,
+          "line": 558,
           "column": 3
         },
         {
-          "title": "rendu de référence 430 pixels : accueil et titre long",
+          "title": "rendu de référence 430 pixels : carnet et titre long",
           "ok": true,
           "tags": [],
           "tests": [
@@ -2215,14 +2449,14 @@
               "results": [
                 {
                   "workerIndex": 2,
-                  "parallelIndex": 0,
+                  "parallelIndex": 2,
                   "status": "passed",
-                  "duration": 2630,
+                  "duration": 2642,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-07T00:10:38.577Z",
+                  "startTime": "2026-10-07T01:38:45.313Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -2230,13 +2464,13 @@
               "status": "expected"
             }
           ],
-          "id": "75ad7d8441bc6b7a4c05-9f42b8d004eed1b5b68f",
+          "id": "75ad7d8441bc6b7a4c05-05acf01c66bee408fe91",
           "file": "carnet.spec.ts",
-          "line": 472,
+          "line": 558,
           "column": 3
         },
         {
-          "title": "rendu de référence 768 pixels : accueil et titre long",
+          "title": "rendu de référence 768 pixels : carnet et titre long",
           "ok": true,
           "tags": [],
           "tests": [
@@ -2249,14 +2483,14 @@
               "results": [
                 {
                   "workerIndex": 2,
-                  "parallelIndex": 0,
+                  "parallelIndex": 2,
                   "status": "passed",
-                  "duration": 2572,
+                  "duration": 2645,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-07T00:10:41.218Z",
+                  "startTime": "2026-10-07T01:38:47.963Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -2264,13 +2498,13 @@
               "status": "expected"
             }
           ],
-          "id": "75ad7d8441bc6b7a4c05-f21c448a94ad97277001",
+          "id": "75ad7d8441bc6b7a4c05-26128ea1685d4552ae0a",
           "file": "carnet.spec.ts",
-          "line": 472,
+          "line": 558,
           "column": 3
         },
         {
-          "title": "rendu de référence 1440 pixels : accueil et titre long",
+          "title": "rendu de référence 1440 pixels : carnet et titre long",
           "ok": true,
           "tags": [],
           "tests": [
@@ -2283,14 +2517,14 @@
               "results": [
                 {
                   "workerIndex": 2,
-                  "parallelIndex": 0,
+                  "parallelIndex": 2,
                   "status": "passed",
-                  "duration": 2623,
+                  "duration": 2836,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-07T00:10:43.801Z",
+                  "startTime": "2026-10-07T01:38:50.621Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -2298,9 +2532,9 @@
               "status": "expected"
             }
           ],
-          "id": "75ad7d8441bc6b7a4c05-7d18586a43e922c1ff6d",
+          "id": "75ad7d8441bc6b7a4c05-aba5796a9c18da471a41",
           "file": "carnet.spec.ts",
-          "line": 472,
+          "line": 558,
           "column": 3
         }
       ]
@@ -2308,9 +2542,9 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-10-07T00:00:55.963Z",
-    "duration": 590591.066,
-    "expected": 63,
+    "startTime": "2026-10-07T01:34:37.308Z",
+    "duration": 257122.693,
+    "expected": 69,
     "skipped": 0,
     "unexpected": 0,
     "flaky": 0

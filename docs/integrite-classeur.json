@@ -1,7 +1,7 @@
 {
   "date": "2026-10-07",
-  "baselineCommit": "3e161638781e36b778db7e30899f06f8ab4f308b",
-  "comparison": "Avant/après correction des onglets, menu du compte, fondu et zoom de capsules",
+  "baselineCommit": "02059cf16d9de04a59f23fe117e38324009255c1",
+  "comparison": "Avant/après correction de l’intégrité physique du carnet, entrée directe et vue d’ensemble superposée",
   "checks": [
     {
       "file": "content/parcours.json",

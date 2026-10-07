@@ -2,6 +2,10 @@
 
 Ces rapports bruts gardent la trace des essais. Le rapport de la version livrée est `../browser-results.json` ; ne pas additionner ces exécutions à ses cas.
 
+- `classeur-trois-feuilles-avant-integrite.json` : précédente livraison à trois onglets, avant la correction du déplacement commandé lors du retour au parcours et le remplacement de l’accueil par une carte superposée. Ses 63 cas ne décrivent pas les deux contraintes supplémentaires de la version actuelle.
+- `accueil-initial-390.png` : capture du premier accueil, conservée pour l’historique ; elle ne représente pas l’entrée directe dans le carnet actuel.
+- `integrite-avant-attente-formulaire.json` : exécution complète avec 68 réussites et un échec WebKit de récupération du compte. Le contrôle pouvait saisir l’identifiant dans le précédent formulaire de connexion avant son remplacement. Il attend désormais le titre « Récupérer ma connexion » avant toute saisie ; le flux de compte reste inchangé. Les six contrôles de l’intégrité physique passent dans cette exécution.
+
 - `continuite-regression-results.json` et `continuite-mesure-results.json` : ancienne interface continue en plan spatial, avant la refonte en classeur. La mesure de retournement avait été corrigée après un échec de protocole sur WebKit.
 - `classeur-initial-interrompu.json` : première régression du classeur, interrompue après un échec de l’attente avant rechargement d’une trace. Le test a été corrigé pour attendre la confirmation de création puis la sauvegarde.
 - `classeur-avant-annulation-rapide-interrompu.json` : régression interrompue pour corriger une annulation de fermeture avant le départ de son mouvement. Les cas déjà exécutés n’ont pas échoué.

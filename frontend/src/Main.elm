@@ -41,9 +41,14 @@ type Moment
     | Entre
 
 
+type GesteNavigation
+    = OngletPointe
+    | OngletAuClavier
+    | DestinationChoisie
+
+
 type Vue
-    = Accueil
-    | Parcours
+    = Parcours
     | ChapitreVue Int Moment
     | Objectifs
     | Reperes
@@ -76,6 +81,7 @@ type alias Modele =
     , formulaires : Dict String String
     , menu : Bool
     , compteMenu : Bool
+    , ensemble : Bool
     , erreur : String
     , notice : String
     , busy : Bool
@@ -105,6 +111,7 @@ type Msg
     | OngletClavier Vue
     | Taille Int Int
     | Naviguer Vue
+    | ChangerFeuille Vue
     | OuvrirCompte Ecran
     | Saisie String String
     | Action String
@@ -113,6 +120,8 @@ type Msg
     | AfficherMenu
     | AfficherCompte
     | FermerCompte
+    | AfficherVueEnsemble
+    | FermerVueEnsemble
     | RetrouverPlan
     | ToggleApprofondissement
     | ToggleSources
@@ -154,8 +163,8 @@ main =
 init : D.Value -> ( Modele, Cmd Msg )
 init flags =
     ( { ecran = Entree
-      , vue = Accueil
-      , camera = position Accueil
+      , vue = Parcours
+      , camera = position Parcours
       , momentCamera = 0
       , preparation = 0
       , mouvementVersion = 0
@@ -176,6 +185,7 @@ init flags =
       , formulaires = Dict.empty
       , menu = False
       , compteMenu = False
+      , ensemble = False
       , erreur = ""
       , notice = ""
       , busy = False
@@ -217,6 +227,11 @@ surveillerMouvement version =
 focus : Cmd Msg
 focus =
     envoyer "focus" (E.object [ ( "id", E.string "titre-page" ), ( "scroll", E.bool True ) ])
+
+
+rejoindreDebut : Modele -> String -> Cmd Msg
+rejoindreDebut modele id =
+    envoyer "focus" (E.object [ ( "id", E.string id ), ( "scroll", E.bool True ), ( "smooth", E.bool (animations modele) ) ])
 
 
 form : String -> Modele -> String
@@ -266,10 +281,10 @@ update msg modele =
                 "opened" ->
                     case D.decodeValue (D.field "journal" K.decoder) data of
                         Ok doc ->
-                            ( { modele | ecran = Ouvert, vue = Accueil, camera = position Accueil, momentCamera = 0, preparation = 0, sortie = Nothing, momentSortie = Nothing, retourSeance = Nothing, parcoursVue = Parcours, carnetVue = Parcours, compteMenu = False, capsule = Nothing, capsuleSortie = Nothing, capsulesMouvement = [], carnet = doc, demo = lire (D.field "demo" D.bool) False data, formulaires = Dict.empty, erreur = "", notice = "", busy = False, photosUrls = Dict.empty, confirmation = "", menu = False }, focus )
+                            ( { modele | ecran = Ouvert, vue = Parcours, camera = position Parcours, momentCamera = 0, preparation = 0, sortie = Nothing, momentSortie = Nothing, retourSeance = Nothing, parcoursVue = Parcours, carnetVue = Parcours, compteMenu = False, ensemble = False, capsule = Nothing, capsuleSortie = Nothing, capsulesMouvement = [], carnet = doc, demo = lire (D.field "demo" D.bool) False data, formulaires = Dict.empty, erreur = "", notice = "", busy = False, photosUrls = Dict.empty, confirmation = "", menu = False }, focus )
 
                         Err _ ->
-                            ( { modele | ecran = Verrouille, vue = Accueil, camera = position Accueil, momentCamera = 0, preparation = 0, sortie = Nothing, momentSortie = Nothing, retourSeance = Nothing, parcoursVue = Parcours, carnetVue = Parcours, compteMenu = False, capsule = Nothing, capsuleSortie = Nothing, capsulesMouvement = [], carnet = K.vide, busy = False, erreur = "Le carnet a un format non pris en charge. Il reste conservé chiffré." }, envoyer "lock" E.null )
+                            ( { modele | ecran = Verrouille, vue = Parcours, camera = position Parcours, momentCamera = 0, preparation = 0, sortie = Nothing, momentSortie = Nothing, retourSeance = Nothing, parcoursVue = Parcours, carnetVue = Parcours, compteMenu = False, ensemble = False, capsule = Nothing, capsuleSortie = Nothing, capsulesMouvement = [], carnet = K.vide, busy = False, erreur = "Le carnet a un format non pris en charge. Il reste conservé chiffré." }, envoyer "lock" E.null )
 
                 "motionPreference" ->
                     let
@@ -279,10 +294,10 @@ update msg modele =
                     ( stabiliserSiNecessaire suivant, Cmd.none )
 
                 "locked" ->
-                    ( { modele | ecran = Verrouille, vue = Accueil, camera = position Accueil, momentCamera = 0, preparation = 0, sortie = Nothing, momentSortie = Nothing, retourSeance = Nothing, parcoursVue = Parcours, carnetVue = Parcours, compteMenu = False, capsule = Nothing, capsuleSortie = Nothing, capsulesMouvement = [], carnet = K.vide, demo = lire (D.field "demo" D.bool) False data, formulaires = Dict.empty, photosUrls = Dict.empty, selection = [], kit = Nothing, coffreRecupere = "", authRecupere = "", busy = False, confirmation = "", menu = False, notice = "" }, Cmd.none )
+                    ( { modele | ecran = Verrouille, vue = Parcours, camera = position Parcours, momentCamera = 0, preparation = 0, sortie = Nothing, momentSortie = Nothing, retourSeance = Nothing, parcoursVue = Parcours, carnetVue = Parcours, compteMenu = False, ensemble = False, capsule = Nothing, capsuleSortie = Nothing, capsulesMouvement = [], carnet = K.vide, demo = lire (D.field "demo" D.bool) False data, formulaires = Dict.empty, photosUrls = Dict.empty, selection = [], kit = Nothing, coffreRecupere = "", authRecupere = "", busy = False, confirmation = "", menu = False, notice = "" }, Cmd.none )
 
                 "entry" ->
-                    ( { modele | ecran = Entree, vue = Accueil, camera = position Accueil, momentCamera = 0, preparation = 0, sortie = Nothing, momentSortie = Nothing, retourSeance = Nothing, parcoursVue = Parcours, carnetVue = Parcours, compteMenu = False, capsule = Nothing, capsuleSortie = Nothing, capsulesMouvement = [], carnet = K.vide, formulaires = Dict.empty, photosUrls = Dict.empty, selection = [], kit = Nothing, busy = False, erreur = "", notice = "", confirmation = "", demo = False }, focus )
+                    ( { modele | ecran = Entree, vue = Parcours, camera = position Parcours, momentCamera = 0, preparation = 0, sortie = Nothing, momentSortie = Nothing, retourSeance = Nothing, parcoursVue = Parcours, carnetVue = Parcours, compteMenu = False, ensemble = False, capsule = Nothing, capsuleSortie = Nothing, capsulesMouvement = [], carnet = K.vide, formulaires = Dict.empty, photosUrls = Dict.empty, selection = [], kit = Nothing, busy = False, erreur = "", notice = "", confirmation = "", demo = False }, focus )
 
                 "busy" ->
                     ( { modele | busy = True, erreur = "", notice = texte }, Cmd.none )
@@ -409,206 +424,16 @@ update msg modele =
             )
 
         OngletClavier vue ->
-            let
-                ( suivant, _ ) =
-                    update (Naviguer vue) modele
-            in
-            ( suivant, envoyer "focus" (E.object [ ( "id", E.string ("onglet-" ++ String.fromInt (round (position vue).x)) ), ( "scroll", E.bool False ) ]) )
+            naviguer OngletAuClavier vue modele
+
+        ChangerFeuille vue ->
+            naviguer OngletPointe vue modele
 
         Naviguer vue ->
-            let
-                anime =
-                    animations modele && modele.ecran == Ouvert && vue /= Presentation && modele.vue /= Presentation
-
-                parcours =
-                    case vue of
-                        ChapitreVue _ _ ->
-                            vue
-
-                        Parcours ->
-                            Parcours
-
-                        _ ->
-                            modele.parcoursVue
-
-                memeSeance =
-                    case ( modele.parcoursVue, parcours ) of
-                        ( ChapitreVue avant _, ChapitreVue apres _ ) ->
-                            avant == apres
-
-                        _ ->
-                            False
-
-                animeMoment =
-                    anime && feuille vue == Parcours && memeSeance && momentDe parcours /= modele.momentCamera
-
-                cibleCapsule =
-                    capsuleDe parcours
-
-                animeCapsule =
-                    anime && feuille vue == Parcours && cibleCapsule /= modele.capsule
-
-                changeFeuille =
-                    position vue /= modele.camera
-
-                ancienneCapsule =
-                    modele.capsule
-                        |> Maybe.map
-                            (\id ->
-                                ( id
-                                , case modele.parcoursVue of
-                                    ChapitreVue _ m ->
-                                        m
-
-                                    _ ->
-                                        Avant
-                                )
-                            )
-
-                ancienMoment =
-                    case modele.parcoursVue of
-                        ChapitreVue _ moment ->
-                            Just moment
-
-                        _ ->
-                            Nothing
-
-                retour =
-                    case ( modele.vue, vue ) of
-                        ( ChapitreVue _ _, Objectifs ) ->
-                            Just modele.vue
-
-                        ( ChapitreVue _ _, Reperes ) ->
-                            Just modele.vue
-
-                        ( _, ChapitreVue _ _ ) ->
-                            Nothing
-
-                        _ ->
-                            modele.retourSeance
-
-                suivant =
-                    { modele
-                        | vue = vue
-                        , mouvementVersion = modele.mouvementVersion + 1
-                        , parcoursVue = parcours
-                        , carnetVue =
-                            if estFeuille vue then
-                                vue
-
-                            else
-                                modele.carnetVue
-                        , camera =
-                            if anime then
-                                modele.camera
-
-                            else
-                                position vue
-                        , momentCamera =
-                            if anime && memeSeance then
-                                modele.momentCamera
-
-                            else
-                                momentDe parcours
-                        , capsule =
-                            if animeCapsule then
-                                modele.capsule
-
-                            else
-                                cibleCapsule
-                        , preparation =
-                            if anime && (changeFeuille || animeMoment || animeCapsule) then
-                                2
-
-                            else
-                                0
-                        , sortie =
-                            if anime && changeFeuille then
-                                if modele.preparation > 0 then
-                                    modele.sortie
-
-                                else
-                                    Just modele.vue
-
-                            else
-                                Nothing
-                        , momentSortie =
-                            if animeMoment then
-                                if modele.preparation > 0 then
-                                    modele.momentSortie
-
-                                else
-                                    ancienMoment
-
-                            else
-                                Nothing
-                        , capsuleSortie =
-                            if animeCapsule then
-                                ancienneCapsule
-
-                            else if anime && cibleCapsule /= Maybe.map Tuple.first modele.capsuleSortie then
-                                modele.capsuleSortie
-
-                            else
-                                Nothing
-                        , capsulesMouvement =
-                            if animeCapsule then
-                                List.filter (\id -> List.member (Just id) [ modele.capsule, cibleCapsule ]) modele.capsulesMouvement
-
-                            else if anime then
-                                modele.capsulesMouvement
-
-                            else
-                                []
-                        , menu = False
-                        , compteMenu = False
-                        , erreur = ""
-                        , notice = ""
-                        , confirmation = ""
-                        , retourSeance = retour
-                        , approfondi =
-                            if memeSeance then
-                                modele.approfondi
-
-                            else
-                                False
-                        , sources =
-                            if memeSeance then
-                                modele.sources
-
-                            else
-                                False
-                    }
-
-                focaliser =
-                    case vue of
-                        ChapitreVue id _ ->
-                            envoyer "focus" (E.object [ ( "id", E.string ("titre-capsule-" ++ String.fromInt id) ), ( "scroll", E.bool False ), ( "reveal", E.bool changeFeuille ) ])
-
-                        Parcours ->
-                            case capsuleDe modele.parcoursVue of
-                                Just id ->
-                                    envoyer "focus" (E.object [ ( "id", E.string ("titre-capsule-" ++ String.fromInt id) ), ( "scroll", E.bool False ) ])
-
-                                Nothing ->
-                                    focus
-
-                        _ ->
-                            focus
-            in
-            ( suivant
-            , Cmd.batch
-                [ focaliser
-                , if suivant.preparation == 0 && anime then
-                    surveillerMouvement suivant.mouvementVersion
-
-                  else
-                    Cmd.none
-                ]
-            )
+            naviguer DestinationChoisie vue modele
 
         OuvrirCompte ecran ->
-            ( { modele | ecran = ecran, vue = Accueil, compteMenu = False, formulaires = Dict.empty, erreur = "", notice = "", confirmation = "" }, focus )
+            ( { modele | ecran = ecran, vue = Parcours, compteMenu = False, ensemble = False, formulaires = Dict.empty, erreur = "", notice = "", confirmation = "" }, focus )
 
         Saisie cle valeur ->
             ( { modele | formulaires = Dict.insert cle valeur modele.formulaires }, Cmd.none )
@@ -626,11 +451,17 @@ update msg modele =
         Annuler ->
             ( { modele | confirmation = "" }, Cmd.none )
 
+        AfficherVueEnsemble ->
+            ( { modele | ensemble = True, compteMenu = False }, envoyer "showOverview" E.null )
+
+        FermerVueEnsemble ->
+            ( { modele | ensemble = False }, envoyer "focus" (E.object [ ( "id", E.string "compte-commande" ), ( "scroll", E.bool False ) ]) )
+
         RetrouverPlan ->
-            ( modele, envoyer "focus" (E.object [ ( "id", E.string "plan-carnet" ), ( "scroll", E.bool True ) ]) )
+            ( modele, rejoindreDebut modele "plan-carnet" )
 
         AfficherMenu ->
-            ( { modele | menu = not modele.menu, compteMenu = False }, Cmd.none )
+            ( { modele | menu = not modele.menu, compteMenu = False, ensemble = False }, Cmd.none )
 
         AfficherCompte ->
             ( { modele | compteMenu = not modele.compteMenu }, Cmd.none )
@@ -1031,6 +862,212 @@ actionTechnique action modele =
             exec action E.null
 
 
+{-| Un onglet conserve la lecture de l’objet carnet. Seule une destination
+explicitement choisie peut révéler une capsule ou rejoindre le début.
+-}
+naviguer : GesteNavigation -> Vue -> Modele -> ( Modele, Cmd Msg )
+naviguer geste vue modele =
+    let
+        anime =
+            animations modele && modele.ecran == Ouvert && vue /= Presentation && modele.vue /= Presentation
+
+        parcours =
+            case vue of
+                ChapitreVue _ _ ->
+                    vue
+
+                Parcours ->
+                    Parcours
+
+                _ ->
+                    modele.parcoursVue
+
+        memeSeance =
+            case ( modele.parcoursVue, parcours ) of
+                ( ChapitreVue avant _, ChapitreVue apres _ ) ->
+                    avant == apres
+
+                _ ->
+                    False
+
+        animeMoment =
+            anime && feuille vue == Parcours && memeSeance && momentDe parcours /= modele.momentCamera
+
+        cibleCapsule =
+            capsuleDe parcours
+
+        animeCapsule =
+            anime && feuille vue == Parcours && cibleCapsule /= modele.capsule
+
+        changeFeuille =
+            position vue /= modele.camera
+
+        ancienneCapsule =
+            modele.capsule
+                |> Maybe.map
+                    (\id ->
+                        ( id
+                        , case modele.parcoursVue of
+                            ChapitreVue _ m ->
+                                m
+
+                            _ ->
+                                Avant
+                        )
+                    )
+
+        ancienMoment =
+            case modele.parcoursVue of
+                ChapitreVue _ moment ->
+                    Just moment
+
+                _ ->
+                    Nothing
+
+        retour =
+            case ( modele.vue, vue ) of
+                ( ChapitreVue _ _, Objectifs ) ->
+                    Just modele.vue
+
+                ( ChapitreVue _ _, Reperes ) ->
+                    Just modele.vue
+
+                ( _, ChapitreVue _ _ ) ->
+                    Nothing
+
+                _ ->
+                    modele.retourSeance
+
+        suivant =
+            { modele
+                | vue = vue
+                , mouvementVersion = modele.mouvementVersion + 1
+                , parcoursVue = parcours
+                , carnetVue =
+                    if estFeuille vue then
+                        vue
+
+                    else
+                        modele.carnetVue
+                , camera =
+                    if anime then
+                        modele.camera
+
+                    else
+                        position vue
+                , momentCamera =
+                    if anime && memeSeance then
+                        modele.momentCamera
+
+                    else
+                        momentDe parcours
+                , capsule =
+                    if animeCapsule then
+                        modele.capsule
+
+                    else
+                        cibleCapsule
+                , preparation =
+                    if anime && (changeFeuille || animeMoment || animeCapsule) then
+                        2
+
+                    else
+                        0
+                , sortie =
+                    if anime && changeFeuille then
+                        if modele.preparation > 0 then
+                            modele.sortie
+
+                        else
+                            Just modele.vue
+
+                    else
+                        Nothing
+                , momentSortie =
+                    if animeMoment then
+                        if modele.preparation > 0 then
+                            modele.momentSortie
+
+                        else
+                            ancienMoment
+
+                    else
+                        Nothing
+                , capsuleSortie =
+                    if animeCapsule then
+                        ancienneCapsule
+
+                    else if anime && cibleCapsule /= Maybe.map Tuple.first modele.capsuleSortie then
+                        modele.capsuleSortie
+
+                    else
+                        Nothing
+                , capsulesMouvement =
+                    if animeCapsule then
+                        List.filter (\id -> List.member (Just id) [ modele.capsule, cibleCapsule ]) modele.capsulesMouvement
+
+                    else if anime then
+                        modele.capsulesMouvement
+
+                    else
+                        []
+                , menu = False
+                , compteMenu = False
+                , ensemble = False
+                , erreur = ""
+                , notice = ""
+                , confirmation = ""
+                , retourSeance = retour
+                , approfondi =
+                    if memeSeance then
+                        modele.approfondi
+
+                    else
+                        False
+                , sources =
+                    if memeSeance then
+                        modele.sources
+
+                    else
+                        False
+            }
+
+        focaliser =
+            case geste of
+                OngletPointe ->
+                    envoyer "focus" (E.object [ ( "id", E.string "titre-page" ), ( "scroll", E.bool False ) ])
+
+                OngletAuClavier ->
+                    envoyer "focus" (E.object [ ( "id", E.string ("onglet-" ++ String.fromInt (round (position vue).x)) ), ( "scroll", E.bool False ) ])
+
+                DestinationChoisie ->
+                    case vue of
+                        ChapitreVue id _ ->
+                            envoyer "focus" (E.object [ ( "id", E.string ("titre-capsule-" ++ String.fromInt id) ), ( "scroll", E.bool False ), ( "reveal", E.bool (changeFeuille || modele.ensemble) ), ( "smooth", E.bool (animations modele) ) ])
+
+                        Parcours ->
+                            case capsuleDe modele.parcoursVue of
+                                Just id ->
+                                    envoyer "focus" (E.object [ ( "id", E.string ("titre-capsule-" ++ String.fromInt id) ), ( "scroll", E.bool False ) ])
+
+                                Nothing ->
+                                    rejoindreDebut modele "titre-page"
+
+                        _ ->
+                            rejoindreDebut modele "titre-page"
+    in
+    ( suivant
+    , Cmd.batch
+        [ focaliser
+        , if suivant.preparation == 0 && anime then
+            surveillerMouvement suivant.mouvementVersion
+
+          else
+            Cmd.none
+        ]
+    )
+
+
 feuille : Vue -> Vue
 feuille vue =
     case vue of
@@ -1073,9 +1110,6 @@ position : Vue -> Continuite.Point
 position vue =
     { x =
         case feuille vue of
-            Accueil ->
-                0
-
             Parcours ->
                 1
 
@@ -1269,7 +1303,7 @@ view modele =
                     U.el [ width fill, R.mainContent, U.htmlAttribute (A.id "titre-page"), U.htmlAttribute (A.tabindex -1) ] (presentation modele)
 
                 else
-                    shell modele
+                    U.column [ width fill, U.spacing 0 ] [ shell modele, vueEnsemble modele ]
 
               else
                 U.column [ width fill, U.spacing 24 ]
@@ -1655,9 +1689,6 @@ shell modele =
 nomEspace : Vue -> String
 nomEspace vue =
     case vue of
-        Accueil ->
-            "Mon accueil"
-
         Parcours ->
             "Mon parcours"
 
@@ -1683,9 +1714,6 @@ nomEspace vue =
 roleEspace : Vue -> String
 roleEspace vue =
     case vue of
-        Accueil ->
-            "Retrouver où j’en suis"
-
         Parcours ->
             "Choisir parmi les 15 étapes"
 
@@ -1739,7 +1767,7 @@ navigation modele =
                         _ ->
                             "Repères"
                 , selectionne = feuille modele.vue == vue
-                , choisir = Naviguer destination
+                , choisir = ChangerFeuille destination
                 , clavier = OngletClavier destination
                 }
             )
@@ -1778,33 +1806,24 @@ chemin modele =
     U.column [ width fill, U.spacing 10, C.classe "carnet-chemin" ]
         [ U.wrappedRow [ width fill, U.spacing 6, R.navigation, U.htmlAttribute (A.attribute "aria-label" "Ma position dans le carnet") ]
             ([ C.discret
-                (if modele.vue /= Accueil && not (estFeuille modele.vue) then
+                (if not (estFeuille modele.vue) then
                     "Revenir au carnet"
 
-                 else if estFeuille modele.vue then
-                    "Classeur"
-
                  else
-                    "Mon carnet"
+                    "Classeur"
                 )
                 (Naviguer
-                    (if modele.vue /= Accueil && not (estFeuille modele.vue) then
+                    (if not (estFeuille modele.vue) then
                         modele.carnetVue
 
-                     else if estFeuille modele.vue then
-                        Parcours
-
                      else
-                        Accueil
+                        Parcours
                     )
                 )
              ]
                 ++ (case modele.vue of
                         ChapitreVue _ _ ->
                             [ C.petit "› Mon parcours" ]
-
-                        Accueil ->
-                            [ C.petit "› Accueil" ]
 
                         _ ->
                             [ C.petit ("› " ++ nomEspace modele.vue) ]
@@ -1822,9 +1841,6 @@ chemin modele =
 vueContenu : Modele -> Vue -> Element Msg
 vueContenu modele vue =
     case vue of
-        Accueil ->
-            pageAccueil modele
-
         Parcours ->
             pageParcours modele
 
@@ -1864,14 +1880,14 @@ fenetreCarnet modele =
     in
     Continuite.feuilles
         { camera = modele.camera, mouvement = animations modele && modele.sortie /= Nothing, anime = animations modele && modele.sortie /= Nothing, termine = TransitionTerminee "feuille" }
-        (List.map panneau [ Accueil, Parcours, Objectifs, Reperes, Reglages, Apropos ])
+        (List.map panneau [ Parcours, Objectifs, Reperes, Reglages, Apropos ])
 
 
 enTeteCarnet : Modele -> Element Msg
 enTeteCarnet modele =
     U.column [ width fill, U.spacing 0, Bg.color C.couleurs.blanc, B.widthEach { top = 0, bottom = 1, left = 0, right = 0 }, B.color C.couleurs.ligne ]
         [ U.row [ width fill, U.paddingXY 20 14, U.spacing 16 ]
-            [ Input.button [ C.classe "marque-commande", U.htmlAttribute (A.attribute "aria-label" "Mon accueil") ] { onPress = Just (Naviguer Accueil), label = marque }
+            [ U.el [ C.classe "marque-carnet" ] marque
             , U.el [ U.alignRight ] (menuCompte modele)
             ]
         , U.wrappedRow [ width fill, U.paddingXY 20 4, U.spacing 8 ]
@@ -1934,6 +1950,11 @@ menuCompte modele =
 
                   else
                     C.discret "Me connecter" (OuvrirCompte Connexion)
+                , if modele.ecran == Ouvert then
+                    C.discret "Vue d’ensemble" AfficherVueEnsemble
+
+                  else
+                    U.none
                 , C.discret "À propos & sources" (Naviguer Apropos)
                 , if modele.ecran == Ouvert then
                     C.discret "Comprendre le classeur" AfficherMenu
@@ -2025,75 +2046,126 @@ conflitVue modele =
         U.none
 
 
-pageAccueil : Modele -> Element Msg
-pageAccueil modele =
-    let
-        chapitre =
-            Contenu.trouver modele.carnet.etape modele.chapitres
+vueEnsemble : Modele -> Element Msg
+vueEnsemble modele =
+    if not modele.ensemble then
+        U.none
 
-        prochain =
-            List.filter (\x -> x.statut == "préparée") modele.carnet.experiences |> List.reverse |> List.head
-    in
-    U.column [ width fill, U.spacing 26 ]
-        [ pageTitre
-            (if modele.demo then
-                "LE CARNET FICTIF DE CAMILLE"
+    else
+        let
+            chapitre =
+                Contenu.trouver modele.carnet.etape modele.chapitres
 
-             else
-                "MON ACCUEIL"
-            )
-            "Un moment pour moi."
-        , C.paragraphe "Je retrouve où j’en suis, ce que je souhaite explorer et les traces que je veux garder."
-        , colonnes modele
-            (U.column [ width fill, U.spacing 0, B.rounded 12, B.width 1, B.color C.couleurs.ligne, Bg.color C.couleurs.blanc, C.classe "current-chapter" ]
-                [ U.column [ width fill, U.padding 28, U.spacing 20 ]
-                    [ U.row [ width fill, U.spacing 14 ] [ pastille (String.fromInt chapitre.id), U.column [ width fill, U.spacing 5 ] [ C.surTitre "MA SÉANCE ACTUELLE", C.petit chapitre.sousTitre ] ]
-                    , C.titre 2 chapitre.titre
-                    , C.paragraphe chapitre.objectif
-                    , C.bouton "Reprendre mon carnet" (Naviguer (ChapitreVue chapitre.id Avant))
+            prochain =
+                List.filter (\x -> x.statut == "préparée") modele.carnet.experiences |> List.reverse |> List.head
+
+            paragraphe texte =
+                Html.p [] [ Html.text texte ]
+
+            petit texte =
+                Html.p [ A.class "ensemble-petit" ] [ Html.text texte ]
+
+            bouton libelle message =
+                Html.button [ A.class "ensemble-action", Events.onClick message ] [ Html.text libelle ]
+
+            carte etape =
+                Html.li []
+                    [ Html.button
+                        [ A.class "ensemble-etape"
+                        , A.attribute "data-current"
+                            (if etape.id == chapitre.id then
+                                "true"
+
+                             else
+                                "false"
+                            )
+                        , Events.onClick (Naviguer (ChapitreVue etape.id Avant))
+                        ]
+                        [ Html.span [ A.class "ensemble-numero" ] [ Html.text (String.fromInt etape.id) ]
+                        , Html.span [ A.class "ensemble-etape-texte" ]
+                            [ Html.span [ A.class "ensemble-petit" ] [ Html.text etape.sousTitre ]
+                            , Html.span [ A.class "ensemble-etape-titre" ] [ Html.text etape.titre ]
+                            , Html.span [ A.class "ensemble-statut" ]
+                                [ Html.text
+                                    (if etape.id == chapitre.id then
+                                        "Ma séance actuelle"
+
+                                     else if List.member etape.id modele.carnet.consultations then
+                                        "Consultation terminée"
+
+                                     else
+                                        "Disponible"
+                                    )
+                                ]
+                            ]
+                        ]
                     ]
-                , U.el [ width fill, U.paddingXY 28 16, Bg.color C.couleurs.doux, C.classe "chapter-footer" ] (C.petit "Avant · Pendant · Entre les séances")
-                ]
-            )
-            (U.column [ width fill, U.spacing 20 ]
-                [ C.panneau
-                    [ C.surTitre "MON PROCHAIN PETIT PAS"
-                    , C.titre 2 (Maybe.map .quoi prochain |> Maybe.withDefault "Une envie, même petite")
-                    , case prochain of
-                        Just x ->
-                            U.column [ width fill, U.spacing 12 ] [ C.petit x.quand, C.discret "Retrouver mon petit pas" (Naviguer (ChapitreVue x.seance Entre)) ]
 
-                        Nothing ->
-                            U.column [ width fill, U.spacing 12 ] [ C.petit "Une réflexion ou une simulation est possible, sans partenaire ni occasion de rencontre.", C.discret "Préparer un petit pas" (Naviguer (ChapitreVue chapitre.id Entre)) ]
+            groupe titre etapes =
+                Html.section []
+                    [ Html.h2 [] [ Html.text titre ]
+                    , Html.ul [ A.class "ensemble-carte" ] (List.map carte etapes)
                     ]
-                , U.column [ width fill, U.spacing 7, U.paddingXY 6 4 ]
-                    [ C.surTitre "MON COFFRE", C.petit (sauvegardeTexte modele), C.petit "Les données sont déchiffrées uniquement ici, tant que le carnet est ouvert." ]
-                ]
-            )
-        , U.column [ width fill, U.spacing 16 ]
-            [ U.row [ width fill, U.spacing 12 ] [ C.titre 2 "Mon chemin", U.el [ U.alignRight ] (C.discret "Voir les 15 étapes" (Naviguer Parcours)) ]
-            , if modele.largeur >= 600 then
-                U.wrappedRow [ width fill, U.spacing 7 ] (List.map (\c -> C.onglet (c.id == chapitre.id) (String.fromInt c.id) (Naviguer (ChapitreVue c.id Avant))) modele.chapitres)
 
-              else
-                C.petit "Les quinze étapes sont accessibles. Je peux revenir en arrière ou explorer la suite."
-            ]
-        , colonnes modele
-            (C.panneau
-                [ C.surTitre "CE QUI ME GUIDE"
-                , C.titre 2 "Mes objectifs peuvent évoluer"
-                , C.paragraphe (List.head modele.carnet.objectifs |> Maybe.map .texte |> Maybe.withDefault "Je peux commencer par ce que j’aimerais voir évoluer.")
-                , C.discret "Retrouver mes objectifs" (Naviguer Objectifs)
+            fermerFond =
+                D.at [ "target", "id" ] D.string
+                    |> D.andThen
+                        (\id ->
+                            if id == "vue-ensemble" then
+                                D.succeed FermerVueEnsemble
+
+                            else
+                                D.fail "Contenu de la vue d’ensemble."
+                        )
+        in
+        U.html <|
+            Html.node "dialog"
+                [ A.id "vue-ensemble"
+                , A.class "vue-ensemble"
+                , A.attribute "aria-labelledby" "titre-vue-ensemble"
+                , Events.preventDefaultOn "cancel" (D.succeed ( FermerVueEnsemble, True ))
+                , Events.on "click" fermerFond
                 ]
-            )
-            (U.column [ width fill, U.spacing 14, U.padding 26, Bg.color C.couleurs.doux, B.rounded 12 ]
-                [ C.surTitre "UN REPÈRE À GARDER"
-                , C.titre 2 "Je peux ne pas savoir encore."
-                , C.paragraphe "Mes premières réponses peuvent rester des hypothèses. J’ai le droit de les préciser, de les changer ou de les laisser ouvertes."
-                , C.petit "Adaptation numérique · à valider avec l’équipe"
+                [ Html.div [ A.class "ensemble-contenu" ]
+                    [ Html.div [ A.class "ensemble-entete" ]
+                        [ Html.h1 [ A.id "titre-vue-ensemble", A.tabindex -1 ] [ Html.text "Vue d’ensemble" ]
+                        , bouton "Fermer" FermerVueEnsemble
+                        ]
+                    , petit (String.fromInt (List.length modele.carnet.consultations) ++ " consultation(s) terminée(s) · Toutes les étapes restent accessibles.")
+                    , Html.section [ A.class "ensemble-reprise" ]
+                        [ petit ("MA SÉANCE ACTUELLE · " ++ String.fromInt chapitre.id)
+                        , Html.h2 [] [ Html.text chapitre.titre ]
+                        , paragraphe chapitre.objectif
+                        , bouton ("Reprendre la séance " ++ String.fromInt chapitre.id) (Naviguer (ChapitreVue chapitre.id Avant))
+                        ]
+                    , groupe "Avant les douze capsules" (List.filter (\c -> c.id == 0) modele.chapitres)
+                    , groupe "Les douze capsules" (List.filter (\c -> c.nature == "chapitre") modele.chapitres)
+                    , groupe "Après les douze capsules" (List.filter (\c -> c.id >= 13) modele.chapitres)
+                    , Html.div [ A.class "ensemble-transversal" ]
+                        [ Html.section []
+                            [ Html.h2 [] [ Html.text "Mon prochain petit pas" ]
+                            , paragraphe (Maybe.map .quoi prochain |> Maybe.withDefault "Une envie, même petite")
+                            , case prochain of
+                                Just x ->
+                                    Html.div [] [ petit x.quand, bouton "Retrouver mon petit pas" (Naviguer (ChapitreVue x.seance Entre)) ]
+
+                                Nothing ->
+                                    Html.div [] [ petit "Une réflexion ou une simulation est possible, sans partenaire ni occasion de rencontre.", bouton "Préparer un petit pas" (Naviguer (ChapitreVue chapitre.id Entre)) ]
+                            ]
+                        , Html.section []
+                            [ Html.h2 [] [ Html.text "Ce qui me guide" ]
+                            , paragraphe (List.head modele.carnet.objectifs |> Maybe.map .texte |> Maybe.withDefault "Je peux commencer par ce que j’aimerais voir évoluer.")
+                            , bouton "Retrouver mes objectifs" (Naviguer Objectifs)
+                            ]
+                        ]
+                    , Html.section []
+                        [ Html.h2 [] [ Html.text "Je peux ne pas savoir encore." ]
+                        , paragraphe "Mes premières réponses peuvent rester des hypothèses. J’ai le droit de les préciser, de les changer ou de les laisser ouvertes."
+                        , petit "Adaptation numérique · à valider avec l’équipe"
+                        , petit (sauvegardeTexte modele)
+                        ]
+                    ]
                 ]
-            )
-        ]
 
 
 pastille : String -> Element Msg
@@ -3028,7 +3100,7 @@ pageApropos modele =
             U.none
 
           else
-            C.discret "Retour au carnet" (Naviguer Accueil)
+            C.discret "Retour au carnet" (Naviguer Parcours)
         , pageTitre "À PROPOS & SOURCES" "Un prototype à explorer"
         , if modele.demoOnly then
             C.panneau
