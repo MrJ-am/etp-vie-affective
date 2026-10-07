@@ -1,7 +1,7 @@
 {
   "date": "2026-10-07",
-  "baselineCommit": "02059cf16d9de04a59f23fe117e38324009255c1",
-  "comparison": "Avant/après correction de l’intégrité physique du carnet, entrée directe et vue d’ensemble superposée",
+  "baselineCommit": "048561f5cde25bbf715e8169b3e39c5753a06841",
+  "comparison": "Avant/après suppression de la vue d’ensemble, bandeau fixe, navigation des moments et ancrage des titres",
   "checks": [
     {
       "file": "content/parcours.json",

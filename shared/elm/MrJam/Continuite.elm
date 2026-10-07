@@ -1,4 +1,4 @@
-module MrJam.Continuite exposing (Onglet, Panneau, Point, capsule, feuilles, onglets, plan, repere, ruban, titreCapsule)
+module MrJam.Continuite exposing (Onglet, Panneau, Point, capsule, feuilles, moments, onglets, plan, repere, ruban, titreCapsule)
 
 {-| Feuilles de classeur, capsules et fenêtres internes, sans état métier. Elm Animator produit les transitions
 CSS natives ; le navigateur conserve les positions intermédiaires lors d'un
@@ -86,6 +86,67 @@ onglets liste =
             Html.div
                 [ A.class "classeur-onglets", A.id "plan-carnet", A.tabindex -1, A.attribute "role" "tablist", A.attribute "aria-label" "Les feuilles de mon classeur" ]
                 (List.indexedMap bouton liste)
+
+
+{-| Navigation horizontale : trois textes sur la même ligne, avec un seul
+indicateur animé en dessous. Les touches fléchées déplacent aussi le focus.
+-}
+moments : { id : String } -> List { libelle : String, selectionne : Bool, choisir : msg } -> Element msg
+moments config liste =
+    let
+        bouton index item =
+            let
+                touche =
+                    D.field "key" D.string
+                        |> D.andThen
+                            (\key ->
+                                let
+                                    suivant =
+                                        case key of
+                                            "ArrowRight" ->
+                                                Just (modBy 3 (index + 1))
+
+                                            "ArrowLeft" ->
+                                                Just (modBy 3 (index - 1))
+
+                                            "Home" ->
+                                                Just 0
+
+                                            "End" ->
+                                                Just 2
+
+                                            _ ->
+                                                Nothing
+                                in
+                                case suivant |> Maybe.andThen (\i -> List.drop i liste |> List.head) of
+                                    Just destination ->
+                                        D.succeed ( destination.choisir, True )
+
+                                    Nothing ->
+                                        D.fail "Touche native de ce moment."
+                            )
+            in
+            Html.button
+                [ A.class "moment-onglet"
+                , A.id (config.id ++ "-onglet-" ++ String.fromInt index)
+                , A.attribute "role" "tab"
+                , A.attribute "aria-controls" config.id
+                , A.attribute "aria-selected" (bool item.selectionne)
+                , A.tabindex
+                    (if item.selectionne then
+                        0
+
+                     else
+                        -1
+                    )
+                , Events.onClick item.choisir
+                , Events.preventDefaultOn "keydown" touche
+                ]
+                [ Html.text item.libelle ]
+    in
+    U.html <|
+        Html.div [ A.class "moments-ligne", A.attribute "role" "tablist", A.attribute "aria-label" "Les moments de cette séance" ]
+            (List.indexedMap bouton liste)
 
 
 bool : Bool -> String
@@ -192,19 +253,11 @@ titreCapsule config titre =
     U.paragraph
         ([ U.width U.fill, R.heading 2 ]
             ++ List.map U.htmlAttribute
-                ([ A.class "capsule-titre"
-                 , A.id ("titre-capsule-" ++ String.fromInt config.id)
-                 , A.tabindex -1
-                 , A.style "font-size"
-                    (if config.ouverte then
-                        "1.75rem"
-
-                     else
-                        "1.2rem"
-                    )
-                 ]
-                    ++ natif config.anime 520 [ Animator.px "font-size" 1 ]
-                )
+                [ A.class "capsule-titre"
+                , A.id ("titre-capsule-" ++ String.fromInt config.id)
+                , A.tabindex -1
+                , A.style "font-size" "1.2rem"
+                ]
         )
         [ U.html <|
             Html.button
@@ -345,6 +398,12 @@ plan config panneaux =
                             ++ transition config.anime config.duree
                             ++ (if p.ouvert then
                                     [ A.id config.identifiant, A.tabindex -1, Events.on "transitionend" fin ]
+                                        ++ (if String.startsWith "moment-capsule-" config.identifiant then
+                                                [ A.attribute "role" "tabpanel", A.attribute "aria-labelledby" (config.identifiant ++ "-onglet-" ++ String.fromInt (round p.position.x)) ]
+
+                                            else
+                                                []
+                                           )
 
                                 else
                                     [ A.attribute "inert" "", A.attribute "aria-hidden" "true" ]

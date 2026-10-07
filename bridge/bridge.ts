@@ -1,5 +1,6 @@
 import { recoveryCode, type Keyring, type Envelope } from "./crypto";
 import { imageDimensions } from "./image";
+import { installerContinuite } from "./continuite";
 type ElmApp = { ports: { commande: { subscribe: (fn: (v: Command) => void) => void }; evenement: { send: (v: unknown) => void } } };
 type Command = { action: string; data: any };
 type Payload = { keyring: Keyring; envelope: Envelope };
@@ -246,6 +247,7 @@ async function beginDemo(): Promise<void> {
   emit("status", { state: "device" });
 }
 async function lock(show = true): Promise<void> {
+  annulerAncrage();
   // Retrait immédiat des vues ; dernière sauvegarde locale terminée avant retrait des clés.
   if (unlocked || show) emit("locked", { demo: mode === "demo" });
   unlocked = false; clearPreviews();
@@ -341,6 +343,7 @@ async function waitForNativeMotion(): Promise<void> {
 }
 
 let focusVersion = 0;
+const annulerAncrage = installerContinuite(waitForNativeMotion);
 
 async function command(command: Command): Promise<void> {
   const { action, data } = command;
@@ -484,20 +487,14 @@ async function command(command: Command): Promise<void> {
     // Une transition annulée ou non démarrée ne doit pas retenir une feuille.
     await waitForNativeMotion();
     if (sessionEpoch === epoch) emit("motionSettled", { version: data.version });
-  } else if (action === "showOverview") {
-    ++focusVersion;
-    const sessionEpoch = epoch;
-    requestAnimationFrame(() => {
-      const dialog = document.getElementById("vue-ensemble");
-      if (sessionEpoch === epoch && dialog instanceof HTMLDialogElement && !dialog.open) {
-        dialog.showModal();
-        document.getElementById("titre-vue-ensemble")?.focus({ preventScroll: true });
-      }
-    });
   } else if (action === "focus") {
     const version = ++focusVersion, sessionEpoch = epoch;
     requestAnimationFrame(async () => {
       const target = document.getElementById(data.id);
+      if (document.activeElement?.classList.contains("moment-onglet") && target?.closest('.capsule') === document.activeElement.closest('.capsule')) {
+        document.activeElement.closest('.moments-navigation')?.querySelector<HTMLElement>(".moment-onglet[aria-selected='true']")?.focus({ preventScroll: true });
+        return;
+      }
       const heading = target?.querySelector<HTMLElement>("h1");
       if (heading) heading.tabIndex = -1;
       (heading ?? target)?.focus({ preventScroll: true });
@@ -507,7 +504,7 @@ async function command(command: Command): Promise<void> {
       if (data.scroll) window.scrollTo({ top: 0, behavior });
       else if (data.reveal && target) {
         const tabs = document.querySelector<HTMLElement>(".classeur-navigation");
-        const inset = (tabs?.getBoundingClientRect().height ?? 0) + 24;
+        const inset = (tabs?.getBoundingClientRect().bottom ?? document.querySelector(".bandeau-carnet")?.getBoundingClientRect().bottom ?? 0) + 24;
         window.scrollTo({ top: Math.max(0, window.scrollY + target.getBoundingClientRect().top - inset), behavior });
       }
     });
