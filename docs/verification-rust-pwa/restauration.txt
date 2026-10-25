@@ -1,0 +1,3 @@
+Journal manquant sur une base existante : démarrage refusé.
+Redémarrage réel Rust : coffre et session de la fixture conservés.
+Restauration simulée d’un compte supprimé : journal indépendant rejoué, compte retiré avant ouverture du service.

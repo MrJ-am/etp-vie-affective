@@ -1,0 +1,31 @@
+{
+  "rustActiveOSV": {
+    "date": "2026-10-25",
+    "scope": "arbre Cargo actif, d\u00e9pendances normales, cible Linux x86_64",
+    "packages": 154,
+    "findings": []
+  },
+  "rustLockOSV": {
+    "packages": 221,
+    "findings": [
+      {
+        "package": "rsa",
+        "version": "0.9.10",
+        "vulns": [
+          {
+            "id": "RUSTSEC-2023-0071",
+            "modified": "2026-09-14T09:45:02.996132Z"
+          }
+        ]
+      }
+    ]
+  },
+  "npmAudit": {
+    "info": 0,
+    "low": 0,
+    "moderate": 0,
+    "high": 0,
+    "critical": 0,
+    "total": 0
+  }
+}

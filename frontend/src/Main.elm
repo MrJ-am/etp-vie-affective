@@ -289,7 +289,7 @@ update msg modele =
                             if modele.ecran == Ouvert && lire (D.field "id" D.int) -1 data == id then
                                 let
                                     index =
-                                        clamp 0 2 (round (momentPosition moment) + lire (D.field "direction" D.int) 0 data)
+                                        clamp 0 1 (round (momentPosition moment) + lire (D.field "direction" D.int) 0 data)
 
                                     destination =
                                         if index == 0 then
@@ -500,7 +500,11 @@ update msg modele =
             modifier { carnet | notes = Dict.remove cle carnet.notes } modele |> avecNotice "Cette entrée a été effacée du carnet actif."
 
         ChoisirEtape id ->
-            modifier { carnet | etape = id } modele |> avecNotice "Cette séance est maintenant votre étape actuelle. Aucune rubrique n’est obligatoire."
+            if id == carnet.etape + 1 then
+                modifier { carnet | etape = id } modele |> avecNotice "La séance est ouverte. Sa préparation et son contenu restent disponibles."
+
+            else
+                ( modele, Cmd.none )
 
         ConsultationTerminee id ->
             modifier { carnet | consultations = id :: List.filter ((/=) id) carnet.consultations } modele |> avecNotice "Consultation terminée à votre demande. Vous pourrez y revenir à tout moment."
@@ -883,8 +887,23 @@ actionTechnique action modele =
 explicitement choisie peut révéler une capsule ou rejoindre le début.
 -}
 naviguer : GesteNavigation -> Vue -> Modele -> ( Modele, Cmd Msg )
-naviguer geste vue modele =
+naviguer geste destination modele =
     let
+        vue =
+            case destination of
+                ChapitreVue id moment ->
+                    if id > modele.carnet.etape + 1 then
+                        Parcours
+
+                    else if id == modele.carnet.etape + 1 || moment == Entre then
+                        ChapitreVue id Avant
+
+                    else
+                        destination
+
+                _ ->
+                    destination
+
         anime =
             animations modele && modele.ecran == Ouvert && vue /= Presentation && modele.vue /= Presentation
 
@@ -1799,13 +1818,13 @@ nomMoment : Moment -> String
 nomMoment moment =
     case moment of
         Avant ->
-            "Avant"
+            "Se préparer"
 
         Pendant ->
-            "Pendant"
+            "Pendant la séance"
 
         Entre ->
-            "Après"
+            "Se préparer"
 
 
 roleMoment : Moment -> String
@@ -1916,7 +1935,7 @@ enTeteCarnet modele =
                 [ C.titre 2 "Les feuilles de mon classeur"
                 , C.paragraphe "Chaque onglet ouvre une autre feuille. Le parcours réunit les douze capsules de chapitre et les trois bilans. Ouvrir une capsule l’agrandit sur cette même feuille ; les autres restent autour. Je peux la refermer pour retrouver l’ensemble."
                 , C.paragraphe "La feuille des objectifs donne une direction et garde les défis disponibles dans la durée. Les expérimentations restent liées aux séances. La feuille des repères réunit les traces, les formulations et les étapes que je souhaite garder. Je choisis ce que je partage."
-                , C.petit "Je peux changer de feuille puis retrouver la capsule et son moment. Les mêmes feuilles et les mêmes contenus sont disponibles sans animation dans Mes réglages. Rien n’est à débloquer."
+                , C.petit "Je peux changer de feuille puis retrouver la capsule et son moment. Les mêmes feuilles et les mêmes contenus sont disponibles sans animation dans Mes réglages. Les séances suivantes deviennent disponibles au fil du parcours."
                 , C.discret "Refermer l’explication" AfficherMenu
                 ]
 
@@ -2092,8 +2111,11 @@ pageParcours modele =
                 lisible =
                     actuel /= Nothing
 
+                disponible =
+                    chapitre.id <= modele.carnet.etape + 1
+
                 ouverte =
-                    modele.capsule == Just chapitre.id
+                    disponible && modele.capsule == Just chapitre.id
 
                 enPreparation =
                     modele.preparation
@@ -2133,7 +2155,13 @@ pageParcours modele =
                 [ U.column
                     [ width fill
                     , U.spacing 0
-                    , C.classe "capsule"
+                    , C.classe
+                        (if disponible then
+                            "capsule"
+
+                         else
+                            "capsule capsule-indisponible"
+                        )
                     , U.htmlAttribute (A.id ("capsule-" ++ String.fromInt chapitre.id))
                     , U.htmlAttribute
                         (A.attribute "data-open"
@@ -2161,7 +2189,12 @@ pageParcours modele =
                         [ U.row [ width fill, U.spacing 14, U.alignTop ]
                             [ pastille (String.fromInt chapitre.id)
                             , U.column [ width fill, U.spacing 7 ]
-                                [ Continuite.titreCapsule { id = chapitre.id, ouverte = ouverte, lisible = lisible, anime = animations modele, choisir = Naviguer ouvrir } chapitre.titre
+                                [ if disponible then
+                                    Continuite.titreCapsule { id = chapitre.id, ouverte = ouverte, lisible = lisible, anime = animations modele, choisir = Naviguer ouvrir } chapitre.titre
+
+                                  else
+                                    U.column [ U.spacing 6, U.htmlAttribute (A.attribute "aria-disabled" "true") ]
+                                        [ C.titre 2 chapitre.titre, C.petit "Séance à venir · pas encore disponible" ]
                                 ]
                             ]
                         ]
@@ -2210,17 +2243,26 @@ pageChapitre modele chapitre moment =
 
           else
             U.none
-        , if chapitre.id /= modele.carnet.etape then
-            C.discret "Choisir comme séance actuelle" (ChoisirEtape chapitre.id)
+        , if chapitre.id == modele.carnet.etape + 1 then
+            C.secondaire "Commencer cette séance" (ChoisirEtape chapitre.id)
 
           else
-            C.petit "Ma séance actuelle"
-        , if chapitre.nature == "bilan" then
+            C.petit
+                (if chapitre.id == modele.carnet.etape then
+                    "Ma séance actuelle"
+
+                 else
+                    "Séance passée"
+                )
+        , if chapitre.id == modele.carnet.etape + 1 then
+            avantVue modele chapitre
+
+          else if chapitre.nature == "bilan" then
             bilanVue modele chapitre
 
           else
             U.column [ width fill, U.spacing 24 ]
-                [ U.column [ width fill, U.spacing 8, C.classe "moments-navigation", R.navigation, U.htmlAttribute (A.attribute "aria-label" "Les trois moments de cette séance") ]
+                [ U.column [ width fill, U.spacing 8, C.classe "moments-navigation", R.navigation, U.htmlAttribute (A.attribute "aria-label" "Les deux temps de cette séance") ]
                     [ Continuite.moments
                         { id = "moment-capsule-" ++ String.fromInt chapitre.id }
                         (List.map
@@ -2230,9 +2272,9 @@ pageChapitre modele chapitre moment =
                                 , choisir = Naviguer (ChapitreVue chapitre.id m)
                                 }
                             )
-                            [ Avant, Pendant, Entre ]
+                            [ Avant, Pendant ]
                         )
-                    , Continuite.ruban modele.momentCamera 3 380 (animations modele)
+                    , Continuite.ruban modele.momentCamera 2 380 (animations modele)
                     ]
                 , momentsVue modele chapitre moment
                 ]
@@ -2249,8 +2291,8 @@ pageChapitre modele chapitre moment =
 
               else
                 U.none
-            , if chapitre.id < 14 then
-                C.discret "Explorer la séance suivante" (Naviguer (ChapitreVue (chapitre.id + 1) Avant))
+            , if chapitre.id < 14 && chapitre.id <= modele.carnet.etape then
+                C.discret "Préparer la séance suivante" (Naviguer (ChapitreVue (chapitre.id + 1) Avant))
 
               else
                 U.none
@@ -2305,7 +2347,7 @@ momentsVue modele chapitre actuel =
         , termine = TransitionTerminee "moment"
         , identifiant = "moment-capsule-" ++ String.fromInt chapitre.id
         }
-        (List.map panneau [ Avant, Pendant, Entre ])
+        (List.map panneau [ Avant, Pendant ])
 
 
 noteChamp : Modele -> Int -> String -> String -> Element Msg
@@ -2354,7 +2396,21 @@ avantVue modele chapitre =
                 , C.panneau [ C.titre 2 "Quelques mots pour moi", noteChamp modele chapitre.id "note" "Ma note personnelle · facultatif" ]
                 ]
             )
-        , C.secondaire "Passer à Pendant la séance" (Naviguer (ChapitreVue chapitre.id Pendant))
+        , U.link [] { url = "/cours/" ++ String.fromInt chapitre.id ++ ".html", label = C.paragraphe "Lire le support de préparation en HTML" }
+        , U.link [] { url = "/cours/" ++ String.fromInt chapitre.id ++ ".pdf", label = C.paragraphe "Télécharger le support en PDF" }
+        , if chapitre.id <= modele.carnet.etape then
+            C.secondaire "Passer à Pendant la séance" (Naviguer (ChapitreVue chapitre.id Pendant))
+
+          else
+            C.petit "Le contenu Pendant la séance sera disponible lorsque vous commencerez cette séance."
+        , if chapitre.id > 0 then
+            U.column [ width fill, U.spacing 18 ]
+                [ C.titre 2 "Depuis la séance précédente"
+                , entreVue modele (Contenu.trouver (chapitre.id - 1) modele.chapitres)
+                ]
+
+          else
+            U.none
         ]
 
 
@@ -2379,7 +2435,12 @@ pendantVue modele chapitre =
             , noteChamp modele chapitre.id "capable" "Aujourd’hui, je me sens davantage capable de…"
             , C.petit "Je peux aussi laisser ces phrases ouvertes."
             ]
-        , C.secondaire "Retrouver Après" (Naviguer (ChapitreVue chapitre.id Entre))
+        , U.link [] { url = "/sondage.html", label = C.paragraphe "Participer à un sondage local ou en animer un" }
+        , if chapitre.id < 14 then
+            C.secondaire "Préparer la séance suivante" (Naviguer (ChapitreVue (chapitre.id + 1) Avant))
+
+          else
+            U.none
         ]
 
 
@@ -2994,7 +3055,7 @@ pageApropos modele =
         , C.panneau
             [ C.titre 2 "Trois statuts pour les contenus"
             , C.paragraphe "Contenu fourni par l’équipe : intitulés, objectifs et organisation des rubriques, dans leur version de travail."
-            , C.paragraphe "Adaptation numérique : regroupement Avant / Pendant / Entre, cartes accessibles au clavier, choix de retour d’expérience et sauvegarde."
+            , C.paragraphe "Adaptation numérique : regroupement Se préparer / Pendant la séance, cartes accessibles au clavier, choix de retour d’expérience et sauvegarde."
             , C.paragraphe "Proposition du POC à valider : lectures courtes, cartes-mots, situations et petits pas contextualisés."
             , C.petit "Sources privées consultées le 6 octobre 2026 : Principes pédagogiques Sexo.docx (« Le carnet de bord », paragraphes 305–374) ; Module Sexo bilan.xlsx (Recapitulatif seances, A1:H16 ; Exo Séance 1, A1:H10) ; Questionnaire – V2.docx ; Etudes scientifiques.xlsx. Ces documents ne sont pas proposés en téléchargement."
             , C.petit "Les couleurs, la forme du carnet et les transitions sont des hypothèses de design à tester avec les personnes concernées."

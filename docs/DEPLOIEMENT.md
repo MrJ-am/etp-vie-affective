@@ -1,29 +1,67 @@
-# Exécution, publication et restauration
+# Déploiement et migration portables
 
-## Environnement réellement utilisé
+Le frontend compilé et le serveur Rust sont livrés ensemble. PostgreSQL et Nginx
+restent des services d’infrastructure. Aucun autre projet n’est nécessaire.
+Le déploiement Compose fournit un PostgreSQL isolé ; le serveur écoute en boucle
+locale sur le port 3000 publié. En production, placer Nginx en HTTPS devant lui.
 
-Docker local isolé : `mon-carnet`, ports de boucle locale 3000 ; tests `mon-carnet-tests`, port 3001 et base distincte. SBCL, Hunchentoot, Ironclad, Postmodern, PostgreSQL 17 ; Node pour compilation uniquement. Les images Debian, PostgreSQL et Playwright sont verrouillées par digest dans les fichiers de build. npm et Elm possèdent des versions exactes. `docs/versions-systeme.txt` consigne les versions Lisp effectivement installées ; apt Bookworm peut évoluer malgré l’image de base figée. Une reproductibilité binaire à long terme nécessite une archive/snapshot apt ou une dérivation Nix verrouillée, à compléter avant production.
+Pour utiliser le PostgreSQL existant, créer une base et un rôle dédiés, sans
+superuser, et renseigner `CARNET_DB_HOST`, `CARNET_DB_PORT`, `CARNET_DB_NAME`,
+`CARNET_DB_USER`, `CARNET_DB_PASSWORD`. Le rôle possède uniquement ses tables
+et applique les migrations versionnées au démarrage. Ne pas utiliser le rôle
+métier commun. Une base distante exige transport réseau privé/chiffré et contrôle
+d’accès PostgreSQL ; aucune ouverture publique de 5432.
 
-L’environnement Sites disponible héberge des assets/Workers et n’exécute pas le backend SBCL/PostgreSQL. La publication privée y contient exclusivement la démonstration navigateur : `CARNET_DEMO_ONLY=true npm run build`. Elle annonce explicitement l’absence de comptes dans cette prévisualisation. La version complète est exécutée et testée localement, et son code est livré. Aucun service VPS existant, domaine, compte payant ou donnée patient n’a été modifié.
+L’environnement contient aussi `CARNET_PUBLIC_URL` (origine HTTPS exacte),
+`CARNET_SECURE_COOKIE=true`, `CARNET_RETENTION_DAYS` (90 par défaut ; politique
+à valider), `CARNET_BIND`, `CARNET_DIST`, `CARNET_DELETION_LEDGER`.
+Le fichier de secrets reste hors Git et hors image, lecture uniquement par
+l’utilisateur du service. Voir les exemples systemd/Nginx dans `deployment/`.
 
-Les scripts de workflow référencés par le plugin Sites n’étaient pas présents dans cet environnement portable (recherche filesystem et ressources du plugin). Le relais de livraison local reproduit les opérations natives autorisées : manifest de l’ID retourné, commit source exact, push avec credential en mémoire/stdin, archive limitée à `.openai/hosting.json` et `dist`, puis appel natif de publication privée et contrôle de statut. Aucun secret n’est écrit dans le dépôt ou passé comme argument de shell. Ce relais n’est pas présenté comme un script du plugin.
+Le serveur ne fait confiance à aucun X-Forwarded-For : derrière Nginx la limite
+applicative d’authentification par IP s’applique collectivement au proxy (60
+requêtes par route/15 min), plus une limite par pseudonyme (30/15 min). Ajuster
+une protection réseau au vhost après mesure ; ne pas contourner la limite par
+un en-tête fourni par le client. Deux calculs scrypt concurrents maximum.
 
-## NixOS / Nginx / systemd — exemple à adapter, non déployé
+## Ancienne API Lisp → Rust
 
-`deployment/carnet.nix` illustre l’intégration locale avec le même conteneur Lisp et PostgreSQL, reverse proxy HTTPS et volumes séparés. Les identités/domaines sont des placeholders explicites. L’image applicative doit être construite en CI, poussée dans un registre autorisé et figée par digest. Les secrets sont provisionnés hors Git via EnvironmentFile/root ou équivalent. La coordination et les contrats du VPS/style-mrjam doivent être relus avant une intégration effective ; seuls ses workflows autorisés feront le déploiement. Cet exemple n’autorise ni SSH ni remplacement de services existants.
-
-Avant exposition : `CARNET_PUBLIC_URL` exact HTTPS, cookie Secure (automatique en HTTPS), reverse proxy sans journal des corps ni paramètres, limite 4 Mo, délais bornés, limite connexions/authentification, firewall, sauvegardes du volume SQL et journal indépendants, quotas disque, alertes techniques sans contenu sensible et revue de la chaîne de livraison.
+1. Sauvegarder SQL et le journal courant des suppressions ; vérifier leur
+   restauration isolée avant bascule. Le format SQL, les enveloppes v1 et les
+   hashes scrypt-v1 restent compatibles. Ne jamais réinitialiser les volumes.
+2. Arrêter l’ancien serveur avant de démarrer Rust : un seul écrivain de journal.
+   Déployer le binaire avec les mêmes paramètres de base, origine, cookie et
+   chemin du journal. Le démarrage applique la migration idempotente existante.
+3. Vérifier santé, connexion fictive, coffre déchiffrable côté client, conflit,
+   export/import et suppression. Une session existante reste compatible.
+4. Au besoin revenir au code antérieur avec la base **actuelle**, sans restaurer
+   une sauvegarde sur des écritures récentes. Les modifications de schéma futures
+   devront conserver cette possibilité ou annoncer une procédure différente.
 
 ## Sauvegarde et restauration
 
-1. Définir une politique courte de backups chiffrés, hors répertoire public, protégés et contrôlés. Sauvegarder PostgreSQL et conserver séparément le journal **le plus récent** de `/var/lib/carnet/deletions.log`. Le journal contient uniquement les UUID techniques supprimés, pas le texte des carnets.
-2. Faire une restauration en environnement isolé sans trafic entrant. Arrêter le service applicatif, restaurer SQL, monter le journal actuel conservé indépendamment. **Ne jamais restaurer uniquement un ancien journal de suppressions avec l’ancien dump.**
-3. Démarrer l’API : migrations idempotentes et rejeu du journal précèdent l’ouverture du port applicatif. Si le journal manque et la base contient des comptes, le démarrage échoue. Une ligne invalide bloque aussi le démarrage, nécessitant une réparation administrative à partir d’une copie vérifiée.
-4. Vérifier comptes supprimés absents, sessions caduques absentes, quotas et fixtures de récupération. Ouvrir le service seulement après ces contrôles.
-5. Effacer anciennes sauvegardes suivant la durée définie. Purger le journal technique uniquement lorsque tous les supports qui pourraient restaurer ces comptes ont disparu, avec preuve et procédure contrôlée. Ne pas automatiser une purge prématurée.
+Sauvegarder PostgreSQL chiffré côté infrastructure et conserver séparément le
+journal le plus récent `deletions.log`. Celui-ci ne contient que les UUID supprimés.
+Les clés du coffre restent sur les appareils ; aucune clé n’est à sauvegarder côté serveur.
 
-`node --import tsx scripts/verify-restore.ts` réalise un exercice avec deux comptes fictifs dans la base de test : un compte est supprimé, réinjecté dans l’état SQL sans tombstone, puis éliminé au redémarrage via le journal indépendant. L’autre coffre et sa session restent utilisables. Ne jamais exécuter cet exercice contre une base réelle.
+Restaurer hors trafic, application arrêtée, avec le journal actuel. Au démarrage,
+les comptes supprimés sont retirés avant ouverture du port. Un journal absent
+sur base contenant des comptes, illisible ou malformé bloque le démarrage.
+Ne jamais remplacer le journal actuel par un ancien journal issu du dump.
+Ne purger ses lignes qu’après disparition de toutes les sauvegardes susceptibles
+de réintroduire ces comptes. L’exercice `scripts/verify-restore.ts` est réservé
+à la base de test de `compose.test.yaml`.
 
-## Maintenance et publication
+## Reproductibilité et exploitation
 
-La CI prépare, compile, exerce une base isolée, les trois moteurs et les vecteurs, puis vérifie stockage et restauration. Elle n’a pas encore été exécutée sur un runner GitHub distant ; les commandes correspondantes ont été exécutées dans cet environnement. La livraison ne crée pas de PR. Les changements de style sont additifs et livrés comme paquet à intégrer après coordination ; ils ne sont pas publiés upstream.
+Cargo.lock et package-lock.json verrouillent les dépendances ; Elm verrouille
+ses versions. Construire l’image une fois, relever son digest et promouvoir cet
+artefact exact. Les images Rust/Debian du Dockerfile sont figées par digest ;
+leur mise à jour nécessite une nouvelle qualification et un nouvel artefact.
+Les migrations et l’entretien périodique sont exécutés par le service ; aucune
+connexion n’est ouverte par le frontend vers PostgreSQL.
+
+Le contrat de raccordement est dans `deployment/CONTRAT-VPS.md`. Aucun changement
+n’a été appliqué au VPS ni aux autres dépôts. Une future migration emporte le dump,
+le journal, le binaire/les assets et les secrets d’exploitation ; aucune modification
+métier n’est nécessaire. Vérifier HDS/AIPD et audit avant données réelles.

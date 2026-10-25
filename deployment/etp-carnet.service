@@ -1,0 +1,25 @@
+[Unit]
+Description=ETP carnet autonome Rust
+After=network.target postgresql.service
+
+[Service]
+User=etp-carnet
+Group=etp-carnet
+WorkingDirectory=/opt/etp-carnet
+ExecStart=/opt/etp-carnet/etp-carnet-server
+EnvironmentFile=/etc/etp-carnet/environment
+Environment=CARNET_BIND=127.0.0.1:3017
+Environment=CARNET_DIST=/opt/etp-carnet/dist
+Environment=CARNET_DELETION_LEDGER=/var/lib/etp-carnet/deletions.log
+StateDirectory=etp-carnet
+StateDirectoryMode=0700
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

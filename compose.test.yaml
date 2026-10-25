@@ -12,7 +12,7 @@ services:
       timeout: 2s
       retries: 30
   backend:
-    image: mon-carnet-app
+    image: etp-carnet:local
     environment:
       CARNET_DB_NAME: carnet_test
       CARNET_DB_USER: carnet_test

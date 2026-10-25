@@ -13,6 +13,16 @@ Actifs : textes, photos, objectifs, étape personnelle, secrets, continuité du 
 | XSS ou fichier malveillant | Elm échappe les textes, aucun innerHTML métier, CSP, imports authentifiés/validés, conversion image native bornée | style-src unsafe-inline nécessaire à ElmUI ; navigateur, décodeur et dependencies doivent être maintenus |
 | Client livré par opérateur compromis | Versions verrouillées, source consultable, hashes de build, CI et absence de scripts tiers | **L’opérateur actif peut livrer un client qui vole le secret. Ce POC ne le protège pas contre ce scénario.** Audit, signatures, publication reproductible et éventuellement client indépendant restent à étudier |
 | Résurrection après restauration | Journal fsync indépendant des backups SQL, rejoué avant démarrage ; démarrage refusé si absent sur une base existante | Restaurer un journal obsolète avec la base contourne cette garantie : conserver impérativement le plus récent |
-| Saturation | Bornes body, image, paramètres crypto, quotas, rate limit authentification | Protection mémoire/scrypt et débits à compléter en reverse proxy avant exposition réelle ; un seul processus de journal supposé |
+| Saturation | Bornes body, image, paramètres crypto, quotas, rate limit authentification | Deux scrypt concurrents bornés ; débits réseau à compléter en reverse proxy avant exposition réelle ; un seul processus de journal supposé |
 
 Aucune assertion « zero knowledge » absolue, anonymat ou sécurité auditée. Les tests sentinelles vérifient l’implémentation courante et complètent les vecteurs indépendants ; ils ne constituent pas une preuve générale contre un client malveillant.
+
+## Nouveaux flux
+
+Le mode hors ligne conserve le risque de vol d’un appareil et d’attaque de la
+phrase ; une révocation distante ne supprime pas les copies téléchargées. Le
+cache PWA est limité aux assets publics ; une mise à jour ne s’active pas pendant
+un coffre ouvert. Les sondages ne sont pas anonymes ni authentifiés par personne :
+scan direct pour confiance dans la clé, chiffrement au destinataire, dédoublonnage
+d’un même QR, mais réponses multiples possibles. Voir SECURITE.md et
+HORS-LIGNE-ET-SONDAGES.md pour les garanties exactes.

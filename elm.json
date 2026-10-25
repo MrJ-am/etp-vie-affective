@@ -2,8 +2,7 @@
     "type": "application",
     "source-directories": [
         "frontend/src",
-        "shared/elm",
-        "vendor/style-mrjam/src"
+        "shared/elm"
     ],
     "elm-version": "0.19.1",
     "dependencies": {

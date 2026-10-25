@@ -12,6 +12,7 @@ services:
       timeout: 2s
       retries: 30
   app:
+    image: etp-carnet:local
     build:
       context: .
       dockerfile: backend/Dockerfile

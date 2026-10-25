@@ -1,0 +1,23 @@
+✔ Quinze étapes accessibles, bilans distincts et aucune date de session inventée (2.002471ms)
+✔ Les sept rubriques et la provenance sont conservées pour chaque chapitre régulier (0.382626ms)
+✔ Les originaux et l’extraction privée sont absents des ressources servies (0.25018ms)
+✔ AES-256-GCM : vecteur NIST indépendant, message vide (6.070856ms)
+✔ AAD et ciphertext compatibles avec OpenSSL/Node, indépendamment du déchiffreur applicatif (3.134164ms)
+✔ PBKDF2 Web Crypto compatible avec la dérivation indépendante de Node (174.17059ms)
+✔ Phrase et récupération ouvrent le même coffre ; mauvaise phrase refusée (294.765982ms)
+✔ Altération, substitution de coffre et d’objet refusées (93.174333ms)
+✔ Nonce de 96 bits renouvelé à chaque opération ; clé non exportable (90.722494ms)
+✔ Changement de phrase par ancien secret ou kit, ancienne sauvegarde préservée (730.544539ms)
+✔ Versions, KDF, base64 et tailles invalides refusés avant calcul coûteux (103.74355ms)
+✔ Padding borné, longueur UTF-8 et validation profonde des imports (2.15066ms)
+✔ images : dimensions avant décodage, refus d’une bombe PNG et d’un format masqué (2.166934ms)
+✔ Sondage : seul le destinataire ouvre la réponse, altération et autre session refusées (16.055308ms)
+✔ QR chiffrés : douze réponses aléatoires se décodent sans réseau (369.024613ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 15
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1700.556543

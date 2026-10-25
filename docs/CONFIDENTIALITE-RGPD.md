@@ -30,3 +30,12 @@ Cartographier traitement et sous-traitants ; examiner contexte, population vuln�
 L’[ANS](https://esante.gouv.fr/faq/si-jheberge-des-donnees-de-sante-chiffrees-suis-je-soumis-lobligation-de-certification-hds), consultée le 6 octobre 2026, indique que chiffrer ne change pas à lui seul l’obligation HDS. Déterminer le champ du traitement envisagé, la certification de chaque acteur, les contrats, la localisation, les procédures d’incident et les possibilités de sortie. Aucun VPS, Sites ou dispositif présent n’est déclaré qualifié pour ce service clinique.
 
 Avant usage réel : responsable et DPO nommés, notices/droits validés, AIPD/HDS tranchés, hébergement contractualisé, audit crypto et client indépendant, configuration HTTPS/proxy, intégrité des builds, tests de restauration/deletion, accompagnement du kit et tests avec adultes autistes. Une case à l’inscription ne résout pas ces points. La bannière actuelle impose uniquement l’usage fictif du prototype.
+
+## Partage local ajouté
+
+Les sondages sont un partage volontaire vers l’animateur, distinct du carnet.
+Question/choix publics dans le QR ; réponses chiffrées en transit optique, résultats
+lisibles seulement sur l’appareil animateur. Pas de serveur, pas de persistance
+automatique, aucune promesse d’anonymat. Le rôle et l’information du groupe doivent
+être validés avant usage réel. Le mode PWA hors ligne conserve les copies chiffrées
+sur chaque appareil ; déconnexion hors ligne ne révoque pas la session serveur.

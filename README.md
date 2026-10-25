@@ -1,56 +1,84 @@
-# Mon carnet
+# ETP vie affective · Mon carnet
 
-Prototype fonctionnel du compagnon de séances pour adultes autistes. Quinze étapes, sept rubriques regroupées en Avant / Pendant / Après, objectifs et formulations successives, défis persistants, expérimentations et paysage personnel. Usage réservé aux **données fictives**. Aucune validation clinique ou certification de sécurité n’est revendiquée.
+Compagnon de séances : carnet personnel chiffré, interface Elm, serveur Rust,
+PostgreSQL et raccordement Nginx. **Prototype réservé aux données fictives**,
+sans certification de sécurité ni validation clinique.
 
-La navigation prend la forme d’un classeur avec trois onglets sur une seule ligne : parcours, objectifs et repères. La démo et l’ouverture du coffre montrent directement la feuille du parcours. Le contour de l’onglet sélectionné se prolonge dans celui de la feuille. Un changement d’onglet ne commande aucun déplacement du carnet et ne restaure aucune position propre à une feuille. Le bandeau fixe porte le nom source « ETP TSA vie amoureuse » ; une icône de compte donne accès au verrouillage, aux réglages, aux informations du site et à la déconnexion. La vue d’ensemble a été supprimée parce qu’elle doublonnait le parcours. Les quinze capsules 0–14 forment une seule suite sur la feuille, avec douze chapitres et trois bilans. Une capsule fermée porte son numéro et son titre ; l’objectif pédagogique reste dans le contenu ouvert. Son titre garde sa taille et sa position à l’écran pendant l’ouverture, même quand une autre capsule se referme au-dessus. Son contenu déjà présent s’agrandit et repousse les suivantes. Avant / Pendant / Après sont trois textes alignés avec un soulignement mobile, accessibles au clavier et par swipe horizontal dans le contenu. Les panneaux suivent le doigt ; glisser à gauche avance, glisser à droite revient. Les rappels redondants sous cette navigation sont retirés. Elm Animator 2.0.0 anime ces relations. Lire `docs/CONTINUITE.md` pour le modèle de navigation et la conservation du fond. La réduction des mouvements du navigateur et le réglage sans animation conservent les mêmes feuilles, capsules et fonctions.
+Le projet est autonome : aucun serveur commun, SSO, base métier, SDK ou paquet
+visuel d’un autre projet n’est requis. Node sert uniquement à construire et tester
+le frontend. Le service déployé est un binaire Rust et des fichiers statiques.
 
-La démonstration privée publiée utilise uniquement le stockage du navigateur. « Ouvrir la démonstration » conduit directement au carnet et à ses trois onglets. La version complète ci-dessous possède de vrais comptes, une API Common Lisp et PostgreSQL. Les fichiers internes ayant servi au travail ne sont pas inclus.
-
-## Lancer la version complète
-
-Pré-requis : Node.js 22 ou plus, npm, Git et Docker Compose. La compilation récupère la révision exacte de style-mrjam si elle manque. Un accès réseau initial aux registres npm, Elm, GitHub et Docker est nécessaire.
+## Démarrer
 
 ```sh
 npm ci
 npm run typecheck
 npm run build
+cp .env.example .env
+# Remplacer le mot de passe PostgreSQL dans .env.
 docker compose up --build -d
 ```
 
-Ouvrir **http://localhost:3000** sur la machine où Docker tourne. Web Crypto fonctionne sur localhost ; toute exposition extérieure exige HTTPS. Ce serveur écoute uniquement sur l’interface de boucle locale. La valeur de mot de passe PostgreSQL par défaut sert au développement isolé. Pour une autre installation, copier `.env.example` en `.env`, utiliser un secret aléatoire et consulter `docs/DEPLOIEMENT.md`.
+Ouvrir `http://localhost:3000`. Hors localhost, HTTPS est obligatoire.
+Le binaire peut aussi être construit avec `cargo build --locked --release
+--manifest-path backend/Cargo.toml`. Les variables `CARNET_DB_*` sélectionnent
+la base ; `CARNET_DIST`, `CARNET_BIND`, `CARNET_PUBLIC_URL` et
+`CARNET_DELETION_LEDGER` sélectionnent les ressources locales.
 
-L’entrée propose « Créer mon compte » : identifiant pseudonyme, mot de passe de connexion, phrase distincte de coffre et confirmation d’utilisation fictive. Télécharger le kit de récupération. Le questionnaire de besoins ne conditionne pas l’inscription. Les comptes démarrent avec un carnet vide ; la démonstration contient les exemples de Camille.
+## Usage
 
-```sh
-docker compose down
-```
+Créer un compte pseudonyme, choisir un mot de passe de connexion et une phrase
+de coffre **différente**, puis conserver le kit privé de récupération.
+Le serveur ne reçoit jamais la phrase, la clé du coffre ou son secret de récupération.
+Une réinitialisation de connexion ne déchiffre pas le carnet.
 
-Cette commande arrête l’application et conserve les volumes. **Ne pas supprimer les volumes de données ni le journal indépendant des suppressions** pour une installation à conserver.
+La séance actuelle et les précédentes restent accessibles. La suivante n’ouvre
+que « Se préparer » ; « Commencer cette séance » ouvre son contenu en séance.
+Les autres sont grisées. Cette progression est choisie localement par la personne,
+ce n’est pas une autorisation médicale ni un verrou imposé par l’équipe.
+Les activités précédemment « Après » se retrouvent dans la préparation suivante.
+Les supports de préparation existent en HTML et PDF téléchargeable. Ils reprennent
+les adaptations du catalogue, **pas les cours originaux privés**.
 
-## Organisation
+La PWA télécharge l’application, le catalogue et les supports. Attendre
+« Application et supports disponibles hors ligne » avant de quitter le réseau.
+Sur un appareil déjà utilisé, un rechargement sans réseau propose le coffre local,
+ouvrable avec sa phrase. Les modifications restent chiffrées sur l’appareil et
+se synchronisent au retour d’une session du même compte. La démo reste fictive.
 
-| Chemin | Responsabilité |
-|---|---|
-| `frontend/src/Main.elm` | Interface Elm/ElmUI, navigation, commandes métier |
-| `frontend/src/Carnet.elm` | Modèle privé, sérialisation et vues transversales locales |
-| `content/parcours.json` | Catalogue éditorial versionné, provenance, quinze étapes |
-| `shared/elm/MrJam/Carnet.elm`, `shared/elm/MrJam/Continuite.elm`, `shared/assets/carnet.css` | Extension additive destinée à style-mrjam, thème centralisé |
-| `style.lock.json` | Révision vérifiée de style-mrjam |
-| `bridge/` | Web Crypto en Worker, transport, IndexedDB et APIs natives |
-| `backend/` | API Lisp, migration PostgreSQL, image reproductible |
-| `tests/`, `compose.test.yaml` | Tests unitaires, vraie API et trois navigateurs |
-| `docs/` | Architecture, confidentialité préparatoire, sources, démonstration et preuves |
+Le lien « sondage local » permet un partage volontaire sans réseau par QR codes
+chiffrés, avec collecte successive par l’animateur. Lire
+[le fonctionnement hors ligne](docs/HORS-LIGNE-ET-SONDAGES.md).
 
 ## Vérifier
 
 ```sh
+npm run typecheck
+npm run build
+cargo fmt --manifest-path backend/Cargo.toml --check
+cargo clippy --manifest-path backend/Cargo.toml --locked -- -D warnings
+docker compose build app
 docker compose -p mon-carnet-tests -f compose.test.yaml up -d backend
-node --import tsx --test tests/crypto.test.ts tests/contenu.test.ts tests/image.test.ts
+node --import tsx --test tests/crypto.test.ts tests/contenu.test.ts tests/image.test.ts tests/poll.test.ts
 node --import tsx --test tests/api.test.ts
-docker compose -p mon-carnet-tests -f compose.test.yaml run --rm browser
-node scripts/verify-storage.mjs
+node --import tsx scripts/verify-restore.ts
 ```
 
-Le navigateur utilise un relais HTTP local vers le vrai backend Lisp de test, sans simulation des réponses. La base de test est distincte, éphémère et ne contient que des fixtures. Les références visuelles sont comparées ; leur mise à jour est une action explicite de maintenance après inspection. La CI utilise les mêmes commandes.
+La base de test est isolée et éphémère. Ne jamais diriger les scripts de
+restauration vers des données réelles. Les anciennes captures et preuves dans
+`docs/historique/` et les fichiers de résultats antérieurs décrivent le prototype
+historique, pas la qualification de cette version. Voir [les résultats actuels](docs/VERIFICATION-RUST-PWA.md).
 
-Lire `docs/RESULTATS.md` pour les résultats exécutés et les limites des contrôles, `docs/DEMONSTRATION.md` pour le parcours d’essai. Ce POC n’inclut ni recherche sur les utilisateurs, ni télémétrie, ni consultation des carnets par une équipe.
+## Dossier de sécurité
+
+Commencer par [le modèle de sécurité](docs/SECURITE.md), puis les
+[contrats cryptographiques](docs/ARCHITECTURE-CRYPTO.md), les
+[menaces](docs/MENACES.md) et le [dossier RGPD](docs/CONFIDENTIALITE-RGPD.md).
+Le chiffrement protège une fuite du stockage ; un serveur qui distribue un client
+malveillant reste une menace pour une PWA. Cette limite empêche de promettre une
+confidentialité absolue face à tout administrateur actif.
+
+[Déploiement portable](docs/DEPLOIEMENT.md) et
+[contrat d’intégration VPS](deployment/CONTRAT-VPS.md).
+Licence du travail propre : **LGPL-3.0-or-later**, textes dans `LICENSE` et
+`COPYING`. Voir [l’examen des licences](docs/LICENCES.md).

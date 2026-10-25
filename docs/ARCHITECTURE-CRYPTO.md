@@ -7,7 +7,7 @@ flowchart LR
     E[Elm : carnet ouvert en mémoire] --> W[Worker Web Crypto]
     W --> I[IndexedDB : enveloppes chiffrées]
     W --> H[HTTPS : enveloppes et révision]
-    H --> L[API Common Lisp : autorisation et bornes]
+    H --> L[API Rust : autorisation et bornes]
     L --> P[PostgreSQL : comptes, sessions et ciphertext]
     L --> J[Journal indépendant des suppressions : UUID]
 ```
@@ -54,3 +54,13 @@ La démo génère son propre CryptoKey non exportable par navigateur et ne conta
 ## Interface continue
 
 La présentation utilise Elm Animator 2.0.0 : un onglet change de feuille du classeur ; les douze chapitres se déploient en capsules sur la même feuille du parcours. L’état de navigation mémorise en mémoire la capsule ouverte et son moment, sans les ajouter au format privé ni conserver une position de défilement par feuille. Le type de geste distingue un onglet, un onglet au clavier et une destination explicitement demandée. Les onglets assurent le focus sans déplacer la lecture ; un retour explicite peut révéler son titre par un défilement natif progressif après le mouvement de la capsule. L’entrée montre directement le parcours ; la vue d’ensemble redondante est supprimée. Un bandeau fixe donne accès au compte. Le pont de présentation compense les variations de hauteur au-dessus du titre cliqué avant la peinture, sans agrandir sa typographie. Les transitions CSS natives générées par Animator ne modifient ni le carnet v1 ni les flux ci-dessus, n’ajoutent aucun stockage ou chemin réseau et s’arrêtent avec le verrouillage. Le pont transmet la préférence native de réduction des mouvements et assure le focus. Lire `CONTINUITE.md`.
+
+## Évolution autonome du 25 octobre 2026
+
+Le backend Rust conserve les contrats SQL, scrypt-v1 et les enveloppes v1.
+La PWA ne met en cache que les ressources publiques ; le coffre local s’ouvre
+avec la phrase sans session distante. Les QR de sondage utilisent un protocole
+éphémère distinct (ECDH P-256/HKDF/AES-GCM), documenté dans
+HORS-LIGNE-ET-SONDAGES.md. Les deux temps visibles sont désormais Se préparer
+et Pendant la séance ; les activités entre séances sont dans la préparation
+suivante. Les métadonnées de progression restent chiffrées.

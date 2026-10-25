@@ -193,6 +193,9 @@ async function synchronize(): Promise<void> {
     if (!draft?.dirty) return;
     const sequence = savingSerial;
     try {
+      const active: Account = await request("/api/me");
+      if (active.id !== account.id) throw new Error("Reconnectez-vous au compte de ce coffre pour synchroniser.");
+      account.csrf = active.csrf;
       // Toutes les images sont synchronisées en bloc indépendamment du chapitre affiché.
       for (const object of await entries("object:" + account.id + ":")) {
         if (object.value.pending) {
@@ -219,8 +222,21 @@ async function synchronize(): Promise<void> {
   });
   await syncTail;
 }
+async function loadLocalAccount(): Promise<void> {
+  const id = await store("last-account");
+  if (typeof id !== "string") throw new Error("Aucun coffre téléchargé sur cet appareil.");
+  account = { id, csrf: "", pseudonyme: "" }; mode = "account";
+  const drafts = (await entries("draft:" + id + ":")).filter(e => e.value.dirty).sort((a,b) => b.value.time - a.value.time);
+  const saved: Stored | undefined = drafts[0]?.value ?? await store("cache:" + id);
+  if (!saved) throw new Error("Aucun coffre téléchargé sur cet appareil.");
+  payload = saved.payload; revision = saved.revision; conflict = false;
+  await store(draftKey(), saved);
+  emit("locked", { demo: false, conflict: false });
+  emit("notice", { message: "Copie locale : ouvrez-la avec votre phrase de coffre. La synchronisation nécessitera une session du même compte." });
+}
 async function loadAccount(): Promise<void> {
   const remote = await request("/api/state");
+  await store("last-account", account!.id);
   const drafts = (await entries("draft:" + account!.id + ":")).filter(e => e.value.dirty).sort((a,b) => b.value.time - a.value.time);
   const saved: Stored = drafts.length ? drafts[0].value : { payload: remote.payload, revision: remote.revision, dirty: false, time: Date.now() };
   payload = saved.payload; revision = saved.revision;
@@ -363,6 +379,8 @@ async function command(command: Command): Promise<void> {
     account = await request("/api/register", "POST", { pseudonyme: data.pseudonyme, password: data.password, authRecovery: auth, payload });
     revision = 1; conflict = false;
     await store(draftKey(), { payload, revision, dirty: false, time: Date.now() } satisfies Stored);
+    await store("last-account", account!.id);
+    await store("cache:" + account!.id, { payload, revision, dirty: false, time: Date.now() } satisfies Stored);
     kit = { account: account!.pseudonyme, auth, vault: created.recovery };
     showJournal(doc);
     emit("kit", kit);
@@ -387,7 +405,8 @@ async function command(command: Command): Promise<void> {
     if (mode === "account") { await saveNow(); await synchronize(); }
     await lock(false);
     if (account) {
-      await request("/api/logout", "POST", {});
+      try { await request("/api/logout", "POST", {}); }
+      catch { emit("notice", { message: "Coffre verrouillé localement. La révocation de session sur le serveur nécessite une connexion." }); }
       // Conservation des seules copies chiffrées ; session révoquée côté serveur.
     }
     account = null; payload = null; mode = "none"; emit("entry");
@@ -477,6 +496,7 @@ async function command(command: Command): Promise<void> {
     await lock(false);
     for (const prefix of ["draft:", "object:", "delete:", "before-import:", "conflict-copy:", "conflict-remote:"]) await erasePrefix(prefix + id + ":");
     await store("cache:" + id, undefined, true);
+    if (await store("last-account") === id) await store("last-account", undefined, true);
     account = null; mode = "none"; payload = null; emit("entry");
     emit("notice", { message: "Compte, sessions et objets chiffrés supprimés du serveur. Les exports que vous avez téléchargés restent sous votre contrôle." });
   } else if (action === "resetDemo") {
@@ -537,6 +557,20 @@ async function command(command: Command): Promise<void> {
 }
 
 async function main(): Promise<void> {
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/sw.js").then(async registration => {
+      await navigator.serviceWorker.ready;
+      const cacheNames = await caches.keys();
+      if (cacheNames.some(name => name.startsWith("etp-shell-"))) {
+        const status = document.createElement("p"); status.className = "pwa-disponible";
+        status.textContent = "Application et supports disponibles hors ligne sur cet appareil.";
+        document.body.append(status);
+      }
+      registration.addEventListener("updatefound", () => registration.installing?.addEventListener("statechange", () => {
+        if (registration.waiting && app) emit("notice", { message: "Mise à jour prête : verrouillez le coffre et fermez toutes les fenêtres du carnet pour l’appliquer." });
+      }));
+    }).catch(() => {});
+  }
   const response = await fetch("/catalogue.json", { cache: "no-cache" });
   const catalogue = await response.json();
   const demoOnly = document.documentElement.dataset.demoOnly === "true";
@@ -569,7 +603,10 @@ async function main(): Promise<void> {
   }, 5000);
   if (!demoOnly) {
     try { account = await request("/api/me"); mode = "account"; await loadAccount(); }
-    catch { account = null; mode = "none"; }
+    catch {
+      try { await loadLocalAccount(); }
+      catch { account = null; mode = "none"; }
+    }
   }
 }
 main().catch(() => {

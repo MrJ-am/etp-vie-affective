@@ -1,9 +1,17 @@
-# Conventions du carnet
+# Conventions du carnet autonome
 
-Vocabulaire métier en français, Elm/ElmUI pour le frontend, Common Lisp/PostgreSQL pour les comptes. Lire README et docs/ARCHITECTURE-CRYPTO.md avant de modifier les contrats. Les documents sources restent privés et hors du dépôt : ne pas les copier, servir ou publier.
+Vocabulaire métier français, Elm/ElmUI/Animator côté interface, Rust/PostgreSQL
+côté serveur. Lire README et docs/SECURITE.md puis ARCHITECTURE-CRYPTO.md avant
+modification des contrats. Préserver le format cryptographique v1 et les comptes.
+Aucune donnée privée ni document source médical original dans les ressources servies.
 
-Composants et thème centralisés dans shared/, extension additive destinée à MrJ-am/style-mrjam à la révision style.lock.json. Ne pas altérer les consommateurs ou les ressources d’identité du paquet partagé. Toute intégration upstream ou au VPS doit respecter ses instructions et la coordination actuelle, via ses workflows autorisés.
+Ce projet est indépendant : aucun raccordement à l’image Common Lisp, au SSO,
+au thème ou aux données des autres projets. Le VPS fournit uniquement Nginx,
+une base et un rôle PostgreSQL dédiés, ainsi que le lancement du service autonome.
+Respecter les procédures du dépôt d’infrastructure pour tout déploiement effectif.
+Les ressources d’identité d’autres projets restent réservées.
 
-Une publication Sites de ce projet expose uniquement la démo navigateur, explicitement annoncée. Le backend Lisp/PostgreSQL reste dans la version complète locale. Ne pas simuler des comptes sur Sites ni remplacer la stack pour l’hébergement.
-
-Tous les tests utilisent des données inventées. scripts/verify-restore.ts cible exclusivement compose.test.yaml : ne jamais l’adapter silencieusement à une base réelle. Ne pas augmenter le nombre de tests ou relancer sans raison après validation ; vérifier les changements pertinents. Ne pas revendiquer une certification de sécurité, une validation clinique ou des essais utilisateurs inexistants.
+Les tests utilisent des fixtures inventées. verify-restore.ts cible uniquement
+compose.test.yaml. Ne pas revendiquer certification, validation clinique,
+audit externe ou essai sur appareils réels inexistant. Pas de publication de
+données patient ni de bascule du VPS sans sauvegarde et retour vérifiés.

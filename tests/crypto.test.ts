@@ -59,11 +59,13 @@ test("Versions, KDF, base64 et tailles invalides refusés avant calcul coûteux"
   await assert.rejects(unlock({...created.keyring,v:2 as any},phrase));
   await assert.rejects(unlock({...created.keyring,phrase:{...created.keyring.phrase,rounds:2_000_000_000}},phrase));
   assert.throws(()=>unbase64("pas du base64"));
+  assert.throws(()=>unbase64("AB=="));
   assert.throws(()=>pack({texte:"x".repeat(2_000_001)}));
   assert.throws(()=>unpack(new Uint8Array([255,255,255,255])));
 });
 test("Padding borné, longueur UTF-8 et validation profonde des imports",()=>{
   const doc=journal();doc.notes["1-note"]="été 🌱";
+  const large={texte:"x".repeat(100_000)};assert.deepEqual(unpack(pack(large)),large);
   const packed=pack(doc);assert.equal(packed.length%4096,0);assert.deepEqual(unpack(packed),doc);validateJournal(doc);
   assert.throws(()=>validateJournal({...doc,version:2}));
   assert.throws(()=>validateJournal({...doc,objectifs:[{id:1,texte:7,origine:1,historique:[]}]}));

@@ -88,7 +88,7 @@ onglets liste =
                 (List.indexedMap bouton liste)
 
 
-{-| Navigation horizontale : trois textes sur la même ligne, avec un seul
+{-| Navigation horizontale : textes sur la même ligne, avec un seul
 indicateur animé en dessous. Les touches fléchées déplacent aussi le focus.
 -}
 moments : { id : String } -> List { libelle : String, selectionne : Bool, choisir : msg } -> Element msg
@@ -104,16 +104,16 @@ moments config liste =
                                     suivant =
                                         case key of
                                             "ArrowRight" ->
-                                                Just (modBy 3 (index + 1))
+                                                Just (modBy (max 1 (List.length liste)) (index + 1))
 
                                             "ArrowLeft" ->
-                                                Just (modBy 3 (index - 1))
+                                                Just (modBy (max 1 (List.length liste)) (index - 1))
 
                                             "Home" ->
                                                 Just 0
 
                                             "End" ->
-                                                Just 2
+                                                Just (List.length liste - 1)
 
                                             _ ->
                                                 Nothing

@@ -19,6 +19,8 @@ async function make(){
   return{...account,key:created.key,keyring:created.keyring,cookie:r.headers.get("set-cookie")!.split(";")[0]};
 }
 const deleted=await make(),survivor=await make();
+assert.throws(()=>docker(["run","--rm","--no-deps","-e","CARNET_DELETION_LEDGER=/tmp/missing-etp-ledger.log","backend"]),/Command failed/);
+console.log("Journal manquant sur une base existante : démarrage refusé.");
 const r=await fetch(base+"/api/account",{method:"DELETE",headers:{Origin:origin,"Content-Type":"application/json",Cookie:deleted.cookie,"X-Carnet-CSRF":deleted.csrf},body:JSON.stringify({password})});assert.equal(r.status,200);
 // Simuler un état ancien de base sans son tombstone SQL ; garder le journal récent.
 assert.match(deleted.id,/^[a-f0-9-]{36}$/);
@@ -29,6 +31,6 @@ await healthy();
 assert.equal(sql("SELECT count(*) FROM comptes WHERE id='"+deleted.id+"'::uuid;"),"0");
 const state=await(await fetch(base+"/api/state",{headers:{Cookie:survivor.cookie}})).json() as any;
 assert.deepEqual(unpack(await open(survivor.key,state.payload.envelope,survivor.keyring.vault,"journal")),journal());
-console.log("Redémarrage réel SBCL : coffre et session de la fixture conservés.");
+console.log("Redémarrage réel Rust : coffre et session de la fixture conservés.");
 console.log("Restauration simulée d’un compte supprimé : journal indépendant rejoué, compte retiré avant ouverture du service.");
 await fetch(base+"/api/account",{method:"DELETE",headers:{Origin:origin,"Content-Type":"application/json",Cookie:survivor.cookie,"X-Carnet-CSRF":survivor.csrf},body:JSON.stringify({password})});

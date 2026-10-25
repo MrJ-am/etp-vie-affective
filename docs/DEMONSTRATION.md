@@ -1,3 +1,5 @@
+> Document historique du prototype initial. Pour la version Rust/PWA du 25 octobre 2026, lire [SECURITE.md](SECURITE.md), [HORS-LIGNE-ET-SONDAGES.md](HORS-LIGNE-ET-SONDAGES.md) et [VERIFICATION-RUST-PWA.md](VERIFICATION-RUST-PWA.md). Les affirmations de résultats ci-dessous ne qualifient pas cette nouvelle version.
+
 # Scénario de démonstration
 
 Tous les exemples sont inventés. Camille n’est pas une personne participante. Les comptes de test ont été créés par automatisation ; aucune observation humaine de personnes autistes n’est revendiquée.

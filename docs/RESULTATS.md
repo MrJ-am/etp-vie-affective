@@ -1,3 +1,5 @@
+> Document historique du prototype initial. Pour la version Rust/PWA du 25 octobre 2026, lire [SECURITE.md](SECURITE.md), [HORS-LIGNE-ET-SONDAGES.md](HORS-LIGNE-ET-SONDAGES.md) et [VERIFICATION-RUST-PWA.md](VERIFICATION-RUST-PWA.md). Les affirmations de résultats ci-dessous ne qualifient pas cette nouvelle version.
+
 # Vérifications de la livraison du 7 octobre 2026
 
 Cette livraison présente les capsules 0–14 dans une seule suite, ajoute le swipe horizontal dans leur contenu et retire les rappels redondants sous Avant / Pendant / Après. Le bandeau reste réduit au nom du programme et à l’icône du compte, avec le verrouillage dans ce menu, et reste en haut pendant la lecture. La vue d’ensemble redondante reste supprimée. Les capsules fermées portent leur numéro et leur titre ; les objectifs source restent dans leur contenu ouvert. Le titre garde sa taille et sa position à l’écran pendant le mouvement. Avant / Pendant / Après sont trois textes alignés au-dessus d’un seul soulignement mobile. Les douze chapitres, les trois bilans et les sept rubriques sont conservés.

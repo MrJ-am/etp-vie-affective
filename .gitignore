@@ -12,3 +12,5 @@ sources/
 private/
 *.zip
 *.tgz
+
+backend/target/

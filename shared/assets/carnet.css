@@ -162,3 +162,10 @@ html[data-motion="off"] *, html[data-motion="off"] *::before, html[data-motion="
 html[data-ancrage="true"], html[data-ancrage="true"] * { overflow-anchor: none !important; }
 /* Une réserve de papier, uniquement si la fin de la feuille borne le scroll. */
 .theme-carnet .ancrage-reserve { flex: 0 0 auto !important; width: 100%; height: var(--reserve-carnet, 0px) !important; min-height: var(--reserve-carnet, 0px) !important; }
+
+.capsule-indisponible { opacity: .55; filter: grayscale(1); }
+
+.support-cours, .sondage { max-width: 55rem; margin: 2rem auto; padding: 1.5rem; line-height: 1.7; }
+.sondage button,.sondage input,.sondage textarea { display: block; margin: .8rem 0; padding: .7rem; max-width: 100%; }
+.sondage canvas,.sondage video { max-width:100%; }
+@media print { .support-cours a { display:none; } }

@@ -1,9 +1,9 @@
 /** Relais HTTP local de test : Web Crypto bénéficie du contexte localhost natif.
- * Aucun endpoint n’est simulé : toutes les requêtes API atteignent SBCL/PostgreSQL.
+ * Aucun endpoint n’est simulé : toutes les requêtes API atteignent Rust/PostgreSQL.
  */
 import http from "node:http";
 import { spawn } from "node:child_process";
-const upstream = "http://backend:3000";
+const upstream = process.env.CARNET_BROWSER_UPSTREAM || "http://backend:3000";
 let healthy = false;
 for (let attempt = 0; attempt < 50; attempt++) {
   try { if ((await fetch(upstream + "/api/health")).ok) { healthy = true; break; } } catch {}
@@ -11,6 +11,12 @@ for (let attempt = 0; attempt < 50; attempt++) {
 }
 if (!healthy) throw new Error("Backend réel non disponible.");
 const server = http.createServer((request,response) => {
+  // Test-only upstream outage. WebKit automation aborts offline navigations before SW dispatch.
+  if (request.headers["x-etp-test-offline"] === "1") {
+    response.writeHead(503, { "Content-Type": "application/json", "Cache-Control": "no-store" });
+    response.end(JSON.stringify({ error: "Panne réseau simulée par le relais de test." }));
+    return;
+  }
   const remote = http.request(new URL(request.url || "/",upstream), { method: request.method, headers: request.headers }, incoming => {
     response.writeHead(incoming.statusCode || 502, incoming.headers);
     incoming.pipe(response);

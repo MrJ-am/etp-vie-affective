@@ -1,3 +1,5 @@
+> Document historique du prototype initial. Pour la version Rust/PWA du 25 octobre 2026, lire [SECURITE.md](SECURITE.md), [HORS-LIGNE-ET-SONDAGES.md](HORS-LIGNE-ET-SONDAGES.md) et [VERIFICATION-RUST-PWA.md](VERIFICATION-RUST-PWA.md). Les affirmations de résultats ci-dessous ne qualifient pas cette nouvelle version.
+
 # Un classeur, des feuilles et des capsules
 
 La refonte d’orientation distingue deux gestes : **changer de plan conceptuel** avec un onglet, et **se rapprocher d’un chapitre** sur sa feuille. Elle conserve **mdgriffith/elm-animator 2.0.0**, figé dans `elm.json`, ElmUI et le thème partagé.

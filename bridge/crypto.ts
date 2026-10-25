@@ -6,7 +6,13 @@ export const ROUNDS = 600_000;
 const encoder = new TextEncoder();
 const decoder = new TextDecoder("utf-8", { fatal: true });
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
-export const bytes = (size: number): Uint8Array => crypto.getRandomValues(new Uint8Array(size));
+export function bytes(size: number): Uint8Array {
+  const output = new Uint8Array(size);
+  // Web Crypto limits each getRandomValues call to 65,536 bytes.
+  for (let offset = 0; offset < size; offset += 65536)
+    crypto.getRandomValues(output.subarray(offset, Math.min(size, offset + 65536)));
+  return output;
+}
 export function base64(value: Uint8Array): string {
   let binary = "";
   for (let i = 0; i < value.length; i += 8192) binary += String.fromCharCode(...value.subarray(i, i + 8192));
@@ -16,6 +22,7 @@ export function unbase64(value: unknown, limit = 8_000_000): Uint8Array {
   if (typeof value !== "string" || value.length > limit || !/^[A-Za-z0-9+/]*={0,2}$/.test(value) || value.length % 4)
     throw new Error("Format chiffré invalide.");
   const decoded = atob(value);
+  if (btoa(decoded) !== value) throw new Error("Encodage base64 non canonique.");
   return Uint8Array.from(decoded, c => c.charCodeAt(0));
 }
 export function recoveryCode(): string { return base64(bytes(32)); }

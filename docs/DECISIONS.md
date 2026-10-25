@@ -1,3 +1,5 @@
+> Document historique du prototype initial. Pour la version Rust/PWA du 25 octobre 2026, lire [SECURITE.md](SECURITE.md), [HORS-LIGNE-ET-SONDAGES.md](HORS-LIGNE-ET-SONDAGES.md) et [VERIFICATION-RUST-PWA.md](VERIFICATION-RUST-PWA.md). Les affirmations de résultats ci-dessous ne qualifient pas cette nouvelle version.
+
 # Décisions du prototype — 6 octobre 2026
 
 Le parcours suit les quinze étapes 0–14 du récapitulatif A:H ; les 12–13 séances du document de principes ne sont pas un calendrier définitif. Aucun rendez-vous ou établissement n’est affiché. Les dates éventuelles sont personnelles et chiffrées.

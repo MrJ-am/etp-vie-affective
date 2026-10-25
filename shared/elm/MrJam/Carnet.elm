@@ -1,8 +1,6 @@
 module MrJam.Carnet exposing (..)
 
-{-| Extension additive proposée au paquet partagé style-mrjam.
-Le moteur de contrôle historique est réutilisé ; la variante Carnet est isolée.
-Elle ne contient aucune donnée métier ni ressource d'identité réservée.
+{-| Composants autonomes du carnet, sans dépendance aux autres projets.
 -}
 
 import Element as U exposing (Attribute, Element, fill, px, width)
@@ -14,7 +12,6 @@ import Element.Region as R
 import Html
 import Html.Attributes as A
 import Html.Events as Events
-import MrJam.Controles as Controle
 
 
 couleurs =
@@ -28,7 +25,7 @@ classe =
 
 bouton : String -> msg -> Element msg
 bouton libelle action =
-    Controle.action Controle.Principale
+    actionLocale
         [ Bg.color couleurs.prune, B.color couleurs.prune, F.color couleurs.blanc, U.mouseOver [ Bg.color couleurs.pruneSurvol ], U.height (U.minimum 44 U.shrink), U.paddingXY 18 12, B.rounded 8, F.size 16, classe "carnet-bouton" ]
         libelle
         (Just action)
@@ -36,7 +33,7 @@ bouton libelle action =
 
 secondaire : String -> msg -> Element msg
 secondaire libelle action =
-    Controle.action Controle.Secondaire
+    actionLocale
         [ F.color couleurs.prune, B.color couleurs.ligne, U.height (U.minimum 44 U.shrink), U.paddingXY 16 11, B.rounded 8, F.size 16, classe "carnet-bouton" ]
         libelle
         (Just action)
@@ -44,7 +41,7 @@ secondaire libelle action =
 
 discret : String -> msg -> Element msg
 discret libelle action =
-    Controle.action Controle.Discrete
+    actionLocale
         [ F.color couleurs.prune, U.height (U.minimum 44 U.shrink), U.paddingXY 8 10, F.size 14, classe "carnet-bouton" ]
         libelle
         (Just action)
@@ -52,7 +49,7 @@ discret libelle action =
 
 destructif : String -> msg -> Element msg
 destructif libelle action =
-    Controle.action Controle.Destructive
+    actionLocale
         [ U.height (U.minimum 44 U.shrink), U.paddingXY 16 11, B.rounded 8, F.size 16, classe "carnet-bouton" ]
         libelle
         (Just action)
@@ -60,7 +57,7 @@ destructif libelle action =
 
 onglet : Bool -> String -> msg -> Element msg
 onglet actif libelle action =
-    Controle.action (Controle.Selection actif)
+    actionLocale
         [ U.height (U.minimum 44 U.shrink)
         , U.paddingXY 16 12
         , B.rounded 8
@@ -186,3 +183,10 @@ lien libelle url =
 separateur : Element msg
 separateur =
     U.el [ width fill, U.height (px 1), Bg.color couleurs.ligne ] U.none
+
+
+actionLocale : List (Attribute msg) -> String -> Maybe msg -> Element msg
+actionLocale attributs libelle message =
+    Input.button
+        ([ B.width 1, Bg.color couleurs.blanc, U.htmlAttribute (A.style "max-width" "100%") ] ++ attributs)
+        { onPress = message, label = U.paragraph [] [ U.text libelle ] }
