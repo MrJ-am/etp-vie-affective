@@ -61,7 +61,11 @@ leur mise à jour nécessite une nouvelle qualification et un nouvel artefact.
 Les migrations et l’entretien périodique sont exécutés par le service ; aucune
 connexion n’est ouverte par le frontend vers PostgreSQL.
 
-Le contrat de raccordement est dans `deployment/CONTRAT-VPS.md`. Aucun changement
-n’a été appliqué au VPS ni aux autres dépôts. Une future migration emporte le dump,
+Le contrat de raccordement est dans `deployment/CONTRAT-VPS.md`. ViSe a été déployé le 27 octobre 2026 sur le VPS par le workflow central
+`vise-deploiement.yml` de vps-infrastructure (run40456207396). Le binaire musl
+autonome tourne sans Docker ; sa base et son rôle séparés utilisent le PostgreSQL
+général existant par socket Unix. HTTPS, sauvegarde chiffrée et démarrage
+persistant ont été vérifiés. Les ressources publiques correspondent par SHA256
+à l’artefact qualifié. Voir `vps-infrastructure/assemblage/vise/production.json`. Une future migration emporte le dump,
 le journal, le binaire/les assets et les secrets d’exploitation ; aucune modification
 métier n’est nécessaire. Vérifier HDS/AIPD et audit avant données réelles.
