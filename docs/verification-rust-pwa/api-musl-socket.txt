@@ -1,0 +1,30 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Le vrai backend de test doit être lancé.
+    at <anonymous> (/workspace/etp-vie-affective/tests/api.test.ts:12:8) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v24.19.0
+✖ tests/api.test.ts (10272.980484ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 10281.33976
+
+✖ failing tests:
+
+test at tests/api.test.ts:1:1
+✖ tests/api.test.ts (10272.980484ms)
+  'test failed'
