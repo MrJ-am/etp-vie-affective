@@ -1,3 +1,6 @@
+# Variante OCI facultative, NON utilisée pour ViSe sur le VPS.
+# Le déploiement actif appartient à vps-infrastructure/assemblage/vise.
+# PostgreSQL ci-dessous désigne le service système commun, pas une seconde instance.
 # Exemple non appliqué : compléter domaine, image/digest et secrets hors dépôt.
 { config, pkgs, ... }:
 let

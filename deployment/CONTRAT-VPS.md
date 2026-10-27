@@ -20,8 +20,9 @@ Le nom de domaine, le port et le digest d’image sont fournis par l’hébergeu
 Aucun endpoint MCP ni accès aux identités communes. Aucun secret en fichier image.
 L’application se déplace sans modification du code vers un autre hébergeur.
 
-Le raccordement réel n’est pas appliqué à ce stade : aucun domaine ETP ni digest
-promu n’a été désigné. Les autres projets et leur infrastructure active sont préservés.
+État initial du 25 octobre : raccordement préparé, non appliqué. La section
+ViSe ci-dessous précise le choix d’hébergement du 27 octobre ; les autres
+projets conservent leur propre infrastructure et leur cycle de vie.
 
 ## ViSe — hébergement choisi le 27 octobre 2026
 
