@@ -22,3 +22,18 @@ L’application se déplace sans modification du code vers un autre hébergeur.
 
 Le raccordement réel n’est pas appliqué à ce stade : aucun domaine ETP ni digest
 promu n’a été désigné. Les autres projets et leur infrastructure active sont préservés.
+
+## ViSe — hébergement choisi le 27 octobre 2026
+
+Domaine : `https://vise.mrj.am`. Une base `etp_carnet` et un rôle Unix/PostgreSQL
+`etp_carnet` sont réservés dans **l’instance PostgreSQL générale existante**.
+Il n’y a pas de second serveur PostgreSQL ni de nouveau conteneur de base.
+La connexion se fait par socket local `/run/postgresql`, authentification peer,
+sans mot de passe stocké ni ouverture TCP. Les règles HBA ne permettent à ce
+rôle que sa base propre.
+
+Le serveur Rust statique musl est qualifié localement sur le même protocole Unix.
+L’adaptateur central `assemblage/vise/` dans vps-infrastructure ne possède que
+le service systemd, le vhost Nginx, la déclaration de base/rôle et la sauvegarde
+chiffrée indépendante. Pas de Docker sur le VPS, ni de SSO/monolithe partagé.
+Les paquets conteneurisés restent une option de développement et de portabilité.

@@ -8,6 +8,9 @@ Le projet est autonome : aucun serveur commun, SSO, base métier, SDK ou paquet
 visuel d’un autre projet n’est requis. Node sert uniquement à construire et tester
 le frontend. Le service déployé est un binaire Rust et des fichiers statiques.
 
+Le domaine retenu pour l’hébergement est **https://vise.mrj.am**.
+Le raccordement utilise une base séparée dans le PostgreSQL général existant.
+
 ## Démarrer
 
 ```sh
