@@ -8,8 +8,10 @@ Le projet est autonome : aucun serveur commun, SSO, base métier, SDK ou paquet
 visuel d’un autre projet n’est requis. Node sert uniquement à construire et tester
 le frontend. Le service déployé est un binaire Rust et des fichiers statiques.
 
-Le site est accessible sur **https://vise.mrj.am** depuis le 27 octobre 2026.
-Le raccordement utilise une base séparée dans le PostgreSQL général existant.
+La préparation du 28 octobre 2026 gèle la publication automatique et conserve
+le service autonome. Les domaines et la production ne sont pas modifiés ici.
+Les anciennes preuves de publication restent dans l'historique Git ; aucune
+qualification nouvelle de ViSe n'est revendiquée par le chantier du monolithe.
 
 ## Démarrer
 
@@ -68,9 +70,8 @@ node --import tsx scripts/verify-restore.ts
 ```
 
 La base de test est isolée et éphémère. Ne jamais diriger les scripts de
-restauration vers des données réelles. Les anciennes captures et preuves dans
-`docs/historique/` et les fichiers de résultats antérieurs décrivent le prototype
-historique, pas la qualification de cette version. Voir [les résultats actuels](docs/VERIFICATION-RUST-PWA.md).
+restauration vers des données réelles. Les anciennes captures et preuves restent dans l'historique Git et la
+référence de retour du chantier ; elles ne qualifient pas un nouveau candidat.
 
 ## Dossier de sécurité
 

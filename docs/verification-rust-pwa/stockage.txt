@@ -1,3 +1,0 @@
-Base : aucune sentinelle en clair dans coffres, objets et archives.
-Logs Rust : aucune sentinelle en clair.
-scrypt Rust : hash du compte fictif identique au calcul Node/OpenSSL indépendant.

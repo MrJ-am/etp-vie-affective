@@ -1,1 +1,0 @@
-JPEG avec segment EXIF et marqueur fictif : réencodage local vérifié après déchiffrement de l’export ; EXIF et marqueur supprimés. Compte de fixture supprimé.

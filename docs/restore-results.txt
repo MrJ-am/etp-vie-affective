@@ -1,2 +1,0 @@
-Redémarrage réel SBCL : coffre et session de la fixture conservés.
-Restauration simulée d’un compte supprimé : journal indépendant rejoué, compte retiré avant ouverture du service.
