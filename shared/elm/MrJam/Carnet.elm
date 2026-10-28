@@ -87,21 +87,21 @@ champ : String -> String -> (String -> msg) -> Element msg
 champ libelle valeur changer =
     Input.text
         [ width fill, U.height (U.minimum 46 U.shrink), U.padding 13, B.rounded 8, B.width 1, B.color couleurs.ligne, Bg.color couleurs.blanc, F.color couleurs.encre, classe "carnet-champ", U.htmlAttribute (A.attribute "aria-label" libelle) ]
-        { onChange = changer, text = valeur, placeholder = Nothing, label = Input.labelAbove [ F.size 15, F.semiBold, U.paddingEach { top = 0, bottom = 6, left = 0, right = 0 } ] (U.text libelle) }
+        { onChange = changer, text = valeur, placeholder = Nothing, label = Input.labelAbove [ width fill, F.size 15, F.semiBold, U.paddingEach { top = 0, bottom = 6, left = 0, right = 0 } ] (U.paragraph [ width fill ] [ U.text libelle ]) }
 
 
 secret : String -> String -> (String -> msg) -> Element msg
 secret libelle valeur changer =
     Input.currentPassword
         [ width fill, U.height (U.minimum 46 U.shrink), U.padding 13, B.rounded 8, B.width 1, B.color couleurs.ligne, Bg.color couleurs.blanc, F.color couleurs.encre, classe "carnet-champ", U.htmlAttribute (A.attribute "aria-label" libelle) ]
-        { onChange = changer, text = valeur, placeholder = Nothing, label = Input.labelAbove [ F.size 15, F.semiBold, U.paddingEach { top = 0, bottom = 6, left = 0, right = 0 } ] (U.text libelle), show = False }
+        { onChange = changer, text = valeur, placeholder = Nothing, label = Input.labelAbove [ width fill, F.size 15, F.semiBold, U.paddingEach { top = 0, bottom = 6, left = 0, right = 0 } ] (U.paragraph [ width fill ] [ U.text libelle ]), show = False }
 
 
 zone : String -> String -> (String -> msg) -> Element msg
 zone libelle valeur changer =
     Input.multiline
         [ width fill, U.height (U.minimum 110 U.shrink), U.padding 14, B.rounded 8, B.width 1, B.color couleurs.ligne, Bg.color couleurs.blanc, F.color couleurs.encre, classe "carnet-champ", U.htmlAttribute (A.attribute "maxlength" "30000"), U.htmlAttribute (A.attribute "aria-label" libelle) ]
-        { onChange = changer, text = valeur, placeholder = Nothing, label = Input.labelAbove [ F.size 15, F.semiBold, U.paddingEach { top = 0, bottom = 7, left = 0, right = 0 } ] (U.text libelle), spellcheck = False }
+        { onChange = changer, text = valeur, placeholder = Nothing, label = Input.labelAbove [ width fill, F.size 15, F.semiBold, U.paddingEach { top = 0, bottom = 7, left = 0, right = 0 } ] (U.paragraph [ width fill ] [ U.text libelle ]), spellcheck = False }
 
 
 choix : String -> List ( String, String ) -> String -> (String -> msg) -> Element msg

@@ -1490,7 +1490,7 @@ entree modele =
                     , U.el [ width fill, U.height (px 1), Bg.color (U.rgba255 255 255 255 0.35) ] U.none
                     , U.paragraph [ width fill, F.family [ F.typeface "Georgia", F.serif ], F.size 43, U.spacing 10 ] [ U.text "Ce qui compte.", U.text " Ce que j’essaie.", U.text " Ce que je garde." ]
                     , U.el [ U.paddingXY 0 24, F.size 16 ] (U.text "À mon rythme, à ma façon.")
-                    , U.row [ width fill, U.spacing 10 ] [ U.el [ F.size 13, F.letterSpacing 1 ] (U.text "VIE AFFECTIVE & RELATIONNELLE"), U.el [ U.alignRight, U.htmlAttribute (A.attribute "aria-hidden" "true") ] (U.text "▤") ]
+                    , U.row [ width fill, U.spacing 10 ] [ U.paragraph [ width fill, F.size 13, F.letterSpacing 1 ] [ U.text "VIE AFFECTIVE & RELATIONNELLE" ], U.el [ U.alignRight, U.htmlAttribute (A.attribute "aria-hidden" "true") ] (U.text "▤") ]
                     ]
                 )
             )

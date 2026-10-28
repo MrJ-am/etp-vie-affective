@@ -18,6 +18,9 @@ body { background: var(--papier); }
 .theme-carnet .carnet-titre { font-size: clamp(2.1rem, 4.4vw, 2.875rem); line-height: 1.18 !important; letter-spacing: -.02em; }
 .theme-carnet .carnet-soustitre { font-size: 1.65rem; line-height: 1.28 !important; letter-spacing: -.012em; }
 .theme-carnet .carnet-bouton, .theme-carnet .carnet-onglet { line-height: 1.35 !important; font-size: 1rem; }
+/* Les rangées repliables ElmUI donnent une base flex nulle aux éléments shrink.
+   Garder la largeur intrinsèque des commandes ; la rangée peut les répartir. */
+.theme-carnet .carnet-bouton, .theme-carnet .carnet-onglet { flex-basis: auto !important; }
 .theme-carnet .carnet-nav-item > * { width: 100% !important; text-align: left !important; }
 .theme-carnet .carnet-sidebar { position: sticky; top: 0; min-height: calc(100dvh - 34px); max-width: 276px; }
 .theme-carnet .carnet-couverture { box-shadow: -8px 0 0 #4d263d, 7px 5px 0 #e4dbcf, 11px 9px 0 #f2ece3, 12px 14px 35px #30282f18; border-left: 1px solid #ffffff44; min-height: 385px; }
@@ -28,6 +31,7 @@ body { background: var(--papier); }
 .carnet-select select { width: 100%; min-width: 0; min-height: 48px; padding: 11px; border: 1px solid #e0d7cf; border-radius: 8px; background: #fffffd; color: #30282f; font-size: 1rem !important; }
 .carnet-checkbox { display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 8px 0; cursor: pointer; line-height: 1.5; font-size: 1rem; }
 .carnet-checkbox input { width: 22px; height: 22px; flex: 0 0 22px; accent-color: #623451; }
+.carnet-checkbox > span { min-width: 0; white-space: normal; overflow-wrap: anywhere; }
 .theme-carnet .landscape-zone { border: 1px solid transparent; }
 .theme-carnet .zone-coeur { background: #efe0e9; border-color: #d5b7c9; }
 .theme-carnet .zone-autour { background: #e6eee5; border-color: #c6d7c4; }
