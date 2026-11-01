@@ -41,3 +41,26 @@ Les paquets conteneurisés restent une option de développement et de portabilit
 
 Le chantier Rust/Elm du 28 octobre gèle les déploiements. Cette référence
 d'intégration décrit la cible historique, pas une activation effectuée ici.
+
+## Adoption déclarative préparée le 1er novembre
+
+La directive actuelle demande d'achever la mise en service. Les anciennes
+mentions de gel décrivent leur lot historique. Aucun accès général de production
+n'est donné aux agents ; le contrôleur et les artefacts de l'infrastructure
+restent soumis à qualification.
+
+`CARNET_SCHEMA_MODE=existing-v1` exige une table `schema_migrations` contenant
+exactement la version 1 et un journal des suppressions régulier déjà présent.
+Ce mode n'exécute aucun DDL. Le précontrôle NixOS vérifie les métadonnées du
+schéma, les droits restreints du rôle et les attributs du journal. Le serveur
+rejoue ensuite le journal avant d'ouvrir HTTP, comme auparavant.
+
+Le mode `initialize-v1`, conservé par défaut pour les fixtures et installations
+autonomes explicites, garde l'initialisation idempotente précédente. Il ne doit
+pas être utilisé pour adopter des données existantes. Les autres valeurs sont
+refusées. Ces paramètres ne qualifient pas à eux seuls une migration de données.
+
+SIGTERM déclenche désormais le drainage HTTP, comme SIGINT. La nouvelle unité
+NixOS attend la fin du drainage ; un arrêt peut donc rester en attente et doit
+être surveillé par le contrôleur de mise en service. Les enveloppes, clés,
+comptes, sessions, API et SQL de version 1 restent inchangés.

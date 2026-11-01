@@ -741,6 +741,13 @@ async fn maintain(a: &App) -> Result<()> {
 }
 #[tokio::main]
 async fn main() -> std::result::Result<(), Box<dyn std::error::Error>> {
+    // Existing deployments must not need DDL privileges on ordinary restart.
+    // The infrastructure preflight validates the schema/role/ledger metadata;
+    // this check also refuses a missing or incompatible version without writes.
+    let schema_mode = setting("CARNET_SCHEMA_MODE", "initialize-v1");
+    if schema_mode != "initialize-v1" && schema_mode != "existing-v1" {
+        return Err("Mode de schéma inconnu".into());
+    }
     let origin = setting("CARNET_PUBLIC_URL", "http://localhost:3000");
     let secure =
         origin.starts_with("https://") || setting("CARNET_SECURE_COOKIE", "false") == "true";
@@ -762,6 +769,31 @@ async fn main() -> std::result::Result<(), Box<dyn std::error::Error>> {
         .connect_with(options)
         .await?;
     let ledger = setting("CARNET_DELETION_LEDGER", "/var/lib/carnet/deletions.log");
+    if schema_mode == "existing-v1" {
+        let mut transaction = db.begin().await?;
+        sqlx::query("SET TRANSACTION READ ONLY")
+            .execute(&mut *transaction)
+            .await?;
+        let present: bool =
+            sqlx::query_scalar("SELECT to_regclass('public.schema_migrations') IS NOT NULL")
+                .fetch_one(&mut *transaction)
+                .await?;
+        if !present {
+            return Err("Schéma existant requis".into());
+        }
+        let versions: Vec<i32> = sqlx::query_scalar(
+            "SELECT version FROM public.schema_migrations ORDER BY version LIMIT 2",
+        )
+        .fetch_all(&mut *transaction)
+        .await?;
+        if versions != [1] {
+            return Err("Version de schéma incompatible".into());
+        }
+        transaction.commit().await?;
+        if !std::fs::symlink_metadata(&ledger)?.file_type().is_file() {
+            return Err("Journal existant régulier requis".into());
+        }
+    }
     if !std::path::Path::new(&ledger).exists() {
         let exists: bool = sqlx::query_scalar("SELECT to_regclass('public.comptes') IS NOT NULL")
             .fetch_one(&db)
@@ -776,7 +808,7 @@ async fn main() -> std::result::Result<(), Box<dyn std::error::Error>> {
         }
     }
     let f = std::fs::OpenOptions::new()
-        .create(true)
+        .create(schema_mode == "initialize-v1")
         .append(true)
         .open(&ledger)?;
     #[cfg(unix)]
@@ -794,9 +826,11 @@ async fn main() -> std::result::Result<(), Box<dyn std::error::Error>> {
         rates: Arc::new(Mutex::new(HashMap::new())),
         auth_jobs: Arc::new(tokio::sync::Semaphore::new(2)),
     };
-    sqlx::raw_sql(include_str!("../migrations/001.sql"))
-        .execute(&a.db)
-        .await?;
+    if schema_mode == "initialize-v1" {
+        sqlx::raw_sql(include_str!("../migrations/001.sql"))
+            .execute(&a.db)
+            .await?;
+    }
     maintain(&a).await.map_err(|_| "Entretien initial refusé")?;
     let maintenance = a.clone();
     tokio::spawn(async move {
@@ -815,9 +849,24 @@ async fn main() -> std::result::Result<(), Box<dyn std::error::Error>> {
             .with_state(a)
             .into_make_service_with_connect_info::<SocketAddr>(),
     )
-    .with_graceful_shutdown(async {
-        let _ = tokio::signal::ctrl_c().await;
-    })
+    .with_graceful_shutdown(shutdown_signal())
     .await?;
     Ok(())
+}
+
+async fn shutdown_signal() {
+    #[cfg(unix)]
+    {
+        let mut terminate =
+            tokio::signal::unix::signal(tokio::signal::unix::SignalKind::terminate())
+                .expect("gestionnaire SIGTERM");
+        tokio::select! {
+            _ = tokio::signal::ctrl_c() => {},
+            _ = terminate.recv() => {},
+        }
+    }
+    #[cfg(not(unix))]
+    {
+        let _ = tokio::signal::ctrl_c().await;
+    }
 }
