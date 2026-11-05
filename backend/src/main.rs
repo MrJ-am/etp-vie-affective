@@ -23,6 +23,7 @@ use std::{
 };
 use subtle::ConstantTimeEq;
 use uuid::Uuid;
+mod encadrement;
 
 #[derive(Clone)]
 struct App {
@@ -249,7 +250,7 @@ impl App {
             return Err(Failure(401, "Connectez-vous pour accéder à votre compte."));
         }
         let hash = digest(token);
-        let row=sqlx::query("UPDATE sessions SET last_seen=now() WHERE token_hash=$1 AND expires_at>now() AND last_seen>now()-interval '2 hours' RETURNING compte,csrf").bind(&hash).fetch_optional(&self.db).await?.ok_or(Failure(401,"Session expirée."))?;
+        let row=sqlx::query("UPDATE sessions s SET last_seen=now() FROM comptes c WHERE s.compte=c.id AND c.actif AND token_hash=$1 AND expires_at>now() AND s.last_seen>now()-interval '2 hours' RETURNING s.compte,s.csrf").bind(&hash).fetch_optional(&self.db).await?.ok_or(Failure(401,"Session expirée ou accès désactivé."))?;
         let id: Uuid = row.get(0);
         sqlx::query("UPDATE comptes SET last_seen=now() WHERE id=$1")
             .bind(id)
@@ -260,26 +261,29 @@ impl App {
     async fn start(
         &self,
         id: Uuid,
-        p: &str,
+        _p: &str,
         recovery: Option<&str>,
         expected_hash: &str,
     ) -> Result<Response> {
         // A password reset and session creation serialize on the account row.
         let mut tx = self.db.begin().await?;
-        let current: String =
-            sqlx::query_scalar("SELECT password_hash FROM comptes WHERE id=$1 FOR UPDATE")
-                .bind(id)
-                .fetch_optional(&mut *tx)
-                .await?
-                .ok_or(Failure(401, "Compte absent."))?;
-        if !equal(&current, expected_hash) {
+        let current = sqlx::query(
+            "SELECT password_hash,actif,role,pseudonyme FROM comptes WHERE id=$1 FOR UPDATE",
+        )
+        .bind(id)
+        .fetch_optional(&mut *tx)
+        .await?
+        .ok_or(Failure(401, "Compte absent."))?;
+        if !current.get::<bool, _>(1) || !equal(&current.get::<String, _>(0), expected_hash) {
             return Err(Failure(401, "Le compte a changé. Reconnectez-vous."));
         }
         let t = secret(32);
         let csrf = secret(32);
         sqlx::query("INSERT INTO sessions(token_hash,compte,csrf,expires_at) VALUES($1,$2,$3,now()+interval '24 hours')").bind(digest(&t)).bind(id).bind(&csrf).execute(&mut *tx).await?;
         tx.commit().await?;
-        let mut r = response(json!({"id":id,"pseudonyme":p,"csrf":csrf,"authRecovery":recovery}));
+        let mut r = response(
+            json!({"id":id,"pseudonyme":current.get::<String,_>(3),"role":current.get::<String,_>(2),"csrf":csrf,"authRecovery":recovery}),
+        );
         cookie(&mut r, &t, self.secure, false);
         Ok(r)
     }
@@ -309,7 +313,7 @@ async fn quota(
     Ok(())
 }
 async fn account_lock(tx: &mut sqlx::Transaction<'_, sqlx::Postgres>, id: Uuid) -> Result<()> {
-    sqlx::query("SELECT id FROM comptes WHERE id=$1 FOR UPDATE")
+    sqlx::query("SELECT id FROM comptes WHERE id=$1 AND actif FOR UPDATE")
         .bind(id)
         .fetch_optional(&mut **tx)
         .await?
@@ -331,9 +335,20 @@ async fn api(
         sqlx::query("SELECT 1").execute(&a.db).await?;
         return Ok(response(json!({"status":"ok","prototype":true})));
     }
+    if matches!(path, "/api/invitation" | "/api/inscription-groupe") && method == "POST" {
+        return encadrement::publique(a, path, &v, peer).await;
+    }
     if matches!(path, "/api/register" | "/api/login" | "/api/reset-auth") && method == "POST" {
         a.throttle(format!("{path}:{}", peer.ip()), 60)?;
-        let p = pseudo(&v)?;
+        let p = if path == "/api/register" {
+            pseudo(&v)?
+        } else {
+            let identifiant = strv(&v, "pseudonyme")?.trim().to_lowercase();
+            if identifiant.is_empty() || identifiant.len() > 254 {
+                return Err(bad());
+            }
+            identifiant
+        };
         let pw = password(&v)?;
         a.throttle(format!("identity:{path}:{}", digest(&p)), 30)?;
         if path == "/api/register" {
@@ -356,10 +371,11 @@ async fn api(
             return a.start(id, &p, None, &hash).await;
         }
         if path == "/api/login" {
-            let row = sqlx::query("SELECT id,password_hash FROM comptes WHERE pseudonyme=$1")
-                .bind(&p)
-                .fetch_optional(&a.db)
-                .await?;
+            let row =
+                sqlx::query("SELECT id,password_hash FROM comptes WHERE pseudonyme=$1 OR email=$1")
+                    .bind(&p)
+                    .fetch_optional(&a.db)
+                    .await?;
             let stored = row
                 .as_ref()
                 .map(|r| r.get::<String, _>(1))
@@ -382,7 +398,7 @@ async fn api(
         let hash = password_hash(a, pw, None).await?;
         let mut tx = a.db.begin().await?;
         let row =
-            sqlx::query("SELECT id,auth_recovery_hash FROM comptes WHERE pseudonyme=$1 FOR UPDATE")
+            sqlx::query("SELECT id,auth_recovery_hash FROM comptes WHERE (pseudonyme=$1 OR email=$1) AND actif FOR UPDATE")
                 .bind(&p)
                 .fetch_optional(&mut *tx)
                 .await?
@@ -410,11 +426,13 @@ async fn api(
     }
     match (path, method) {
         ("/api/me", "GET") => {
-            let p: String = sqlx::query_scalar("SELECT pseudonyme FROM comptes WHERE id=$1")
+            let p = sqlx::query("SELECT pseudonyme,role FROM comptes WHERE id=$1")
                 .bind(id)
                 .fetch_one(&a.db)
                 .await?;
-            Ok(response(json!({"id":id,"pseudonyme":p,"csrf":csrf})))
+            Ok(response(
+                json!({"id":id,"pseudonyme":p.get::<String,_>(0),"role":p.get::<String,_>(1),"csrf":csrf}),
+            ))
         }
         ("/api/logout", "POST") => {
             sqlx::query("DELETE FROM sessions WHERE token_hash=$1")
@@ -520,6 +538,17 @@ async fn api(
             if current != stored {
                 return Err(Failure(409, "Le compte a changé. Reconnectez-vous."));
             }
+            let responsable: bool =
+                sqlx::query_scalar("SELECT EXISTS(SELECT 1 FROM groupes WHERE encadrant=$1)")
+                    .bind(id)
+                    .fetch_one(&mut *tx)
+                    .await?;
+            if responsable {
+                return Err(Failure(
+                    409,
+                    "Ce compte encadre encore des groupes. Faites transférer leur gestion avant de supprimer le compte.",
+                ));
+            }
             a.deletion(id)?;
             sqlx::query("INSERT INTO suppressions(compte) VALUES($1) ON CONFLICT DO NOTHING")
                 .bind(id)
@@ -594,7 +623,7 @@ async fn api(
                 _ => Err(Failure(405, "Méthode non autorisée.")),
             }
         }
-        _ => Err(Failure(404, "Route absente.")),
+        _ => encadrement::api(a, id, path, method, h, &v).await,
     }
 }
 async fn handle(
@@ -667,7 +696,9 @@ async fn handle(
             "default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; font-src 'self'; connect-src 'self'; worker-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'",
         ),
     ] {
-        r.headers_mut().insert(k, v.parse().unwrap());
+        if !r.headers().contains_key(k) {
+            r.headers_mut().insert(k, v.parse().unwrap());
+        }
     }
     if a.secure {
         r.headers_mut().insert(
@@ -693,6 +724,9 @@ fn static_file(path: &str) -> bool {
             | "/icon-512.png"
             | "/sondage.html"
             | "/sondage.js"
+            | "/espace.html"
+            | "/espace.js"
+            | "/espace-elm.js"
     ) || (0..15).any(|i| path == format!("/cours/{i}.html") || path == format!("/cours/{i}.pdf"))
 }
 async fn maintain(a: &App) -> Result<()> {
@@ -716,7 +750,7 @@ async fn maintain(a: &App) -> Result<()> {
         return Err(bad());
     }
     let expired: Vec<Uuid> = sqlx::query_scalar(
-        "SELECT id FROM comptes WHERE last_seen<now()-($1 * interval '1 day') FOR UPDATE",
+        "SELECT id FROM comptes WHERE last_seen<now()-($1 * interval '1 day') AND NOT EXISTS(SELECT 1 FROM groupes WHERE encadrant=comptes.id) FOR UPDATE",
     )
     .bind(days)
     .fetch_all(&mut *tx)
@@ -797,6 +831,23 @@ async fn main() -> std::result::Result<(), Box<dyn std::error::Error>> {
     sqlx::raw_sql(include_str!("../migrations/001.sql"))
         .execute(&a.db)
         .await?;
+    encadrement::initialiser(&a.db).await?;
+    let args: Vec<String> = env::args().skip(1).collect();
+    if !args.is_empty() {
+        if args.len() != 2 || args[0] != "--encadrant" {
+            return Err("Usage : etp-carnet-server --encadrant <pseudonyme existant>".into());
+        }
+        let changed =
+            sqlx::query("UPDATE comptes SET role='encadrant' WHERE pseudonyme=$1 AND actif")
+                .bind(&args[1])
+                .execute(&a.db)
+                .await?;
+        if changed.rows_affected() != 1 {
+            return Err("Compte actif introuvable".into());
+        }
+        println!("Rôle d’encadrement attribué au compte indiqué. Aucun service démarré.");
+        return Ok(());
+    }
     maintain(&a).await.map_err(|_| "Entretien initial refusé")?;
     let maintenance = a.clone();
     tokio::spawn(async move {

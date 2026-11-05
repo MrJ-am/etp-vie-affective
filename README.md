@@ -55,6 +55,56 @@ Le lien « sondage local » permet un partage volontaire sans réseau par QR cod
 chiffrés, avec collecte successive par l’animateur. Lire
 [le fonctionnement hors ligne](docs/HORS-LIGNE-ET-SONDAGES.md).
 
+## Groupes et encadrement
+
+L’entrée **Mon groupe · Encadrement** ouvre `/espace.html`. Une personne
+encadrante crée ses groupes, copie leur lien d’invitation et consulte les
+inscriptions (nom, prénom, adresse mail). Le lien est commun au groupe : aucun
+mail n’est envoyé. Il peut être remplacé ; archiver le groupe suspend les
+inscriptions et les questionnaires sans retirer les carnets aux membres.
+Une inscription par invitation crée un compte participant ; le formulaire ne
+permet jamais de s’attribuer un rôle d’encadrement.
+
+L’équipe peut désactiver/réactiver l’accès d’une personne de ses groupes ou
+supprimer son compte après confirmation. Désactiver révoque toutes ses sessions.
+La réactivation demande une nouvelle connexion. Les copies déjà téléchargées
+restent sur les appareils, y compris un carnet chiffré ouvrable hors ligne.
+Les comptes autonomes existants gardent leur identifiant et leur coffre v1.
+Les nouveaux comptes peuvent se connecter avec leur adresse mail ou l’identifiant
+du kit ; la phrase de coffre reste distincte du mot de passe.
+
+L’encadrant·e édite les textes communs et dépose des PDF pédagogiques
+(2 Mo maximum, 20 par séance). Ces modifications concernent tous les groupes ;
+la visibilité d’une séance se règle séparément pour chaque groupe. Les nouveaux
+supports passent par l’API authentifiée, jamais le cache public PWA. Les supports
+initiaux de démonstration restent des références publiques, indépendantes des
+textes édités. Dans un carnet de groupe, les liens proposés sont ceux des PDF
+déposés par l’équipe. L’aperçu participant utilise le vrai classeur avec un carnet
+fictif local séparé, sans demander le carnet d’un compte participant.
+
+Un questionnaire comporte 1 à 12 questions, chacune avec 2 à 8 choix et une
+abstention possible. Les compteurs sont agrégés à l’envoi, sans conserver de
+réponse individuelle. Une table distincte empêche de répondre deux fois avec le
+même compte. Les résultats restent masqués avant fermeture et en dessous de
+trois participations ; un questionnaire fermé ne peut pas être rouvert. Ce
+mécanisme protège contre la consultation nominative par l’équipe, pas contre
+toute déduction dans un petit groupe ou une analyse de l’infrastructure.
+
+Le rôle initial s’attribue **hors interface**, à un compte déjà créé, avec le
+binaire et la configuration de l’environnement concerné :
+
+```sh
+# Exemple de procédure ; ne pas exécuter en production sans autorisation.
+backend/target/release/etp-carnet-server --encadrant identifiant_existant
+```
+
+Cette commande ne démarre pas de serveur. Elle applique les migrations additives
+et attribue uniquement le rôle indiqué. Aucun rôle n’est attribué automatiquement
+au premier compte. La purge d’inactivité ne supprime pas un compte responsable
+de groupes ; sa suppression nécessite leur transfert préalable par l’opérateur.
+Aucun compte existant n’est promu automatiquement ; l’attribution des rôles
+reste une opération distincte. **Les déploiements restent gelés.**
+
 ## Vérifier
 
 ```sh
@@ -68,6 +118,21 @@ node --import tsx --test tests/crypto.test.ts tests/contenu.test.ts tests/image.
 node --import tsx --test tests/api.test.ts
 node --import tsx scripts/verify-restore.ts
 ```
+
+Pour les nouvelles API, `npm run test:encadrement` construit le serveur Rust,
+crée un PostgreSQL éphémère dédié sur `127.0.0.1:55439`, lance l’application sur
+`http://localhost:38139`, exécute les scénarios d’encadrement puis les tests API
+historiques et arrête ses propres processus. Il refuse les ports occupés. Aucun
+volume ni configuration de production n’est utilisé. Les scénarios navigateur
+supplémentaires sont dans `tests/browser/encadrement.spec.ts` ; ils exigent cette
+même cible locale et sa configuration de base fictive. Préparer le frontend avec
+`npm run build` avant de les exécuter sur un atelier local maintenu ouvert.
+Avec Chromium de Playwright installé, `CARNET_TEST_BROWSER=1 npm run
+test:encadrement` inclut leur exécution dans l’atelier éphémère, avant les tests
+historiques de limitation de débit.
+Un navigateur Chromium déjà installé peut être sélectionné explicitement avec
+`CARNET_TEST_CHROMIUM_EXECUTABLE=/chemin/vers/chromium`, sans modifier les
+dépendances verrouillées.
 
 La base de test est isolée et éphémère. Ne jamais diriger les scripts de
 restauration vers des données réelles. Les anciennes captures et preuves restent dans l'historique Git et la

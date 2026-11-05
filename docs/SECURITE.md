@@ -16,8 +16,9 @@ indépendant, ni autorisation d’usage clinique. Les essais utilisent des donn�
 |---|---|
 | Personne, coffre ouvert | Ses textes, photos, progression et préférences sur son appareil |
 | Personne, coffre verrouillé | Copies chiffrées ; phrase ou secret privé requis pour ouvrir |
-| Animateur | Seulement les réponses de sondage que les participants lui transmettent ; pas leurs carnets |
-| Serveur Rust / administrateur PostgreSQL | Ciphertexts, clés enveloppées, pseudonymes, hashes d’authentification, sessions et métadonnées techniques |
+| Encadrant·e | Identités et accès des membres de ses groupes, contenus pédagogiques communs, résultats agrégés de questionnaires fermés avec au moins trois participations ; aucun accès aux carnets |
+| Animateur du sondage local QR | Réponses volontairement transmises à son appareil ; pas les carnets |
+| Serveur Rust / administrateur PostgreSQL | Ciphertexts, clés enveloppées, pseudonymes, identités de gestion, groupes, hashes d’authentification, sessions et métadonnées techniques ; aucune clé de déchiffrement du carnet |
 | Nginx / réseau | Origine, IP, horaires, volumes ; HTTPS protège le transit, pas toutes les métadonnées |
 | Autre appareil | Aucun accès au coffre sans ses secrets ; un QR de réponse ne peut être ouvert que par l’appareil animateur destinataire |
 
@@ -41,6 +42,52 @@ catalogue et supports HTML/PDF. Les réponses API ne sont jamais mises dans Cach
 Storage. IndexedDB contient les enveloppes chiffrées et les métadonnées techniques
 nécessaires à la synchronisation. La copie démo est une exception explicitement
 fictive : sa clé locale permet de la rouvrir sans phrase.
+
+## Encadrement et questionnaires de groupe
+
+Le rôle `encadrant` est attribué hors HTTP par une commande opérateur explicite.
+Les comptes existants et les inscriptions publiques ont par défaut le rôle
+`participant`. Un champ de formulaire ne peut pas élever les privilèges.
+L’autorisation de chaque route de gestion vérifie le rôle actif et la propriété
+du groupe. Un compte participant appartient au groupe de son invitation ;
+l’équipe ne peut ni gérer les membres d’un autre groupe ni récupérer leur
+ciphertext ou leurs clés par un endpoint d’encadrement. Les routes de coffre
+continuent à autoriser uniquement le compte connecté, même encadrant.
+
+L’inscription par invitation transmet nom, prénom et adresse mail normalisée,
+distincts du carnet chiffré. Le lien aléatoire de 256 bits reste valide jusqu’à
+rotation ou archivage ; il autorise l’inscription au groupe, jamais la lecture de
+ses membres. Il est dans le fragment de l’URL et n’apparaît donc pas dans la
+requête initiale ni dans un en-tête Referer. Les noms et mails sont déclaratifs,
+sans vérification par courriel. Aucune fonctionnalité d’envoi de mail n’est ajoutée.
+
+Les PDF ajoutés sont bornés, contrôlés par signature et téléchargés comme pièces
+jointes avec une CSP sandbox ; cette vérification n’est pas un antivirus ou une
+preuve de validité intégrale du PDF. Un membre ne peut pas les télécharger si la
+séance est masquée. Une copie déjà reçue ou un contenu public initial ne peuvent
+pas être révoqués. Les textes, métadonnées de supports et visibilité reçus pour
+le carnet sont conservés sur l’appareil pour sa copie hors ligne ; les PDF ajoutés
+et les réponses API ne vont pas dans le cache public de l’application.
+
+Les questionnaires de groupe ne conservent que les totaux par question, y
+compris les abstentions. Une participation nominative distincte enregistre
+seulement `(questionnaire, compte)` sans réponse ni horodatage individuel ; elle
+n’est pas exposée à l’équipe. La transaction verrouille le questionnaire, vérifie
+l’appartenance, insère une participation unique et incrémente les compteurs.
+La fermeture est irréversible et fige les résultats agrégés, accessibles seulement
+à partir de trois participations. Pas de détail individuel, de
+texte libre, de résultat intermédiaire ou d’export de réponses individuelles.
+Cela ne garantit pas un anonymat absolu face aux opérateurs, aux sauvegardes
+successives, aux corrélations réseau ou aux déductions dans un petit groupe.
+Le sondage QR hors ligne conserve son protocole et ses limites propres.
+
+La désactivation invalide les sessions existantes et interdit connexion,
+récupération de compte et nouvelles mutations privées. L’équipe peut réactiver
+ou supprimer une cible déjà désactivée. La suppression réutilise le journal
+durable indépendant et les cascades du compte ; elle ne détruit pas les copies
+sur les autres appareils. La suppression d’un compte responsable de groupes est
+refusée pour éviter la perte de leurs inscriptions ; la purge d’inactivité le
+préserve également tant qu’il gère des groupes.
 
 ## Coffre et récupération
 

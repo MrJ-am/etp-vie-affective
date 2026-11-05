@@ -78,6 +78,9 @@ type alias Modele =
     , largeur : Int
     , demo : Bool
     , demoOnly : Bool
+    , apercu : Bool
+    , groupe : Bool
+    , supports : Dict Int (List ( String, String ))
     , reducedMotion : Bool
     , formulaires : Dict String String
     , menu : Bool
@@ -179,6 +182,9 @@ init flags =
       , largeur = lire (D.field "largeur" D.int) 1440 flags
       , demo = False
       , demoOnly = lire (D.field "demoOnly" D.bool) False flags
+      , apercu = lire (D.field "apercu" D.bool) False flags
+      , groupe = False
+      , supports = Dict.empty
       , reducedMotion = lire (D.field "reducedMotion" D.bool) False flags
       , formulaires = Dict.empty
       , menu = False
@@ -211,6 +217,13 @@ lire decoder defaut valeur =
     D.decodeValue decoder valeur |> Result.withDefault defaut
 
 
+supportDecoder : D.Decoder ( Int, List ( String, String ) )
+supportDecoder =
+    D.map2 Tuple.pair
+        (D.field "id" D.int)
+        (D.field "pdfs" (D.list (D.map2 Tuple.pair (D.field "id" D.string) (D.field "nom" D.string))))
+
+
 envoyer : String -> E.Value -> Cmd Msg
 envoyer action donnees =
     commande (E.object [ ( "action", E.string action ), ( "data", donnees ) ])
@@ -234,6 +247,11 @@ rejoindreDebut modele id =
 form : String -> Modele -> String
 form cle modele =
     Dict.get cle modele.formulaires |> Maybe.withDefault ""
+
+
+suivanteVisible : Modele -> Int
+suivanteVisible modele =
+    modele.chapitres |> List.map .id |> List.filter (\id -> id > modele.carnet.etape) |> List.minimum |> Maybe.withDefault 15
 
 
 seanceCourante : Modele -> Int
@@ -275,6 +293,14 @@ update msg modele =
                     lire (D.field "message" D.string) "" data
             in
             case kind of
+                "parcoursGroupe" ->
+                    case D.decodeValue (D.field "chapitres" (D.list Contenu.decoder)) data of
+                        Ok chapitres ->
+                            ( { modele | chapitres = chapitres, groupe = lire (D.field "groupe" D.bool) False data, supports = lire (D.field "supports" (D.list supportDecoder)) [] data |> Dict.fromList, vue = Parcours, parcoursVue = Parcours, camera = position Parcours, capsule = Nothing, capsuleSortie = Nothing, capsulesMouvement = [], sortie = Nothing, momentSortie = Nothing, preparation = 0 }, Cmd.none )
+
+                        Err _ ->
+                            ( { modele | erreur = "Les séances du groupe sont indisponibles." }, Cmd.none )
+
                 "opened" ->
                     case D.decodeValue (D.field "journal" K.decoder) data of
                         Ok doc ->
@@ -500,7 +526,7 @@ update msg modele =
             modifier { carnet | notes = Dict.remove cle carnet.notes } modele |> avecNotice "Cette entrée a été effacée du carnet actif."
 
         ChoisirEtape id ->
-            if id == carnet.etape + 1 then
+            if id == suivanteVisible modele then
                 modifier { carnet | etape = id } modele |> avecNotice "La séance est ouverte. Sa préparation et son contenu restent disponibles."
 
             else
@@ -888,14 +914,28 @@ explicitement choisie peut révéler une capsule ou rejoindre le début.
 -}
 naviguer : GesteNavigation -> Vue -> Modele -> ( Modele, Cmd Msg )
 naviguer geste destination modele =
+    case destination of
+        ChapitreVue id _ ->
+            if List.any (\c -> c.id == id) modele.chapitres then
+                naviguerVisible geste destination modele
+
+            else
+                ( { modele | erreur = "Cette séance n’est pas visible pour votre groupe." }, Cmd.none )
+
+        _ ->
+            naviguerVisible geste destination modele
+
+
+naviguerVisible : GesteNavigation -> Vue -> Modele -> ( Modele, Cmd Msg )
+naviguerVisible geste destination modele =
     let
         vue =
             case destination of
                 ChapitreVue id moment ->
-                    if id > modele.carnet.etape + 1 then
+                    if id > suivanteVisible modele then
                         Parcours
 
-                    else if id == modele.carnet.etape + 1 || moment == Entre then
+                    else if id == suivanteVisible modele || moment == Entre then
                         ChapitreVue id Avant
 
                     else
@@ -1333,7 +1373,10 @@ view modele =
                 (U.paragraph [ F.size 13, F.color C.couleurs.prune ]
                     [ U.text "PROTOTYPE · Données fictives uniquement"
                     , U.text
-                        (if modele.demo then
+                        (if modele.apercu then
+                            "  ·  Aperçu participant·e du groupe · Carnet fictif local"
+
+                         else if modele.demo then
                             "  ·  Démonstration sur cet appareil"
 
                          else
@@ -1524,8 +1567,22 @@ compteVue modele =
             )
         , messages modele
         , C.panneau
-            ([ C.champ "Identifiant pseudonyme" (form "pseudo" modele) (Saisie "pseudo")
-             , C.petit "3 à 40 lettres, chiffres, tirets ou underscores. Aucune adresse e-mail n’est demandée."
+            ([ C.champ
+                (if inscription then
+                    "Identifiant pseudonyme"
+
+                 else
+                    "Adresse mail ou identifiant"
+                )
+                (form "pseudo" modele)
+                (Saisie "pseudo")
+             , C.petit
+                (if inscription then
+                    "Compte autonome : 3 à 40 lettres, chiffres, tirets ou underscores. Pour rejoindre un groupe, utilisez son lien d’invitation."
+
+                 else
+                    "Utilisez l’adresse mail de votre inscription par invitation ou votre identifiant de compte autonome."
+                )
              , C.secret
                 (if recuperation then
                     "Nouveau mot de passe de connexion"
@@ -1983,6 +2040,11 @@ menuCompte modele =
 
                   else
                     U.none
+                , if not modele.demoOnly then
+                    U.link [ F.color C.couleurs.prune, U.padding 10 ] { url = "/espace.html", label = U.text "Mon groupe · Encadrement" }
+
+                  else
+                    U.none
                 , C.discret "À propos & sources" (Naviguer Apropos)
                 , if modele.ecran == Ouvert then
                     C.discret "Comprendre le classeur" AfficherMenu
@@ -2112,7 +2174,7 @@ pageParcours modele =
                     actuel /= Nothing
 
                 disponible =
-                    chapitre.id <= modele.carnet.etape + 1
+                    chapitre.id <= suivanteVisible modele
 
                 ouverte =
                     disponible && modele.capsule == Just chapitre.id
@@ -2243,7 +2305,7 @@ pageChapitre modele chapitre moment =
 
           else
             U.none
-        , if chapitre.id == modele.carnet.etape + 1 then
+        , if chapitre.id == suivanteVisible modele then
             C.secondaire "Commencer cette séance" (ChoisirEtape chapitre.id)
 
           else
@@ -2254,7 +2316,7 @@ pageChapitre modele chapitre moment =
                  else
                     "Séance passée"
                 )
-        , if chapitre.id == modele.carnet.etape + 1 then
+        , if chapitre.id == suivanteVisible modele then
             avantVue modele chapitre
 
           else if chapitre.nature == "bilan" then
@@ -2396,8 +2458,15 @@ avantVue modele chapitre =
                 , C.panneau [ C.titre 2 "Quelques mots pour moi", noteChamp modele chapitre.id "note" "Ma note personnelle · facultatif" ]
                 ]
             )
-        , U.link [] { url = "/cours/" ++ String.fromInt chapitre.id ++ ".html", label = C.paragraphe "Lire le support de préparation en HTML" }
-        , U.link [] { url = "/cours/" ++ String.fromInt chapitre.id ++ ".pdf", label = C.paragraphe "Télécharger le support en PDF" }
+        , if modele.groupe then
+            U.column [ width fill, U.spacing 12 ]
+                (Dict.get chapitre.id modele.supports |> Maybe.withDefault [] |> List.map (\( id, nom ) -> U.link [] { url = "/api/supports/" ++ id, label = C.paragraphe ("Télécharger · " ++ nom) }))
+
+          else
+            U.column [ width fill, U.spacing 12 ]
+                [ U.link [] { url = "/cours/" ++ String.fromInt chapitre.id ++ ".html", label = C.paragraphe "Lire le support de préparation en HTML" }
+                , U.link [] { url = "/cours/" ++ String.fromInt chapitre.id ++ ".pdf", label = C.paragraphe "Télécharger le support en PDF" }
+                ]
         , if chapitre.id <= modele.carnet.etape then
             C.secondaire "Passer à Pendant la séance" (Naviguer (ChapitreVue chapitre.id Pendant))
 

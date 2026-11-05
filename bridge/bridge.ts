@@ -66,6 +66,26 @@ const tabId = sessionStorage.getItem("carnet-tab") || crypto.randomUUID();
 sessionStorage.setItem("carnet-tab", tabId); // Identifiant opaque ; ni secret, ni donnée métier.
 let app: ElmApp;
 let account: Account | null = null;
+const apercu = new URLSearchParams(location.search).get("apercu");
+let chapitresPublics: any[] = [];
+let chapitresApercu: any[] = [];
+let donneesApercu: any = null;
+let empreinteParcours = "";
+const demoStorageKey = () => apercu ? "apercu-vault:" + apercu : "demo-vault";
+const presenterParcours = (parcours: any) => ({ chapitres: parcours.seances.map((s: any) => s.contenu), groupe: Boolean(parcours.groupe), supports: parcours.seances.map((s: any) => ({ id: s.id, pdfs: s.pdfs })) });
+async function rafraichirParcours(): Promise<void> {
+  if (!account || mode !== "account") return;
+  const id = account.id;
+  const parcours = await request("/api/parcours");
+  if (account?.id !== id || mode !== "account") return;
+  const presentation = presenterParcours(parcours);
+  await store("parcours:" + id, presentation);
+  const signature = id + JSON.stringify(presentation);
+  if (empreinteParcours !== signature) {
+    empreinteParcours = signature;
+    emit("parcoursGroupe", presentation);
+  }
+}
 let mode: "none" | "demo" | "account" = "none";
 let payload: Payload | null = null;
 let revision = 0;
@@ -88,7 +108,7 @@ let technicalAction = false;
 const exclusiveActions = new Set(["demo", "resetDemo", "register", "login", "unlock", "logout", "newVault", "resetAuth", "changePhrase", "import", "deleteAccount"]);
 const emit = (kind: string, data: unknown = {}) => app.ports.evenement.send({ kind, data });
 const message = (error: unknown) => error instanceof Error ? error.message : "Cette opération n’a pas pu aboutir.";
-const profile = () => mode === "demo" ? "demo" : account!.id;
+const profile = () => mode === "demo" ? (apercu ? "apercu:" + apercu : "demo") : account!.id;
 const draftKey = () => "draft:" + profile() + ":" + tabId;
 function clearPreviews(): void { for (const url of previews.values()) URL.revokeObjectURL(url); previews.clear(); }
 async function request(path: string, method = "GET", body?: unknown, match?: number): Promise<any> {
@@ -164,8 +184,8 @@ async function saveNow(): Promise<void> {
     await store(destination, { payload, revision, dirty: capturedMode === "account", time: Date.now() } satisfies Stored);
     savingSerial++;
     if (capturedMode === "demo") {
-      const demo = await store("demo-vault");
-      await store("demo-vault", { ...demo, envelope });
+      const demo = await store(demoStorageKey());
+      await store(demoStorageKey(), { ...demo, envelope });
     }
     emit("status", { state: capturedMode === "demo" ? "device" : "pending" });
     } catch (error) {
@@ -232,9 +252,12 @@ async function loadLocalAccount(): Promise<void> {
   payload = saved.payload; revision = saved.revision; conflict = false;
   await store(draftKey(), saved);
   emit("locked", { demo: false, conflict: false });
+  const parcoursLocal = await store("parcours:" + id);
+  emit("parcoursGroupe", Array.isArray(parcoursLocal) ? { chapitres: parcoursLocal } : parcoursLocal ?? { chapitres: [], groupe: true, supports: [] });
   emit("notice", { message: "Copie locale : ouvrez-la avec votre phrase de coffre. La synchronisation nécessitera une session du même compte." });
 }
 async function loadAccount(): Promise<void> {
+  await rafraichirParcours();
   const remote = await request("/api/state");
   await store("last-account", account!.id);
   const drafts = (await entries("draft:" + account!.id + ":")).filter(e => e.value.dirty).sort((a,b) => b.value.time - a.value.time);
@@ -248,17 +271,19 @@ async function loadAccount(): Promise<void> {
 }
 async function beginDemo(): Promise<void> {
   await lock(false);
+  empreinteParcours = "";
   mode = "demo"; account = null; conflict = false;
-  let saved = await store("demo-vault");
+  let saved = await store(demoStorageKey());
   if (!saved) {
     const vault = crypto.randomUUID();
     const generated = await cryptoCall("demo", { vault });
     saved = { key: generated.key, vault, envelope: null };
-    await store("demo-vault", saved);
+    await store(demoStorageKey(), saved);
   }
   const result = await cryptoCall("demo", saved);
   payload = { keyring: { v: 1, vault: saved.vault } as Keyring, envelope: saved.envelope };
   showJournal(result.journal || demoJournal());
+  emit("parcoursGroupe", apercu ? donneesApercu : { chapitres: chapitresPublics, groupe: false, supports: [] });
   scheduleSave(currentDoc); await saveNow();
   await imagePreviews();
   emit("status", { state: "device" });
@@ -366,6 +391,7 @@ const annulerGlissement = installerGlissement((id,direction)=>emit("swipeMoment"
 
 async function command(command: Command): Promise<void> {
   const { action, data } = command;
+  if (apercu && ["register", "login", "unlock", "resetAuth", "deleteAccount", "newVault"].includes(action)) throw new Error("Cet aperçu utilise uniquement un carnet fictif local. Revenez à votre espace pour gérer votre compte.");
   if (action === "demo") await beginDemo();
   else if (action === "register") {
     if (data.password === data.phrase) throw new Error("Choisissez une phrase de coffre différente du mot de passe de connexion.");
@@ -383,6 +409,7 @@ async function command(command: Command): Promise<void> {
     await store("cache:" + account!.id, { payload, revision, dirty: false, time: Date.now() } satisfies Stored);
     kit = { account: account!.pseudonyme, auth, vault: created.recovery };
     showJournal(doc);
+    await rafraichirParcours();
     emit("kit", kit);
     emit("status", { state: "synced" });
   } else if (action === "login") {
@@ -496,13 +523,14 @@ async function command(command: Command): Promise<void> {
     await lock(false);
     for (const prefix of ["draft:", "object:", "delete:", "before-import:", "conflict-copy:", "conflict-remote:"]) await erasePrefix(prefix + id + ":");
     await store("cache:" + id, undefined, true);
+    await store("parcours:" + id, undefined, true);
     if (await store("last-account") === id) await store("last-account", undefined, true);
     account = null; mode = "none"; payload = null; emit("entry");
     emit("notice", { message: "Compte, sessions et objets chiffrés supprimés du serveur. Les exports que vous avez téléchargés restent sous votre contrôle." });
   } else if (action === "resetDemo") {
     await lock(false);
-    await store("demo-vault", undefined, true);
-    for (const prefix of ["draft:demo:", "object:demo:", "delete:demo:"]) await erasePrefix(prefix);
+    await store(demoStorageKey(), undefined, true);
+    for (const prefix of ["draft:", "object:", "delete:"]) await erasePrefix(prefix + profile() + ":");
     await beginDemo();
   } else if (action === "settleMotion") {
     const sessionEpoch = epoch;
@@ -573,9 +601,16 @@ async function main(): Promise<void> {
   }
   const response = await fetch("/catalogue.json", { cache: "no-cache" });
   const catalogue = await response.json();
+  chapitresPublics = catalogue.chapitres;
+  if (apercu) {
+    if (!/^[0-9a-f-]{36}$/.test(apercu)) throw new Error("Groupe invalide.");
+    const parcours = await request("/api/groupes/" + apercu + "/apercu");
+    chapitresApercu = parcours.seances.map((s: any) => s.contenu);
+    donneesApercu = presenterParcours(parcours);
+  }
   const demoOnly = document.documentElement.dataset.demoOnly === "true";
   app = window.Elm.Main.init({ node: document.getElementById("app"), flags: {
-    largeur: innerWidth, chapitres: catalogue.chapitres, demoOnly, reducedMotion: matchMedia("(prefers-reduced-motion: reduce)").matches
+    largeur: innerWidth, chapitres: apercu ? chapitresApercu : catalogue.chapitres, apercu: Boolean(apercu), demoOnly, reducedMotion: matchMedia("(prefers-reduced-motion: reduce)").matches
   } });
   app.ports.commande.subscribe(commandValue => {
     const exclusive = exclusiveActions.has(commandValue.action);
@@ -585,7 +620,8 @@ async function main(): Promise<void> {
       .finally(() => { if (exclusive) technicalAction = false; });
   });
   matchMedia("(prefers-reduced-motion: reduce)").addEventListener("change", event => emit("motionPreference", { reduce: event.matches }));
-  addEventListener("online", () => { if (unlocked) synchronize().catch(error => emit("status", { state: "pending", message: message(error) })); });
+  addEventListener("online", () => { rafraichirParcours().catch(() => {}); if (unlocked) synchronize().catch(error => emit("status", { state: "pending", message: message(error) })); });
+  addEventListener("focus", () => { rafraichirParcours().catch(() => {}); });
   addEventListener("offline", () => { if (unlocked && mode === "account") emit("status", { state: "pending", message: "Hors connexion : sauvegarde chiffrée sur cet appareil." }); });
   for (const event of ["pointerdown", "keydown"]) addEventListener(event, () => { lastActivity = Date.now(); if (lastWarning) { lastWarning = false; emit("lockWarning", { show: false }); } });
   addEventListener("pagehide", () => { if (unlocked) lock(false).catch(() => {}); });
@@ -601,7 +637,8 @@ async function main(): Promise<void> {
     if (remaining <= 0) lock();
     else if (remaining < 30000 && !lastWarning) { lastWarning = true; emit("lockWarning", { show: true }); }
   }, 5000);
-  if (!demoOnly) {
+  if (apercu) await beginDemo();
+  else if (!demoOnly) {
     try { account = await request("/api/me"); mode = "account"; await loadAccount(); }
     catch {
       try { await loadLocalAccount(); }

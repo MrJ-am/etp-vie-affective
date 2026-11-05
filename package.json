@@ -8,6 +8,7 @@
     "typecheck": "tsc --noEmit",
     "test": "node --import tsx --test tests/*.test.ts",
     "test:browser": "playwright test",
+    "test:encadrement": "bash scripts/test-encadrement.sh",
     "start": "docker compose up --build -d",
     "stop": "docker compose down"
   },

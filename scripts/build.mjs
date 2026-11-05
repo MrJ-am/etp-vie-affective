@@ -9,7 +9,8 @@ await mkdir("dist", { recursive: true });
 const catalogue = JSON.parse(await readFile("content/parcours.json", "utf8"));
 if (catalogue.chapitres.length !== 15 || catalogue.chapitres.some((c,i) => c.id !== i || !c.source || !c.essentiel.length || (c.nature === "chapitre" && c.rubriques.length !== 7))) throw new Error("Catalogue incomplet.");
 execFileSync("node_modules/.bin/elm", ["make","frontend/src/Main.elm","--optimize","--output=dist/elm.js"], { stdio: "inherit" });
-await Promise.all(["bridge", "worker", "sondage"].map(name => build({ entryPoints: ["bridge/" + name + ".ts"], outfile: "dist/" + name + ".js", bundle: true, format: "iife", target: "es2022", minify: true, sourcemap: false })));
+execFileSync("node_modules/.bin/elm", ["make","frontend/src/Espace.elm","--optimize","--output=dist/espace-elm.js"], { stdio: "inherit" });
+await Promise.all(["bridge", "worker", "sondage", "espace"].map(name => build({ entryPoints: ["bridge/" + name + ".ts"], outfile: "dist/" + name + ".js", bundle: true, format: "iife", target: "es2022", minify: true, sourcemap: false })));
 await copyFile("shared/assets/carnet.css", "dist/carnet.css");
 await copyFile("content/parcours.json", "dist/catalogue.json");
 await copyFile("frontend/favicon.svg", "dist/favicon.svg");
@@ -20,4 +21,5 @@ console.log("Elm, pont et Worker compilés ; 15 étapes et sources validées.");
 
 await courses(catalogue);
 await copyFile("frontend/sondage.html", "dist/sondage.html");
+await copyFile("frontend/espace.html", "dist/espace.html");
 await pwa(catalogue);

@@ -7,9 +7,9 @@ Cette fiche organise les décisions nécessaires avant un usage réel. Elle ne d
 | Finalité | Essai d’un carnet personnel compagnon des séances, sans surveillance | Finalité du service réel, contexte sanitaire ou éducatif, nécessité/proportionnalité |
 | Responsable et contact | Aucun établissement ni DPO inventé | Organisme responsable, adresse de contact, responsable sécurité et procédure de droits |
 | Article 6 / Article 9 | Non choisis pour un service clinique | Base juridique et condition des données sensibles adaptées au contexte ; information compréhensible |
-| Données minimales | Pseudonyme, hash de mot de passe/code de compte, UUID, sessions, dates techniques, ciphertext et révisions | Registre, données collectées par hébergeur/reverse proxy, preuve de minimisation |
+| Données minimales | Pseudonyme, hash de mot de passe/code de compte, UUID, sessions, dates techniques, ciphertext et révisions ; par invitation : nom, prénom, mail, groupe et état d’accès | Registre, nécessité des identités nominatives, données collectées par hébergeur/reverse proxy, preuve de minimisation |
 | Données privées | Notes, objectifs, défis, situations, photos, préférences et calendrier libre dans l’enveloppe | Analyse de sensibilité et participation de personnes concernées |
-| Destinataires | Personne qui ouvre son coffre ; serveur reçoit uniquement ciphertext | Accès techniques et sous-traitants, contrats article 28, support sans lecture du carnet |
+| Destinataires | Personne qui ouvre son coffre ; équipe : identité et accès des membres de ses groupes, résultats agrégés ; serveur : métadonnées de gestion et carnet chiffré | Accès techniques et sous-traitants, contrats article 28, support sans lecture du carnet |
 | Sous-traitance/transferts | Docker local pour comptes ; démonstration privée Sites sans API de comptes | Localisation, hébergeur choisi, clauses, transferts, accès légaux, HDS selon champ applicable |
 | Recherche et partage | Désactivés ; retour POC privé, présentation locale choisie | Toute recherche doit faire l’objet d’un projet distinct et de ses autorisations |
 
@@ -39,3 +39,18 @@ lisibles seulement sur l’appareil animateur. Pas de serveur, pas de persistanc
 automatique, aucune promesse d’anonymat. Le rôle et l’information du groupe doivent
 être validés avant usage réel. Le mode PWA hors ligne conserve les copies chiffrées
 sur chaque appareil ; déconnexion hors ligne ne révoque pas la session serveur.
+
+## Gestion de groupes ajoutée au prototype
+
+L’inscription par lien collecte des identités déclaratives fictives, sans envoi
+ni vérification de mail. Le responsable du groupe peut gérer ces identités et
+les accès, mais ne peut pas lire les écrits. Les questionnaires distants
+enregistrent des compteurs agrégés et un registre distinct des comptes ayant
+participé, sans réponse ni horodatage individuel. L’équipe ne reçoit pas ce
+registre. Les petits effectifs et les corrélations techniques restent des risques
+de réidentification ; la fermeture et le seuil de trois ne constituent pas une
+garantie statistique d’anonymat. Les supports pédagogiques communs et les noms de
+groupes ne doivent contenir aucune donnée patient ou document médical privé.
+Un compte responsable de groupes n’est pas purgé automatiquement par inactivité,
+afin de préserver leurs inscriptions ; la durée de conservation de ces
+métadonnées et la procédure de transfert de gestion restent à fixer avant usage réel.

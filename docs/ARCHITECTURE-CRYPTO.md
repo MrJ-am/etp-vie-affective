@@ -12,7 +12,7 @@ flowchart LR
     L --> J[Journal indépendant des suppressions : UUID]
 ```
 
-Le catalogue pédagogique entier est public pour le prototype. Les étapes consultées ne changent ni l’URL ni les chemins de requêtes. L’API `/api/state` reçoit une enveloppe globale ; les pièces jointes utilisent des UUID aléatoires. Aucun titre, note, nom de fichier, préférence, statut de défi ou étape personnelle ne sert de colonne serveur. Les vues de progression sont calculées en Elm après déchiffrement. Les références aux documents internes expliquent la provenance sans les servir.
+Le catalogue pédagogique initial est public pour le prototype. Les éditions et PDF de l’équipe passent par l’API authentifiée ; la projection du groupe ne contient que ses séances visibles. Les étapes consultées dans le carnet ne changent ni l’URL ni les chemins de requêtes. L’API `/api/state` reçoit une enveloppe globale ; les pièces jointes personnelles utilisent des UUID aléatoires. Aucun titre, note, nom de fichier personnel, préférence, statut de défi ou étape personnelle ne sert de colonne serveur. Les vues de progression sont calculées en Elm après déchiffrement. Les références aux documents internes expliquent la provenance sans les servir.
 
 ## Clés et formats
 
@@ -50,6 +50,42 @@ L’export chiffré contient format/version, trousseau, enveloppe et images. L�
 | `DELETE /api/account` | CSRF, Origin, confirmation du mot de passe ; journal durable puis cascade SQL |
 
 La démo génère son propre CryptoKey non exportable par navigateur et ne contacte pas l’API. Ce stockage sert à isoler les visiteurs ; il ne possède pas la protection par phrase du vrai coffre. Un autre utilisateur du même profil de navigateur peut rouvrir la démo. Il ne faut y écrire que des exemples fictifs.
+
+## Contrat d’encadrement
+
+La migration additive `002-encadrement.sql` conserve les comptes et enveloppes v1.
+Elle ajoute les rôles et identités de gestion, groupes et membres, contenus
+pédagogiques versionnés, visibilité, PDF et compteurs de questionnaires. Le
+catalogue versionné initialise les séances absentes sans écraser les éditions.
+`GET /api/me` et les connexions retournent le rôle. Les routes de carnet restent
+strictement attachées à l’identité de session ; aucun paramètre de groupe ou de
+compte cible ne change leur propriétaire.
+
+| Route | Autorisation et contrat |
+|---|---|
+| `POST /api/invitation` | Lien valide : nom du groupe uniquement, aucun membre |
+| `POST /api/inscription-groupe` | Invitation active ; identité, mot de passe, code de compte et enveloppe v1 ; rôle participant imposé |
+| `GET/POST /api/groupes` | Groupes de l’encadrant connecté ; création atomique avec lien et visibilité initiale |
+| `PATCH /api/groupes/<UUID>` | Propriétaire : nom et archivage |
+| `POST /api/groupes/<UUID>/invitation` | Propriétaire : remplacement du lien |
+| `GET /api/groupes/<UUID>/membres` | Propriétaire : identité et accès, sans carnet ni progression |
+| `PATCH/DELETE /api/utilisatrices/<UUID>` | Membre participant d’un groupe géré : accès ou suppression confirmée et journalisée |
+| `GET /api/groupes/<UUID>/seances` | Propriétaire : contenu et PDF communs, visibilité du groupe |
+| `PUT /api/groupes/<UUID>/seances/<id>` | Propriétaire : visibilité, indépendante du parcours personnel |
+| `PUT /api/seances/<id>` | Encadrant : édition commune, `If-Match` obligatoire, conflit 409 |
+| `POST/DELETE /api/supports[/<UUID>]` | Encadrant : PDF commun borné, déposé ou retiré |
+| `GET /api/supports/<UUID>` | Session active ; visibilité de la séance pour les membres d’un groupe |
+| `GET /api/parcours` | Séances visibles et PDF pour le compte connecté ; catalogue complet pour un compte autonome |
+| `GET /api/groupes/<UUID>/apercu` | Propriétaire : même projection que les membres, sans carnet |
+| `GET/POST /api/groupes/<UUID>/questionnaires` | Propriétaire : lancement et résultats fermés avec seuil ; aucune réponse individuelle |
+| `GET /api/questionnaires` | Questionnaires ouverts du groupe et statut de sa propre participation |
+| `POST /api/questionnaires/<UUID>/reponses` | Membre actif : indices ou abstentions, une seule participation atomique |
+| `POST /api/questionnaires/<UUID>/fermer` | Propriétaire : fermeture irréversible |
+
+Toutes les mutations conservent l’Origin stricte et, après connexion, le CSRF de
+session. L’aperçu `/?apercu=<UUID>` vérifie la propriété du groupe puis ouvre un
+carnet fictif local dans un espace de stockage distinct de la démo et des comptes.
+Il ne demande ni `/api/state` ni les objets d’un compte participant.
 
 ## Interface continue
 

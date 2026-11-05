@@ -13,5 +13,5 @@ export default defineConfig({
     viewport: {width:1440,height:1000},
     trace: "off", screenshot: "off", video: "off"
   },
-  projects: [{name:"chromium",use:{browserName:"chromium"}},{name:"webkit",use:{browserName:"webkit"}},{name:"firefox",use:{browserName:"firefox"}}]
+  projects: [{name:"chromium",use:{browserName:"chromium",launchOptions:process.env.CARNET_TEST_CHROMIUM_EXECUTABLE?{executablePath:process.env.CARNET_TEST_CHROMIUM_EXECUTABLE}:undefined}},{name:"webkit",use:{browserName:"webkit"}},{name:"firefox",use:{browserName:"firefox"}}]
 });
