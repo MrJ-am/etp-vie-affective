@@ -8,10 +8,13 @@ Le projet est autonome : aucun serveur commun, SSO, base métier, SDK ou paquet
 visuel d’un autre projet n’est requis. Node sert uniquement à construire et tester
 le frontend. Le service déployé est un binaire Rust et des fichiers statiques.
 
-La préparation du 28 octobre 2026 gèle la publication automatique et conserve
-le service autonome. Les domaines et la production ne sont pas modifiés ici.
-Les anciennes preuves de publication restent dans l'historique Git ; aucune
-qualification nouvelle de ViSe n'est revendiquée par le chantier du monolithe.
+La clarification utilisateur du 5 novembre 2026 remplace le gel historique :
+une demande de déploiement autorise sa réalisation via la chaîne Forgejo native
+de `vps-infrastructure`, depuis son main testé. Préparer le candidat, sa migration
+et son retour, puis vérifier la bascule ; les protections de branches restent
+en place. Aucune ancienne chaîne ni aucun accès SSH n’est réactivé.
+Les anciennes preuves de publication restent dans l’historique Git et ne
+qualifient pas automatiquement une nouvelle version.
 
 ## Démarrer
 
@@ -103,7 +106,8 @@ et attribue uniquement le rôle indiqué. Aucun rôle n’est attribué automati
 au premier compte. La purge d’inactivité ne supprime pas un compte responsable
 de groupes ; sa suppression nécessite leur transfert préalable par l’opérateur.
 Aucun compte existant n’est promu automatiquement ; l’attribution des rôles
-reste une opération distincte. **Les déploiements restent gelés.**
+reste une opération distincte. **Le déploiement demandé par l’utilisateur est
+autorisé ; sa qualification et son intégration à la livraison restent nécessaires.**
 
 ## Vérifier
 

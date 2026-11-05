@@ -1,5 +1,24 @@
 # Déploiement et migration portables
 
+La demande de déploiement de l’utilisateur autorise sa réalisation ; le gel
+historique a été remplacé le 5 novembre 2026. Pour le VPS MRJ.am, suivre la chaîne
+Forgejo native de `vps-infrastructure/operations/continuous-delivery/` depuis son
+main testé, sans créer de workflow applicatif ou contourner les protections.
+Préparer le candidat, la migration versionnée et le retour avant la bascule ;
+vérifier immédiatement la disponibilité et revenir à l’ancienne version en cas
+d’échec. Les recettes Compose ci-dessous restent une option portable et locale,
+pas une commande de bascule du VPS.
+
+La version d’encadrement ajoute le schéma `002-encadrement.sql`. Son intégration
+à la livraison doit déclarer cette migration et vérifier sa compatibilité avec
+le runtime adopté : la configuration d’infrastructure consultée utilise encore
+`CARNET_SCHEMA_MODE=existing-v1`, sans droit DDL pour le rôle applicatif. Ne pas
+promouvoir le nouveau binaire par simple changement de référence source ni lui
+redonner des droits de création de schéma pour contourner cette étape. Adapter
+le contrat de schéma et les entrées de construction, puis qualifier la migration
+et le retour sur fixtures avant livraison. Ce travail technique reste à réaliser ;
+l’autorisation de déployer est déjà donnée.
+
 Le frontend compilé et le serveur Rust sont livrés ensemble. PostgreSQL et Nginx
 restent des services d’infrastructure. Aucun autre projet n’est nécessaire.
 Le déploiement Compose fournit un PostgreSQL isolé ; le serveur écoute en boucle

@@ -39,5 +39,10 @@ le service systemd, le vhost Nginx, la déclaration de base/rôle et la sauvegar
 chiffrée indépendante. Pas de Docker sur le VPS, ni de SSO/monolithe partagé.
 Les paquets conteneurisés restent une option de développement et de portabilité.
 
-Le chantier Rust/Elm du 28 octobre gèle les déploiements. Cette référence
-d'intégration décrit la cible historique, pas une activation effectuée ici.
+Le gel du 28 octobre est remplacé par la clarification utilisateur du 5 novembre :
+une demande de déploiement autorise sa réalisation. Le circuit courant est celui
+de `vps-infrastructure/operations/continuous-delivery/` : candidat et migration
+testés, livraison depuis le main testé, version précédente disponible, vérification
+immédiate et retour rapide en cas d'échec. Ne pas réactiver les anciennes chaînes.
+La description d'hébergement ci-dessus reste une référence historique ; elle ne
+prouve pas la révision actuellement installée.

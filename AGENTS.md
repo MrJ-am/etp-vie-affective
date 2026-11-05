@@ -16,13 +16,23 @@ compose.test.yaml. Ne pas revendiquer certification, validation clinique,
 audit externe ou essai sur appareils réels inexistant. Pas de publication de
 données patient ni de bascule du VPS sans sauvegarde et retour vérifiés.
 
-La préparation Rust/Elm du 28 octobre 2026 gèle tous les déploiements.
-L'assemblage applicatif est dans [mrjam-plateforme](https://github.com/MrJ-am/mrjam-plateforme),
-les propositions de règles indépendantes dans [mrjam-validation](https://github.com/MrJ-am/mrjam-validation),
-et l'environnement de développement dans [vps-infrastructure/environment](https://github.com/MrJ-am/vps-infrastructure/tree/main/environment).
-La forge cible est https://forge.mrj.am ; son raccordement et les ACL restent à établir.
+Clarification utilisateur du 5 novembre 2026 : les demandes de déploiement de
+ViSe autorisent leur réalisation. Cette directive remplace le gel du 28 octobre ;
+ne pas redemander une autorisation générale déjà donnée. Préparer le candidat,
+qualifier la migration et le retour, puis utiliser la chaîne Forgejo native
+existante de vps-infrastructure depuis son main testé. Conserver la dernière
+version disponible et vérifier immédiatement la bascule ; revenir à l'ancienne
+version en cas d'échec. Ne pas contourner les protections de branches ni réactiver
+d'accès SSH depuis Cloud. Aucun accès aux données métier réelles ; les essais
+de production autorisés concernent seulement les comptes fictifs dédiés.
+L'assemblage applicatif est dans [mrjam-plateforme](https://forge.mrj.am/MrJ-am/mrjam-plateforme),
+les propositions de règles indépendantes dans [mrjam-validation](https://forge.mrj.am/MrJ-am/mrjam-validation),
+et l'environnement de développement dans [vps-infrastructure/environment](https://forge.mrj.am/MrJ-am/vps-infrastructure/src/branch/main/environment).
+La forge cible est https://forge.mrj.am ; les ACL et la chaîne courantes sont
+décrites dans vps-infrastructure/operations/continuous-delivery/.
 Ne créer ni workflow, ni déclencheur de déploiement dans ce dépôt.
-Une vérification locale ne vaut ni qualification complète ni autorisation de production.
+Une vérification locale ne prouve pas la qualification du candidat par la chaîne
+de livraison. Distinguer une étape technique manquante d'une autorisation déjà donnée.
 Conserver les révisions exactes des dépendances, les licences et les ressources réservées.
 Aucune donnée personnelle, aucun accès de production, aucun secret dans le dépôt.
 L'historique Git conserve les versions antérieures ; aucune réécriture forcée.
